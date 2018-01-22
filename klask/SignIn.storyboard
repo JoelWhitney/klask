@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KOMIKASL.ttf">
+            <string>KomikaSlim</string>
+        </array>
+        <array key="KOMIKHI_.ttf">
+            <string>KomikaHand-Italic</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Sign In View Controller-->
+        <scene sceneID="Pa0-D5-LDP">
+            <objects>
+                <viewController storyboardIdentifier="SignInViewController" id="6cc-yl-zuC" customClass="SignInViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KBs-yR-nvd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="qvM-9m-QJa">
+                                <rect key="frame" x="62" y="208" width="250" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="dYu-Kq-5g0"/>
+                                    <constraint firstAttribute="width" constant="250" id="n1c-3c-xKl"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vir-0l-n5u" customClass="GIDSignInButton">
+                                <rect key="frame" x="67" y="324.5" width="240" height="118"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="118" id="DBq-Rp-2qb"/>
+                                    <constraint firstAttribute="width" constant="240" id="tNY-5P-wxe"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="signIn" destination="6cc-yl-zuC" eventType="valueChanged" id="mZ8-Ac-Jnj"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Vir-0l-n5u" firstAttribute="centerY" secondItem="KBs-yR-nvd" secondAttribute="centerY" constant="50" id="3iy-ZW-iDq"/>
+                            <constraint firstItem="qvM-9m-QJa" firstAttribute="centerY" secondItem="KBs-yR-nvd" secondAttribute="centerY" id="EZN-9v-M05"/>
+                            <constraint firstItem="qvM-9m-QJa" firstAttribute="centerX" secondItem="KBs-yR-nvd" secondAttribute="centerX" id="q8U-qp-01h"/>
+                            <constraint firstItem="Vir-0l-n5u" firstAttribute="centerX" secondItem="KBs-yR-nvd" secondAttribute="centerX" id="slF-W1-Ba8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="G7M-EL-yA8"/>
+                    </view>
+                    <connections>
+                        <outlet property="GoogleSignInButton" destination="Vir-0l-n5u" id="pX4-lS-Tfl"/>
+                        <outlet property="googleSignInButton" destination="Vir-0l-n5u" id="MNT-ih-r2j"/>
+                        <segue destination="DNi-nK-bXT" kind="show" identifier="ChooseArenaViewController" id="bdL-sg-dmH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4nf-tI-oMM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-702" y="-668"/>
+        </scene>
+        <!--Choose Arena View Controller-->
+        <scene sceneID="Deo-fh-dHV">
+            <objects>
+                <viewController storyboardIdentifier="ChooseArenaViewController" id="DNi-nK-bXT" customClass="ChooseArenaViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tHP-Uh-zPh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ox6-NL-LT1">
+                                <rect key="frame" x="0.0" y="152" width="375" height="515"/>
+                                <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ArenaCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ArenaCell" rowHeight="70" id="1d9-Tx-zXQ" customClass="ArenaCell" customModule="klask" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1d9-Tx-zXQ" id="CcJ-me-Eeq">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uva-hQ-OXM">
+                                                    <rect key="frame" x="15" y="21" width="141" height="26"/>
+                                                    <fontDescription key="fontDescription" name="KomikaHand-Italic" family="Komika Hand" pointSize="19"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="12 playing" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpC-05-rAv">
+                                                    <rect key="frame" x="218" y="24" width="142" height="21"/>
+                                                    <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uva-hQ-OXM" firstAttribute="centerY" secondItem="CcJ-me-Eeq" secondAttribute="centerY" id="71i-Dm-C8J"/>
+                                                <constraint firstItem="uva-hQ-OXM" firstAttribute="leading" secondItem="CcJ-me-Eeq" secondAttribute="leadingMargin" id="BEj-vu-FLz"/>
+                                                <constraint firstItem="FpC-05-rAv" firstAttribute="centerY" secondItem="CcJ-me-Eeq" secondAttribute="centerY" id="GVZ-ju-4sJ"/>
+                                                <constraint firstItem="FpC-05-rAv" firstAttribute="trailing" secondItem="CcJ-me-Eeq" secondAttribute="trailingMargin" id="T3Y-qQ-Ljk"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="arenaNameLabel" destination="uva-hQ-OXM" id="BLP-Ry-7db"/>
+                                            <outlet property="numberJoinedLabel" destination="FpC-05-rAv" id="3Z6-iT-2RP"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="DNi-nK-bXT" id="Djw-1g-gro"/>
+                                    <outlet property="delegate" destination="DNi-nK-bXT" id="oa4-O4-gzR"/>
+                                </connections>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mJI-K8-OI1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
+                                <color key="barTintColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="largeTitleTextAttributes">
+                                    <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="28"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Choose Arena" id="g6q-w0-qig"/>
+                                </items>
+                            </navigationBar>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Join new league" translatesAutoresizingMaskIntoConstraints="NO" id="ijB-5v-hod">
+                                <rect key="frame" x="0.0" y="96" width="375" height="56"/>
+                                <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="DNi-nK-bXT" id="Rry-Fh-zrO"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="trailing" secondItem="EUz-Qe-5T1" secondAttribute="trailing" id="Btl-wn-YwD"/>
+                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="leading" secondItem="EUz-Qe-5T1" secondAttribute="leading" id="D5h-fc-ENa"/>
+                            <constraint firstItem="mJI-K8-OI1" firstAttribute="trailing" secondItem="EUz-Qe-5T1" secondAttribute="trailing" id="RR0-X8-kAs"/>
+                            <constraint firstItem="ijB-5v-hod" firstAttribute="leading" secondItem="EUz-Qe-5T1" secondAttribute="leading" id="elS-e5-2al"/>
+                            <constraint firstItem="mJI-K8-OI1" firstAttribute="leading" secondItem="EUz-Qe-5T1" secondAttribute="leading" id="fVs-OP-les"/>
+                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="top" secondItem="ijB-5v-hod" secondAttribute="bottom" id="j1s-sh-N34"/>
+                            <constraint firstItem="mJI-K8-OI1" firstAttribute="top" secondItem="tHP-Uh-zPh" secondAttribute="top" id="jtG-Nt-7ll"/>
+                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="bottom" secondItem="EUz-Qe-5T1" secondAttribute="bottom" id="ryV-Pv-H3t"/>
+                            <constraint firstItem="ijB-5v-hod" firstAttribute="trailing" secondItem="EUz-Qe-5T1" secondAttribute="trailing" id="wqa-wr-Ixt"/>
+                            <constraint firstItem="ijB-5v-hod" firstAttribute="top" secondItem="mJI-K8-OI1" secondAttribute="bottom" id="xtJ-3A-Zcn"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="EUz-Qe-5T1"/>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="ijB-5v-hod" id="bqB-pR-VAe"/>
+                        <outlet property="tableView" destination="Ox6-NL-LT1" id="ArO-xB-LYH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lk3-4x-vcu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="70" y="-668"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Logo" width="200" height="190"/>
+    </resources>
+</document>

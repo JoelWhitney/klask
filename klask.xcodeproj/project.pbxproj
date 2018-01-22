@@ -1,0 +1,621 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BBFA451FE2ACC51BF10524DB /* Pods_klask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CE552898C0C2B2221D9522 /* Pods_klask.framework */; };
+		D60AB233200A5E96003359B1 /* _retired_SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D60AB232200A5E96003359B1 /* _retired_SignIn.storyboard */; };
+		D60AB235200A5F30003359B1 /* __retired_SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60AB234200A5F30003359B1 /* __retired_SignInViewController.swift */; };
+		D60AB23F200AD809003359B1 /* AngleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60AB23E200AD809003359B1 /* AngleView.swift */; };
+		D60AB241200ADB34003359B1 /* SelectWinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60AB240200ADB34003359B1 /* SelectWinnerViewController.swift */; };
+		D60AB243200ADBDF003359B1 /* SelectChallengerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60AB242200ADBDF003359B1 /* SelectChallengerViewController.swift */; };
+		D60DAD7920139198008777B0 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60DAD7820139198008777B0 /* DataStore.swift */; };
+		D60DAD7D2013E42F008777B0 /* ChooseArenaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60DAD7C2013E42F008777B0 /* ChooseArenaViewController.swift */; };
+		D60DAD80201433CF008777B0 /* UI+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60DAD7F201433CF008777B0 /* UI+View.swift */; };
+		D61D5B07200CF1FF00CB19F4 /* SubmitGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */; };
+		D61D5B09200D48CC00CB19F4 /* NoConnection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */; };
+		D61D5B0B200D48F200CB19F4 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */; };
+		D63FBE04200EC32400D289F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */; };
+		D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6806C1E200ED52600070195 /* SignIn.storyboard */; };
+		D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6806C20200EDA9B00070195 /* SignInViewController.swift */; };
+		E5524C1920114083004F1852 /* __retired_DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5524C1820114083004F1852 /* __retired_DataModels.swift */; };
+		E5524C1B20114177004F1852 /* __retired_StandingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5524C1A20114177004F1852 /* __retired_StandingsViewController.swift */; };
+		E563C92F20094EED004A0BF9 /* Daniel Midgley.txt in Resources */ = {isa = PBXBuildFile; fileRef = E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */; };
+		E563C93020094EED004A0BF9 /* Daniel-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E563C92B20094EED004A0BF9 /* Daniel-Black.otf */; };
+		E563C93120094EED004A0BF9 /* Daniel-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E563C92C20094EED004A0BF9 /* Daniel-Bold.otf */; };
+		E563C93220094EED004A0BF9 /* Daniel-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E563C92D20094EED004A0BF9 /* Daniel-Regular.otf */; };
+		E563C94020095B1B004A0BF9 /* Komika.txt in Resources */ = {isa = PBXBuildFile; fileRef = E563C93420095B19004A0BF9 /* Komika.txt */; };
+		E563C94120095B1B004A0BF9 /* KOMIKAH_.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93520095B19004A0BF9 /* KOMIKAH_.ttf */; };
+		E563C94220095B1B004A0BF9 /* KOMIKAHB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93620095B19004A0BF9 /* KOMIKAHB.ttf */; };
+		E563C94320095B1B004A0BF9 /* KOMIKASK.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93720095B19004A0BF9 /* KOMIKASK.ttf */; };
+		E563C94420095B1B004A0BF9 /* KOMIKASL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93820095B19004A0BF9 /* KOMIKASL.ttf */; };
+		E563C94520095B1B004A0BF9 /* KOMIKHBI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93920095B19004A0BF9 /* KOMIKHBI.ttf */; };
+		E563C94620095B1B004A0BF9 /* KOMIKHI_.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93A20095B19004A0BF9 /* KOMIKHI_.ttf */; };
+		E563C94720095B1B004A0BF9 /* KOMIKJ__.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93B20095B19004A0BF9 /* KOMIKJ__.ttf */; };
+		E563C94820095B1B004A0BF9 /* KOMIKJI_.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93C20095B19004A0BF9 /* KOMIKJI_.ttf */; };
+		E563C94920095B1B004A0BF9 /* KOMIKSKI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93D20095B19004A0BF9 /* KOMIKSKI.ttf */; };
+		E563C94A20095B1B004A0BF9 /* KOMIKSLI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563C93E20095B19004A0BF9 /* KOMIKSLI.ttf */; };
+		E563C94B20095B1B004A0BF9 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = E563C93F20095B19004A0BF9 /* readme.txt */; };
+		E57E7D7E2005AF540039748E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E7D7D2005AF540039748E /* AppDelegate.swift */; };
+		E57E7D802005AF540039748E /* StandingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E7D7F2005AF540039748E /* StandingsViewController.swift */; };
+		E57E7D832005AF540039748E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57E7D812005AF540039748E /* Main.storyboard */; };
+		E57E7D852005AF540039748E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E57E7D842005AF540039748E /* Assets.xcassets */; };
+		E57E7D882005AF540039748E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57E7D862005AF540039748E /* LaunchScreen.storyboard */; };
+		E57E7D902005B2250039748E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E7D8F2005B2250039748E /* ProfileViewController.swift */; };
+		E57E7D932005B24B0039748E /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E7D922005B24B0039748E /* DataModels.swift */; };
+		E57E7D952005B59C0039748E /* __retired_DatabaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E7D942005B59C0039748E /* __retired_DatabaseAPI.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		69F628A82F24232C397A0C8A /* Pods-klask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-klask.release.xcconfig"; path = "Pods/Target Support Files/Pods-klask/Pods-klask.release.xcconfig"; sourceTree = "<group>"; };
+		94CE552898C0C2B2221D9522 /* Pods_klask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_klask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE6FD42C2EA1033E53A644F5 /* Pods-klask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-klask.debug.xcconfig"; path = "Pods/Target Support Files/Pods-klask/Pods-klask.debug.xcconfig"; sourceTree = "<group>"; };
+		D60AB232200A5E96003359B1 /* _retired_SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = _retired_SignIn.storyboard; sourceTree = "<group>"; };
+		D60AB234200A5F30003359B1 /* __retired_SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = __retired_SignInViewController.swift; sourceTree = "<group>"; };
+		D60AB23E200AD809003359B1 /* AngleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleView.swift; sourceTree = "<group>"; };
+		D60AB240200ADB34003359B1 /* SelectWinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWinnerViewController.swift; sourceTree = "<group>"; };
+		D60AB242200ADBDF003359B1 /* SelectChallengerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengerViewController.swift; sourceTree = "<group>"; };
+		D60DAD7820139198008777B0 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		D60DAD7C2013E42F008777B0 /* ChooseArenaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseArenaViewController.swift; sourceTree = "<group>"; };
+		D60DAD7F201433CF008777B0 /* UI+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UI+View.swift"; sourceTree = "<group>"; };
+		D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SubmitGame.storyboard; sourceTree = "<group>"; };
+		D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnection.storyboard; sourceTree = "<group>"; };
+		D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
+		D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D6806C1E200ED52600070195 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
+		D6806C20200EDA9B00070195 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		E5524C1820114083004F1852 /* __retired_DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = __retired_DataModels.swift; sourceTree = "<group>"; };
+		E5524C1A20114177004F1852 /* __retired_StandingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = __retired_StandingsViewController.swift; sourceTree = "<group>"; };
+		E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Daniel Midgley.txt"; sourceTree = "<group>"; };
+		E563C92B20094EED004A0BF9 /* Daniel-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Daniel-Black.otf"; sourceTree = "<group>"; };
+		E563C92C20094EED004A0BF9 /* Daniel-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Daniel-Bold.otf"; sourceTree = "<group>"; };
+		E563C92D20094EED004A0BF9 /* Daniel-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Daniel-Regular.otf"; sourceTree = "<group>"; };
+		E563C93420095B19004A0BF9 /* Komika.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Komika.txt; sourceTree = "<group>"; };
+		E563C93520095B19004A0BF9 /* KOMIKAH_.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKAH_.ttf; sourceTree = "<group>"; };
+		E563C93620095B19004A0BF9 /* KOMIKAHB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKAHB.ttf; sourceTree = "<group>"; };
+		E563C93720095B19004A0BF9 /* KOMIKASK.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKASK.ttf; sourceTree = "<group>"; };
+		E563C93820095B19004A0BF9 /* KOMIKASL.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKASL.ttf; sourceTree = "<group>"; };
+		E563C93920095B19004A0BF9 /* KOMIKHBI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKHBI.ttf; sourceTree = "<group>"; };
+		E563C93A20095B19004A0BF9 /* KOMIKHI_.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKHI_.ttf; sourceTree = "<group>"; };
+		E563C93B20095B19004A0BF9 /* KOMIKJ__.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKJ__.ttf; sourceTree = "<group>"; };
+		E563C93C20095B19004A0BF9 /* KOMIKJI_.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKJI_.ttf; sourceTree = "<group>"; };
+		E563C93D20095B19004A0BF9 /* KOMIKSKI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKSKI.ttf; sourceTree = "<group>"; };
+		E563C93E20095B19004A0BF9 /* KOMIKSLI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KOMIKSLI.ttf; sourceTree = "<group>"; };
+		E563C93F20095B19004A0BF9 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		E57E7D7A2005AF540039748E /* klask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = klask.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E57E7D7D2005AF540039748E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E57E7D7F2005AF540039748E /* StandingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsViewController.swift; sourceTree = "<group>"; };
+		E57E7D822005AF540039748E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E57E7D842005AF540039748E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E57E7D872005AF540039748E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E57E7D892005AF540039748E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E57E7D8F2005B2250039748E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E57E7D922005B24B0039748E /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
+		E57E7D942005B59C0039748E /* __retired_DatabaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = __retired_DatabaseAPI.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E57E7D772005AF540039748E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBFA451FE2ACC51BF10524DB /* Pods_klask.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		557F18A9FB47296D42119EC4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AE6FD42C2EA1033E53A644F5 /* Pods-klask.debug.xcconfig */,
+				69F628A82F24232C397A0C8A /* Pods-klask.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9C30476F08D5A66746C447DE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				94CE552898C0C2B2221D9522 /* Pods_klask.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D60AB23C200AD479003359B1 /* SubmitGameContollers */ = {
+			isa = PBXGroup;
+			children = (
+				D60AB242200ADBDF003359B1 /* SelectChallengerViewController.swift */,
+				D60AB240200ADB34003359B1 /* SelectWinnerViewController.swift */,
+			);
+			path = SubmitGameContollers;
+			sourceTree = "<group>";
+		};
+		D60AB23D200AD7EF003359B1 /* UI Extras */ = {
+			isa = PBXGroup;
+			children = (
+				D60AB23E200AD809003359B1 /* AngleView.swift */,
+				D60DAD7F201433CF008777B0 /* UI+View.swift */,
+			);
+			path = "UI Extras";
+			sourceTree = "<group>";
+		};
+		D60DAD7E2013EDFA008777B0 /* SignInControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D6806C20200EDA9B00070195 /* SignInViewController.swift */,
+				D60DAD7C2013E42F008777B0 /* ChooseArenaViewController.swift */,
+			);
+			path = SignInControllers;
+			sourceTree = "<group>";
+		};
+		E563C91C20094DE6004A0BF9 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E563C93320095B19004A0BF9 /* komika */,
+				E563C92820094EED004A0BF9 /* daniel */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		E563C92820094EED004A0BF9 /* daniel */ = {
+			isa = PBXGroup;
+			children = (
+				E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */,
+				E563C92B20094EED004A0BF9 /* Daniel-Black.otf */,
+				E563C92C20094EED004A0BF9 /* Daniel-Bold.otf */,
+				E563C92D20094EED004A0BF9 /* Daniel-Regular.otf */,
+			);
+			path = daniel;
+			sourceTree = "<group>";
+		};
+		E563C93320095B19004A0BF9 /* komika */ = {
+			isa = PBXGroup;
+			children = (
+				E563C93420095B19004A0BF9 /* Komika.txt */,
+				E563C93520095B19004A0BF9 /* KOMIKAH_.ttf */,
+				E563C93620095B19004A0BF9 /* KOMIKAHB.ttf */,
+				E563C93720095B19004A0BF9 /* KOMIKASK.ttf */,
+				E563C93820095B19004A0BF9 /* KOMIKASL.ttf */,
+				E563C93920095B19004A0BF9 /* KOMIKHBI.ttf */,
+				E563C93A20095B19004A0BF9 /* KOMIKHI_.ttf */,
+				E563C93B20095B19004A0BF9 /* KOMIKJ__.ttf */,
+				E563C93C20095B19004A0BF9 /* KOMIKJI_.ttf */,
+				E563C93D20095B19004A0BF9 /* KOMIKSKI.ttf */,
+				E563C93E20095B19004A0BF9 /* KOMIKSLI.ttf */,
+				E563C93F20095B19004A0BF9 /* readme.txt */,
+			);
+			path = komika;
+			sourceTree = "<group>";
+		};
+		E57E7D712005AF540039748E = {
+			isa = PBXGroup;
+			children = (
+				E57E7D7C2005AF540039748E /* klask */,
+				E57E7D7B2005AF540039748E /* Products */,
+				557F18A9FB47296D42119EC4 /* Pods */,
+				9C30476F08D5A66746C447DE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E57E7D7B2005AF540039748E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E57E7D7A2005AF540039748E /* klask.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E57E7D7C2005AF540039748E /* klask */ = {
+			isa = PBXGroup;
+			children = (
+				E57E7D862005AF540039748E /* LaunchScreen.storyboard */,
+				E57E7D812005AF540039748E /* Main.storyboard */,
+				D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */,
+				D6806C1E200ED52600070195 /* SignIn.storyboard */,
+				D60AB232200A5E96003359B1 /* _retired_SignIn.storyboard */,
+				D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */,
+				E57E7D842005AF540039748E /* Assets.xcassets */,
+				E57E7D7D2005AF540039748E /* AppDelegate.swift */,
+				D60DAD7E2013EDFA008777B0 /* SignInControllers */,
+				E57E7D7F2005AF540039748E /* StandingsViewController.swift */,
+				E57E7D8F2005B2250039748E /* ProfileViewController.swift */,
+				D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */,
+				E5524C1A20114177004F1852 /* __retired_StandingsViewController.swift */,
+				D60AB234200A5F30003359B1 /* __retired_SignInViewController.swift */,
+				D60AB23C200AD479003359B1 /* SubmitGameContollers */,
+				E57E7D912005B2350039748E /* Data Models */,
+				D60AB23D200AD7EF003359B1 /* UI Extras */,
+				E563C91C20094DE6004A0BF9 /* fonts */,
+				E57E7D892005AF540039748E /* Info.plist */,
+				D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */,
+			);
+			path = klask;
+			sourceTree = "<group>";
+		};
+		E57E7D912005B2350039748E /* Data Models */ = {
+			isa = PBXGroup;
+			children = (
+				E57E7D922005B24B0039748E /* DataModels.swift */,
+				D60DAD7820139198008777B0 /* DataStore.swift */,
+				E5524C1820114083004F1852 /* __retired_DataModels.swift */,
+				E57E7D942005B59C0039748E /* __retired_DatabaseAPI.swift */,
+			);
+			path = "Data Models";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E57E7D792005AF540039748E /* klask */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E57E7D8C2005AF540039748E /* Build configuration list for PBXNativeTarget "klask" */;
+			buildPhases = (
+				ACCC453F7393CE55B1D56E0A /* [CP] Check Pods Manifest.lock */,
+				E57E7D762005AF540039748E /* Sources */,
+				E57E7D772005AF540039748E /* Frameworks */,
+				E57E7D782005AF540039748E /* Resources */,
+				65F4838FA29B6AC3A86BE06E /* [CP] Embed Pods Frameworks */,
+				7754AB12B4ADB76D99ECB88D /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = klask;
+			productName = klask;
+			productReference = E57E7D7A2005AF540039748E /* klask.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E57E7D722005AF540039748E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = JoelWhitney;
+				TargetAttributes = {
+					E57E7D792005AF540039748E = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = E57E7D752005AF540039748E /* Build configuration list for PBXProject "klask" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E57E7D712005AF540039748E;
+			productRefGroup = E57E7D7B2005AF540039748E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E57E7D792005AF540039748E /* klask */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E57E7D782005AF540039748E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E563C94220095B1B004A0BF9 /* KOMIKAHB.ttf in Resources */,
+				E563C94A20095B1B004A0BF9 /* KOMIKSLI.ttf in Resources */,
+				E563C94B20095B1B004A0BF9 /* readme.txt in Resources */,
+				E563C94920095B1B004A0BF9 /* KOMIKSKI.ttf in Resources */,
+				E563C93120094EED004A0BF9 /* Daniel-Bold.otf in Resources */,
+				E563C94120095B1B004A0BF9 /* KOMIKAH_.ttf in Resources */,
+				E563C92F20094EED004A0BF9 /* Daniel Midgley.txt in Resources */,
+				E57E7D882005AF540039748E /* LaunchScreen.storyboard in Resources */,
+				E563C94820095B1B004A0BF9 /* KOMIKJI_.ttf in Resources */,
+				E563C94620095B1B004A0BF9 /* KOMIKHI_.ttf in Resources */,
+				D61D5B09200D48CC00CB19F4 /* NoConnection.storyboard in Resources */,
+				E57E7D852005AF540039748E /* Assets.xcassets in Resources */,
+				E563C94020095B1B004A0BF9 /* Komika.txt in Resources */,
+				D61D5B07200CF1FF00CB19F4 /* SubmitGame.storyboard in Resources */,
+				E563C94420095B1B004A0BF9 /* KOMIKASL.ttf in Resources */,
+				E563C94520095B1B004A0BF9 /* KOMIKHBI.ttf in Resources */,
+				D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */,
+				E563C94720095B1B004A0BF9 /* KOMIKJ__.ttf in Resources */,
+				E563C93220094EED004A0BF9 /* Daniel-Regular.otf in Resources */,
+				D60AB233200A5E96003359B1 /* _retired_SignIn.storyboard in Resources */,
+				D63FBE04200EC32400D289F4 /* GoogleService-Info.plist in Resources */,
+				E563C94320095B1B004A0BF9 /* KOMIKASK.ttf in Resources */,
+				E563C93020094EED004A0BF9 /* Daniel-Black.otf in Resources */,
+				E57E7D832005AF540039748E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		65F4838FA29B6AC3A86BE06E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CodableFirebase/CodableFirebase.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CodableFirebase.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7754AB12B4ADB76D99ECB88D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle,
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ACCC453F7393CE55B1D56E0A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-klask-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E57E7D762005AF540039748E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */,
+				D60AB235200A5F30003359B1 /* __retired_SignInViewController.swift in Sources */,
+				E57E7D902005B2250039748E /* ProfileViewController.swift in Sources */,
+				E57E7D932005B24B0039748E /* DataModels.swift in Sources */,
+				D60AB243200ADBDF003359B1 /* SelectChallengerViewController.swift in Sources */,
+				D60DAD7D2013E42F008777B0 /* ChooseArenaViewController.swift in Sources */,
+				E57E7D802005AF540039748E /* StandingsViewController.swift in Sources */,
+				E5524C1B20114177004F1852 /* __retired_StandingsViewController.swift in Sources */,
+				D60DAD7920139198008777B0 /* DataStore.swift in Sources */,
+				D60AB241200ADB34003359B1 /* SelectWinnerViewController.swift in Sources */,
+				E5524C1920114083004F1852 /* __retired_DataModels.swift in Sources */,
+				D61D5B0B200D48F200CB19F4 /* NoConnectionViewController.swift in Sources */,
+				D60DAD80201433CF008777B0 /* UI+View.swift in Sources */,
+				D60AB23F200AD809003359B1 /* AngleView.swift in Sources */,
+				E57E7D7E2005AF540039748E /* AppDelegate.swift in Sources */,
+				E57E7D952005B59C0039748E /* __retired_DatabaseAPI.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E57E7D812005AF540039748E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E57E7D822005AF540039748E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E57E7D862005AF540039748E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E57E7D872005AF540039748E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E57E7D8A2005AF540039748E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E57E7D8B2005AF540039748E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E57E7D8D2005AF540039748E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE6FD42C2EA1033E53A644F5 /* Pods-klask.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5SREPW8963;
+				INFOPLIST_FILE = klask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.klask;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E57E7D8E2005AF540039748E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69F628A82F24232C397A0C8A /* Pods-klask.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5SREPW8963;
+				INFOPLIST_FILE = klask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.esri.klask;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E57E7D752005AF540039748E /* Build configuration list for PBXProject "klask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E57E7D8A2005AF540039748E /* Debug */,
+				E57E7D8B2005AF540039748E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E57E7D8C2005AF540039748E /* Build configuration list for PBXNativeTarget "klask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E57E7D8D2005AF540039748E /* Debug */,
+				E57E7D8E2005AF540039748E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E57E7D722005AF540039748E /* Project object */;
+}

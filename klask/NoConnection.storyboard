@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KOMIKAHB.ttf">
+            <string>KomikaHand-Bold</string>
+        </array>
+        <array key="KOMIKAH_.ttf">
+            <string>KomikaHand</string>
+        </array>
+        <array key="KOMIKASL.ttf">
+            <string>KomikaSlim</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--No Connection View Controller-->
+        <scene sceneID="63D-w9-UA8">
+            <objects>
+                <viewController storyboardIdentifier="NoConnectionViewController" id="yJ3-r1-fP4" customClass="NoConnectionViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V8Q-om-9wq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="515-XV-KLd">
+                                <rect key="frame" x="30" y="191" width="315" height="285"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="7Pf-Qo-ap1">
+                                        <rect key="frame" x="67.5" y="97" width="180" height="180"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="180" id="2HR-9q-rBm"/>
+                                            <constraint firstAttribute="width" constant="180" id="K3w-L3-fJs"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$@#%¢!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dp5-pa-OwS">
+                                        <rect key="frame" x="109" y="8" width="98.5" height="38"/>
+                                        <fontDescription key="fontDescription" name="KomikaHand-Bold" family="Komika Hand" pointSize="28"/>
+                                        <color key="textColor" white="1" alpha="0.90014982880000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The server seems to be inaccessible" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rww-rw-rmN">
+                                        <rect key="frame" x="20" y="54" width="275" height="45.5"/>
+                                        <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="0.90014982876712324" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Dp5-pa-OwS" firstAttribute="top" secondItem="515-XV-KLd" secondAttribute="top" constant="8" id="19h-iJ-TgV"/>
+                                    <constraint firstAttribute="bottom" secondItem="7Pf-Qo-ap1" secondAttribute="bottom" constant="8" id="BPz-lG-gCe"/>
+                                    <constraint firstItem="7Pf-Qo-ap1" firstAttribute="centerX" secondItem="515-XV-KLd" secondAttribute="centerX" id="BbR-nB-X5Z"/>
+                                    <constraint firstAttribute="height" constant="285" id="D2O-r2-za9"/>
+                                    <constraint firstItem="Rww-rw-rmN" firstAttribute="leading" secondItem="515-XV-KLd" secondAttribute="leading" constant="20" id="TTk-Xz-Y17"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rww-rw-rmN" secondAttribute="trailing" constant="20" id="h4b-jF-Lwy"/>
+                                    <constraint firstItem="Dp5-pa-OwS" firstAttribute="centerX" secondItem="515-XV-KLd" secondAttribute="centerX" id="nfU-t2-ODE"/>
+                                    <constraint firstItem="Rww-rw-rmN" firstAttribute="top" secondItem="Dp5-pa-OwS" secondAttribute="bottom" constant="8" id="vfZ-uN-Vap"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q1-7H-O0L">
+                                <rect key="frame" x="301" y="45" width="56" height="36"/>
+                                <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
+                                <state key="normal" title="Retry">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="retry" destination="yJ3-r1-fP4" eventType="touchUpInside" id="jSp-Oe-jgw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="515-XV-KLd" firstAttribute="centerY" secondItem="V8Q-om-9wq" secondAttribute="centerY" id="M8e-Z5-zE5"/>
+                            <constraint firstItem="bgY-h0-oNT" firstAttribute="trailing" secondItem="515-XV-KLd" secondAttribute="trailing" constant="30" id="ciQ-aE-VBs"/>
+                            <constraint firstItem="515-XV-KLd" firstAttribute="leading" secondItem="bgY-h0-oNT" secondAttribute="leading" constant="30" id="tGN-fV-Qaa"/>
+                            <constraint firstItem="9q1-7H-O0L" firstAttribute="top" secondItem="bgY-h0-oNT" secondAttribute="top" constant="25" id="ujm-IK-G8p"/>
+                            <constraint firstItem="bgY-h0-oNT" firstAttribute="trailing" secondItem="9q1-7H-O0L" secondAttribute="trailing" constant="18" id="xzU-b1-HKT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bgY-h0-oNT"/>
+                    </view>
+                    <connections>
+                        <outlet property="retryButton" destination="9q1-7H-O0L" id="ozH-PY-tcR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I3O-Bu-HuF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10.4" y="184.85757121439281"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Logo" width="200" height="190"/>
+    </resources>
+</document>

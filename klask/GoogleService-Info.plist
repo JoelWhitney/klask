@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>421656896618-0ejsolpig2vfh6kl68shubqj8and2v1f.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.421656896618-0ejsolpig2vfh6kl68shubqj8and2v1f</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBFjI4BzodNtuF6s6NqPY8NPGyF19F113s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>421656896618</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.esri.klask</string>
+	<key>PROJECT_ID</key>
+	<string>portland-leaderboard</string>
+	<key>STORAGE_BUCKET</key>
+	<string>portland-leaderboard.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:421656896618:ios:0325d0bd350a29fb</string>
+	<key>DATABASE_URL</key>
+	<string>https://portland-leaderboard.firebaseio.com</string>
+</dict>
+</plist>
