@@ -72,7 +72,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ox6-NL-LT1">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ox6-NL-LT1">
                                 <rect key="frame" x="0.0" y="152" width="375" height="515"/>
                                 <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -85,24 +85,24 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uva-hQ-OXM">
-                                                    <rect key="frame" x="15" y="21" width="141" height="26"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uva-hQ-OXM">
+                                                    <rect key="frame" x="15" y="11" width="54.5" height="26"/>
                                                     <fontDescription key="fontDescription" name="KomikaHand-Italic" family="Komika Hand" pointSize="19"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="12 playing" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpC-05-rAv">
-                                                    <rect key="frame" x="218" y="24" width="142" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 playing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpC-05-rAv">
+                                                    <rect key="frame" x="15" y="38" width="78.5" height="21"/>
                                                     <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="uva-hQ-OXM" firstAttribute="centerY" secondItem="CcJ-me-Eeq" secondAttribute="centerY" id="71i-Dm-C8J"/>
                                                 <constraint firstItem="uva-hQ-OXM" firstAttribute="leading" secondItem="CcJ-me-Eeq" secondAttribute="leadingMargin" id="BEj-vu-FLz"/>
-                                                <constraint firstItem="FpC-05-rAv" firstAttribute="centerY" secondItem="CcJ-me-Eeq" secondAttribute="centerY" id="GVZ-ju-4sJ"/>
-                                                <constraint firstItem="FpC-05-rAv" firstAttribute="trailing" secondItem="CcJ-me-Eeq" secondAttribute="trailingMargin" id="T3Y-qQ-Ljk"/>
+                                                <constraint firstItem="FpC-05-rAv" firstAttribute="leading" secondItem="CcJ-me-Eeq" secondAttribute="leadingMargin" id="QHY-BX-qd4"/>
+                                                <constraint firstItem="uva-hQ-OXM" firstAttribute="top" secondItem="CcJ-me-Eeq" secondAttribute="topMargin" id="YIa-eM-xVx"/>
+                                                <constraint firstItem="FpC-05-rAv" firstAttribute="top" secondItem="uva-hQ-OXM" secondAttribute="bottom" constant="1" id="aFr-Ei-a6L"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -18,13 +18,24 @@ protocol StandingsDelegate {
     func reloadStandings()
 }
 
+protocol ArenaUsersDelegate {
+    func reloadArenaUsers()
+}
+
+protocol ArenasJoinedDelegate {
+    func reloadArenasJoined()
+}
+
 // MARK: - DataStore
 class DataStore {
 
     static var shared = DataStore()
     
     let ref = Database.database().reference()
-    var delegate: StandingsDelegate?
+    
+    var standingsDelegate: StandingsDelegate?
+    var arenaUsersDelegate: ArenaUsersDelegate?
+    var arenasJoinedDelegate: ArenasJoinedDelegate?
     
     private init() {
         getUserDefaults()
@@ -58,12 +69,26 @@ class DataStore {
                     self.arenausers = arenausers
                 }
             }
+//            observeArenaUsers() { arenausers in
+//                if let arenausers = arenausers {
+//                    self.arenausers = []
+//                    self.arenausers = arenausers
+//                }
+//            }
         }
     }
     //user details
-    var arenasjoined = [KlaskArena]()
+    var arenasjoined = [KlaskArena]() {
+        didSet {
+            arenasJoinedDelegate?.reloadArenasJoined()
+        }
+    }
     //arena details
-    var arenausers: [KlaskUser]?
+    var arenausers: [KlaskUser]? {
+        didSet {
+            arenaUsersDelegate?.reloadArenaUsers()
+        }
+    }
     var arenagames = [KlaskGame]() {
         didSet {
             calculateStandings()
@@ -72,7 +97,7 @@ class DataStore {
     //standings
     var standings: [Standing]? {
         didSet {
-            delegate?.reloadStandings()
+            standingsDelegate?.reloadStandings()
         }
     }
     
@@ -107,7 +132,7 @@ class DataStore {
             
             // need to create user in users table
             guard snapshot.exists() else {
-                self.activeuser = KlaskUser(uid: user.uid, arenasjoined: [], name: user.displayName!, email: user.email!, photourl: (user.photoURL?.absoluteString)!, nickname: "")
+                self.activeuser = KlaskUser(uid: user.uid, name: user.displayName!, email: user.email!, photourl: (user.photoURL?.absoluteString)!, nickname: "")
                 self.postActiveUser()
                 return
             }
@@ -166,7 +191,6 @@ class DataStore {
         if let activearena = activearena {
             ref.child("games").queryOrdered(byChild: "arenaid").queryEqual(toValue: activearena.aid).observe(.value, with: { (snapshot) in
                 
-                // fill array
                 guard let value = snapshot.value  else { return }
                 
                 games = []
@@ -221,6 +245,38 @@ class DataStore {
         }
     }
     
+    func observeArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
+        
+        if let activearena = activearena {
+            for uid in activearena.joinedusers {
+                
+                ref.child("users").child(uid).observe(.value, with: { (snapshot) in
+                    
+                    guard let value = snapshot.value, var arenausers = self.arenausers else { return }
+                    print(value)
+                    do {
+                        let user = try FirebaseDecoder().decode(KlaskUser.self, from: value)
+                        guard let userIndex = arenausers.index(where: {$0.uid == user.uid} ) else { return }
+                        arenausers[userIndex] = user
+                    } catch {
+                        print(error)
+                    }
+
+                    // call completion handler on the main thread.
+                    DispatchQueue.main.async() {
+                        if arenausers.isEmpty {
+                            onComplete(nil)
+                        } else {
+                            onComplete(arenausers)
+                        }
+                    }
+                }) { (error) in
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     
     func getArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
         var arenausers = [KlaskUser]()
@@ -228,7 +284,7 @@ class DataStore {
         let dispatchGroup = DispatchGroup()
         
         if let activearena = activearena {
-            for uid in activearena.joinedusers! {
+            for uid in activearena.joinedusers {
                 
                 dispatchGroup.enter()
                 ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in

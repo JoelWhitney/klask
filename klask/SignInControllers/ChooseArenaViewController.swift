@@ -11,12 +11,14 @@ import UIKit
 import Firebase
 import CodableFirebase
 
-class ChooseArenaViewController: UIViewController {
+class ChooseArenaViewController: UIViewController, ArenasJoinedDelegate {
     
     // MARK: - Variables
     var arenas = [[KlaskArena]]() {
         didSet {
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     var selectedArena: KlaskArena!
@@ -43,6 +45,8 @@ class ChooseArenaViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        DataStore.shared.arenasJoinedDelegate = self
+        
         let firebaseAuth = Auth.auth()
         if let currentUser = firebaseAuth.currentUser {
             print("Already signed in as \(String(describing: currentUser.displayName)) (\(String(describing: currentUser.email)))")
@@ -57,7 +61,14 @@ class ChooseArenaViewController: UIViewController {
     }
     
     // MARK: - Methods
-
+    func reloadArenasJoined() {
+        print("reload arenas")
+        var arenas = self.arenas
+        if arenas.count == 1{
+            arenas[0] = DataStore.shared.arenasjoined
+        }
+        self.arenas = arenas
+    }
 }
 
 // MARK: - search bar delegate
@@ -126,7 +137,7 @@ extension ChooseArenaViewController: UITableViewDataSource {
         }
         // cell details
         arenaCell.arenaNameLabel.text = arena.arenaname ?? ""
-        arenaCell.numberJoinedLabel.text = String(describing: arena.joinedusers?.count)
+        arenaCell.numberJoinedLabel.text = "\(String(describing: arena.joinedusers.count)) playing"
         return arenaCell
     }
 }
@@ -137,23 +148,25 @@ extension ChooseArenaViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var arena = arenas[indexPath.section][indexPath.row]
         guard var activeuser = DataStore.shared.activeuser else { return }
-        if arenas.count == 2, indexPath.section == 0 {
-            // joining new arena
-            
-            // update arena
-            if arena.joinedusers == nil {
-                arena.joinedusers = []
+        if let arenasjoined = activeuser.arenasjoined, !arenasjoined.contains(arena.aid!) {
+            if arenas.count == 2, indexPath.section == 0 {
+                // joining new arena
+                
+                // update arena
+                if arena.joinedusers == nil {
+                    arena.joinedusers = []
+                }
+                arena.joinedusers.append(activeuser.uid!)
+                DataStore.shared.updateArena(arena)
+                
+                // update user
+                if activeuser.arenasjoined == nil {
+                    activeuser.arenasjoined = []
+                }
+                activeuser.arenasjoined?.append(arena.aid!)
+                DataStore.shared.updateUser(activeuser)
+                
             }
-            arena.joinedusers?.append(activeuser.uid!)
-            DataStore.shared.updateArena(arena)
-            
-            // update user
-            if activeuser.arenasjoined == nil {
-                activeuser.arenasjoined = []
-            }
-            activeuser.arenasjoined?.append(arena.aid!)
-            DataStore.shared.updateUser(activeuser)
-            
         }
         DataStore.shared.activearena = arena
         tableView.deselectRow(at: indexPath, animated: true)

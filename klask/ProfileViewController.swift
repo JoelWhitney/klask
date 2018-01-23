@@ -11,7 +11,7 @@ import Foundation
 import GoogleSignIn
 import Firebase
 
-class ProfileViewController: UIViewController, StandingsDelegate {
+class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     // MARK: - Variables
     var selectedUser: Standing?
     var userstanding: Standing? {
@@ -47,7 +47,9 @@ class ProfileViewController: UIViewController, StandingsDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataStore.shared.delegate = self
+        DataStore.shared.standingsDelegate = self
+        DataStore.shared.arenaUsersDelegate = self
+
         tableView.tableFooterView = UIView()
         updateUserInfo()
     }
@@ -84,6 +86,15 @@ class ProfileViewController: UIViewController, StandingsDelegate {
             self.tableView.reloadData()
         }
     }
+    
+    func reloadArenaUsers() {
+        print("new user data")
+        DispatchQueue.main.async {
+            self.updateUserInfo()
+            self.tableView.reloadData()
+        }
+    }
+    
 }
 
 // MARK: - tableView data source

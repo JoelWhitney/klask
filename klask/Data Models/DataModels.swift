@@ -78,9 +78,8 @@ struct KlaskUser: Codable {
     let nickname: String?
     let photourl: String?
     
-    init(uid: String, arenasjoined: [String], name: String, email: String, photourl: String, nickname: String) {
+    init(uid: String, name: String, email: String, photourl: String, nickname: String) {
         self.uid = uid
-        self.arenasjoined = arenasjoined
         self.nickname = nickname
         self.email = email
         self.name = name
@@ -98,7 +97,7 @@ extension KlaskUser: Equatable {
 struct KlaskArena: Codable {
     let aid: String?
     let arenaname: String?
-    var joinedusers: [String]?
+    var joinedusers: [String]
 }
 
 

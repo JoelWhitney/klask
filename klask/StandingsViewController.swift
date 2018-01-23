@@ -12,7 +12,7 @@ import GoogleSignIn
 import Firebase
 import CodableFirebase
 
-class StandingsViewController: UIViewController, StandingsDelegate {
+class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     
     // MARK: - Variables
     var selectedStanding: Standing?
@@ -37,8 +37,9 @@ class StandingsViewController: UIViewController, StandingsDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataStore.shared.delegate = self
-        
+        DataStore.shared.standingsDelegate = self
+        DataStore.shared.arenaUsersDelegate = self
+
         // auth
         let firebaseAuth = Auth.auth()
         if let currentUser = firebaseAuth.currentUser {
@@ -80,6 +81,14 @@ class StandingsViewController: UIViewController, StandingsDelegate {
     
     // MARK: - Methods
     func reloadStandings() {
+        print("new standing data")
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func reloadArenaUsers() {
+        print("new user data")
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -103,6 +112,7 @@ class StandingsViewController: UIViewController, StandingsDelegate {
 extension StandingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let standings = DataStore.shared.standings {
+            print(standings.count)
             return standings.count
         }
         return 0
@@ -144,7 +154,9 @@ extension StandingsViewController: UITableViewDataSource {
 // MARK: - tableView delegate
 extension StandingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedStanding = DataStore.shared.standings?[indexPath.row]
+        if let standings = DataStore.shared.standings {
+            selectedStanding = standings[indexPath.row]
+        }
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
     }
