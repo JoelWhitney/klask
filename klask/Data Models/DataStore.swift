@@ -10,9 +10,9 @@ import Foundation
 import Firebase
 import CodableFirebase
 
-typealias FirebaseArenaClosure = ([KlaskArena]?) -> Void
-typealias FirebaseArenaUsersClosure = ([KlaskUser]?) -> Void
-typealias FirebaseGameClosure = ([KlaskGame]?) -> Void
+typealias FirebaseArenaClosure = ([KlaskArena]) -> Void
+typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
+typealias FirebaseGameClosure = ([KlaskGame]) -> Void
 
 protocol StandingsDelegate {
     func reloadStandings()
@@ -47,10 +47,7 @@ class DataStore {
         didSet {
             saveUserDefaults()
             getArenasJoined() { arenas in
-                if let arenas = arenas {
-                    self.arenasjoined = []
-                    self.arenasjoined = arenas
-                }
+                self.arenasjoined = arenas
             }
         }
     }
@@ -58,16 +55,10 @@ class DataStore {
         didSet {
             saveUserDefaults()
             observeArenaGames() { games in
-                if let games = games {
-                    self.arenagames = []
-                    self.arenagames = games
-                }
+                self.arenagames = games
             }
             getArenaUsers() { arenausers in
-                if let arenausers = arenausers {
-                    self.arenausers = []
-                    self.arenausers = arenausers
-                }
+                self.arenausers = arenausers
             }
 //            observeArenaUsers() { arenausers in
 //                if let arenausers = arenausers {
@@ -177,11 +168,7 @@ class DataStore {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if arenas.isEmpty {
-                onComplete(nil)
-            }else {
-                onComplete(arenas)
-            }
+            onComplete(arenas)
         }
     }
     
@@ -206,11 +193,7 @@ class DataStore {
                 
                 // call completion handler on the main thread.
                 DispatchQueue.main.async() {
-                    if games.isEmpty {
-                        onComplete(nil)
-                    }else {
-                        onComplete(games)
-                    }
+                    onComplete(games)
                 }
             }) { (error) in
                 print(error.localizedDescription)
@@ -234,11 +217,7 @@ class DataStore {
                 print(error)
             }
             DispatchQueue.main.async() {
-                if arenas.isEmpty {
-                    onComplete(nil)
-                }else {
-                    onComplete(arenas)
-                }
+                onComplete(arenas)
             }
         }) { (error) in
             print(error.localizedDescription)
@@ -248,7 +227,7 @@ class DataStore {
     func observeArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
         
         if let activearena = activearena {
-            for uid in activearena.joinedusers {
+            for uid in activearena.joinedusers! {
                 
                 ref.child("users").child(uid).observe(.value, with: { (snapshot) in
                     
@@ -264,11 +243,7 @@ class DataStore {
 
                     // call completion handler on the main thread.
                     DispatchQueue.main.async() {
-                        if arenausers.isEmpty {
-                            onComplete(nil)
-                        } else {
-                            onComplete(arenausers)
-                        }
+                        onComplete(arenausers)
                     }
                 }) { (error) in
                     print(error.localizedDescription)
@@ -284,7 +259,11 @@ class DataStore {
         let dispatchGroup = DispatchGroup()
         
         if let activearena = activearena {
-            for uid in activearena.joinedusers {
+            
+            guard let joinedusers = activearena.joinedusers else { return }
+            
+            print(joinedusers)
+            for uid in joinedusers {
                 
                 dispatchGroup.enter()
                 ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -305,11 +284,7 @@ class DataStore {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if arenausers.isEmpty {
-                onComplete(nil)
-            }else {
-                onComplete(arenausers)
-            }
+            onComplete(arenausers)
         }
     }
     
@@ -372,6 +347,7 @@ class DataStore {
     // MARK: - Private methods
     private func calculateStandings() {
         if let arenausers = arenausers {
+            print("calculting standings for \(arenausers.count) users")
             self.standings = arenausers.map{ (klaskuser: KlaskUser) in
                 var wins = 0
                 var losses = 0

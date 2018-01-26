@@ -26,6 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
     
+        let userDefaults = UserDefaults.standard
+        
+        if userDefaults.bool(forKey: "hasRunBefore") == false {
+            
+            // remove keychain items here
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+                DataStore.shared.activeuser = nil
+                DataStore.shared.activearena = nil
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+            
+            // update the flag indicator
+            userDefaults.set(true, forKey: "hasRunBefore")
+            userDefaults.synchronize() // forces the app to update the NSUserDefaults
+            
+        }
+        
         return true
     }
 
@@ -41,10 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        DataStore.shared.saveUserDefaults()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        DataStore.shared.getUserDefaults()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

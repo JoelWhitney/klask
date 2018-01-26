@@ -97,7 +97,7 @@ extension KlaskUser: Equatable {
 struct KlaskArena: Codable {
     let aid: String?
     let arenaname: String?
-    var joinedusers: [String]
+    var joinedusers: [String]?
 }
 
 
