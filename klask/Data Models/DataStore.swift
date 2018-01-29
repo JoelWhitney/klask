@@ -10,9 +10,10 @@ import Foundation
 import Firebase
 import CodableFirebase
 
-typealias FirebaseArenaClosure = ([KlaskArena]?) -> Void
-typealias FirebaseArenaUsersClosure = ([KlaskUser]?) -> Void
-typealias FirebaseGameClosure = ([KlaskGame]?) -> Void
+typealias FirebaseArenaClosure = (KlaskArena?) -> Void
+typealias FirebaseArenasClosure = ([KlaskArena]) -> Void
+typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
+typealias FirebaseGameClosure = ([KlaskGame]) -> Void
 
 protocol StandingsDelegate {
     func reloadStandings()
@@ -24,6 +25,18 @@ protocol ArenaUsersDelegate {
 
 protocol ArenasJoinedDelegate {
     func reloadArenasJoined()
+}
+
+enum StandingsTimeframe: String {
+    case Week
+    case Month
+    case Year
+    case Alltime
+}
+
+enum StandingsType: String {
+    case Goals
+    case Wins
 }
 
 // MARK: - DataStore
@@ -47,10 +60,7 @@ class DataStore {
         didSet {
             saveUserDefaults()
             getArenasJoined() { arenas in
-                if let arenas = arenas {
-                    self.arenasjoined = []
-                    self.arenasjoined = arenas
-                }
+                self.arenasjoined = arenas
             }
         }
     }
@@ -58,23 +68,10 @@ class DataStore {
         didSet {
             saveUserDefaults()
             observeArenaGames() { games in
-                if let games = games {
-                    self.arenagames = []
-                    self.arenagames = games
-                }
+                self.arenagames = games
             }
-            getArenaUsers() { arenausers in
-                if let arenausers = arenausers {
-                    self.arenausers = []
-                    self.arenausers = arenausers
-                }
-            }
-//            observeArenaUsers() { arenausers in
-//                if let arenausers = arenausers {
-//                    self.arenausers = []
-//                    self.arenausers = arenausers
-//                }
-//            }
+            observeForUserAdded()
+            observeForUserChanged()
         }
     }
     //user details
@@ -95,34 +92,37 @@ class DataStore {
         }
     }
     //standings
+    var standingsTimeframe: StandingsTimeframe = .Week {
+        didSet {
+            calculateStandings()
+        }
+    }
+    var standingsType: StandingsType = .Wins {
+        didSet {
+            calculateStandings()
+        }
+    }
     var standings: [Standing]? {
         didSet {
             standingsDelegate?.reloadStandings()
         }
     }
-    
-    // MARK: - Local cache methods
+
+    // MARK: - User defaults methods
     func getUserDefaults() {
-        do {
-            if let userData = UserDefaults.standard.value(forKey: "activeuser") as? Data, let arenaData =  UserDefaults.standard.value(forKey: "activearena") as? Data{
-                let decodedUser = try JSONDecoder().decode(KlaskUser.self, from: userData)
-                let decodedArena = try JSONDecoder().decode(KlaskArena.self, from: arenaData)
-                self.activeuser = decodedUser
-                self.activearena = decodedArena
-            } else {
-                self.activeuser = nil
-                self.activearena = nil
-            }
-        } catch {
-            print(error)
+        if let encodeduser = UserDefaults.standard.value(forKey: "activeuser") as? Data, let encodedarena = UserDefaults.standard.value(forKey: "activearena") as? Data {
+            self.activeuser = try? PropertyListDecoder().decode(KlaskUser.self, from: encodeduser)
+            self.activearena = try? PropertyListDecoder().decode(KlaskArena.self, from: encodedarena)
+        } else {
+            self.activeuser = nil
+            self.activearena = nil
         }
     }
     
     func saveUserDefaults() {
-        let encoder = JSONEncoder()
-        if let encodeduser = try? encoder.encode(activeuser), let encodedarena = try? encoder.encode(activearena) {
-            UserDefaults.standard.set(encodeduser, forKey: "activeuser")
-            UserDefaults.standard.set(encodedarena, forKey: "activearena")
+        if let activeuser = activeuser, let activearena = activearena {
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(activeuser), forKey: "activeuser")
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(activearena), forKey: "activearena")
         }
     }
     
@@ -132,7 +132,7 @@ class DataStore {
             
             // need to create user in users table
             guard snapshot.exists() else {
-                self.activeuser = KlaskUser(uid: user.uid, name: user.displayName!, email: user.email!, photourl: (user.photoURL?.absoluteString)!, nickname: "")
+                self.activeuser = KlaskUser(uid: user.uid, name: user.displayName!, email: user.email!, nickname: "", photourl: (user.photoURL?.absoluteString)!)
                 self.postActiveUser()
                 return
             }
@@ -150,7 +150,7 @@ class DataStore {
         }
     }
     
-    func getArenasJoined(onComplete: @escaping FirebaseArenaClosure) {
+    func getArenasJoined(onComplete: @escaping FirebaseArenasClosure) {
         var arenas = [KlaskArena]()
         
         let dispatchGroup = DispatchGroup()
@@ -177,11 +177,28 @@ class DataStore {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if arenas.isEmpty {
-                onComplete(nil)
-            }else {
-                onComplete(arenas)
+            onComplete(arenas)
+        }
+    }
+    
+    func getArena(aid: String, onComplete: @escaping FirebaseArenaClosure) {
+        var arena: KlaskArena?
+        
+        ref.child("arenas").child(aid).observeSingleEvent(of: .value, with: { (snapshot) in
+        
+            guard let value = snapshot.value  else { return }
+        
+            do {
+                arena = try FirebaseDecoder().decode(KlaskArena.self, from: value)
+            } catch {
+                print(error)
             }
+            
+            DispatchQueue.main.async() {
+                onComplete(arena)
+            }
+            }) { (error) in
+                print(error.localizedDescription)
         }
     }
     
@@ -192,7 +209,6 @@ class DataStore {
             ref.child("games").queryOrdered(byChild: "arenaid").queryEqual(toValue: activearena.aid).observe(.value, with: { (snapshot) in
                 
                 guard let value = snapshot.value  else { return }
-                
                 games = []
                 
                 do {
@@ -206,11 +222,7 @@ class DataStore {
                 
                 // call completion handler on the main thread.
                 DispatchQueue.main.async() {
-                    if games.isEmpty {
-                        onComplete(nil)
-                    }else {
-                        onComplete(games)
-                    }
+                    onComplete(games)
                 }
             }) { (error) in
                 print(error.localizedDescription)
@@ -218,7 +230,7 @@ class DataStore {
         }
     }
     
-    func searchArenas(arenaname: String, onComplete: @escaping FirebaseArenaClosure) {
+    func searchArenas(arenaname: String, onComplete: @escaping FirebaseArenasClosure) {
         var arenas = [KlaskArena]()
         ref.child("arenas").queryOrdered(byChild: "arenaname").queryEqual(toValue: arenaname).observeSingleEvent(of: .value, with: { (snapshot) in
         
@@ -234,57 +246,115 @@ class DataStore {
                 print(error)
             }
             DispatchQueue.main.async() {
-                if arenas.isEmpty {
-                    onComplete(nil)
-                }else {
-                    onComplete(arenas)
-                }
+                onComplete(arenas)
             }
         }) { (error) in
             print(error.localizedDescription)
         }
     }
     
-    func observeArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
-        
-        if let activearena = activearena {
-            for uid in activearena.joinedusers {
+    
+    func observeForUserAdded() {
+        ref.child("users").observe(.childAdded, with: { (snapshot) in
+            guard let value = snapshot.value  else { return }
+            //print("someone added...")
+            do {
+                let addedUser  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
                 
-                ref.child("users").child(uid).observe(.value, with: { (snapshot) in
-                    
-                    guard let value = snapshot.value, var arenausers = self.arenausers else { return }
-                    print(value)
-                    do {
-                        let user = try FirebaseDecoder().decode(KlaskUser.self, from: value)
-                        guard let userIndex = arenausers.index(where: {$0.uid == user.uid} ) else { return }
-                        arenausers[userIndex] = user
-                    } catch {
-                        print(error)
-                    }
-
-                    // call completion handler on the main thread.
-                    DispatchQueue.main.async() {
-                        if arenausers.isEmpty {
-                            onComplete(nil)
-                        } else {
-                            onComplete(arenausers)
-                        }
-                    }
-                }) { (error) in
-                    print(error.localizedDescription)
+                if let arenausers = self.arenausers {
+                    guard !arenausers.contains(addedUser) else { return } // return if exists
                 }
+                
+                if let activearena = self.activearena, let arenasjoined = addedUser.arenasjoined {
+                    self.getArena(aid: activearena.aid!, onComplete: { arena in
+                        if let arena = arena, arenasjoined.contains(arena.aid!) {
+                            //print("someone added was in activearena, reload!!!")
+                            self.activearena = arena
+                            self.updateArenaUsers(onComplete: { users in
+                                DispatchQueue.main.async {
+                                    self.arenausers = users
+                                }
+                            })
+                        }
+                    })
+                }
+            } catch {
+                print(error)
             }
-        }
+        })
     }
     
+    func observeForUserChanged() {
+        ref.child("users").observe(.childChanged, with: { (snapshot) in
+            guard let value = snapshot.value  else { return }
+            
+            do {
+                let user  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
+                
+                if let arenausers = self.arenausers {
+                    guard let existinguser = arenausers.first(where: { existing in (existing.uid == user.uid) }), existinguser != user else { return } // don't reload if user not updated with certain properties
+                }
+            
+                if let activearena = self.activearena, let arenasjoined = user.arenasjoined {
+                    self.getArena(aid: activearena.aid!, onComplete: { arena in
+                        if let arena = arena, arenasjoined.contains(arena.aid!) {
+                            //print("someone changed was in activearena, reload!!!")
+                            self.activearena = arena
+                            self.updateArenaUsers(onComplete: { users in
+                                DispatchQueue.main.async {
+                                    self.arenausers = users
+                                }
+                            })
+                        }
+                    })
+                }
+            } catch {
+                print(error)
+            }
+        })
+    }
     
-    func getArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
+    func observeForUserRemoved() {
+        ref.child("users").observe(.childRemoved, with: { (snapshot) in
+            guard let value = snapshot.value  else { return }
+            
+            do {
+                let userremoved  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
+                
+                if let arenausers = self.arenausers {
+                    guard arenausers.contains(where: { user in (user.uid == userremoved.uid) }) else { return } // return if does not exist in arena
+                }
+                
+                if let activearena = self.activearena, let arenasjoined = userremoved.arenasjoined {
+                    self.getArena(aid: activearena.aid!, onComplete: { arena in
+                        if let arena = arena, arenasjoined.contains(arena.aid!) {
+                            //print("someone changed was in activearena, reload!!!")
+                            self.activearena = arena
+                            self.updateArenaUsers(onComplete: { users in
+                                DispatchQueue.main.async {
+                                    self.arenausers = users
+                                }
+                            })
+                        }
+                    })
+                }
+            } catch {
+                print(error)
+            }
+        })
+    }
+    
+
+    func updateArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
         var arenausers = [KlaskUser]()
         
         let dispatchGroup = DispatchGroup()
         
         if let activearena = activearena {
-            for uid in activearena.joinedusers {
+            
+            guard let joinedusers = activearena.joinedusers else { return }
+            
+            for uid in joinedusers {
                 
                 dispatchGroup.enter()
                 ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -305,11 +375,7 @@ class DataStore {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if arenausers.isEmpty {
-                onComplete(nil)
-            }else {
-                onComplete(arenausers)
-            }
+            onComplete(arenausers)
         }
     }
     
@@ -372,13 +438,25 @@ class DataStore {
     // MARK: - Private methods
     private func calculateStandings() {
         if let arenausers = arenausers {
+            var relevantgames = [KlaskGame]()
+            
+            switch standingsTimeframe {
+            case .Week:
+                relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -7, to: Date())?.timeIntervalSince1970)! } )
+            case .Month:
+                relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -30, to: Date())?.timeIntervalSince1970)! } )
+            case .Year:
+                relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -365, to: Date())?.timeIntervalSince1970)! } )
+            case .Alltime:
+                relevantgames = arenagames
+            }
+
             self.standings = arenausers.map{ (klaskuser: KlaskUser) in
                 var wins = 0
                 var losses = 0
                 var goalsfor = 0
                 var goalsagainst = 0
-                let usergames = self.arenagames.filter( { ($0.player1id == klaskuser.uid)  || ($0.player2id == klaskuser.uid) } )
-                print("arena games fitlered to \(usergames.count)")
+                let usergames = relevantgames.filter( { ($0.player1id == klaskuser.uid)  || ($0.player2id == klaskuser.uid) } )
                 for game in usergames {
                     if (game.player1id == klaskuser.uid) {
                         if (game.player1score! > game.player2score!) {
@@ -402,12 +480,17 @@ class DataStore {
                 }
                 // .filter({ ($0.wins + $0.losses) > 0 })
                 .sorted { (standing1, standing2) in
-                    if standing1.winpercentage != standing2.winpercentage {
-                        return standing1.winpercentage > standing2.winpercentage
-                    } else if standing1.wins != standing2.wins {
-                        return standing1.wins > standing2.wins
-                    } else {
-                        return (standing1.wins + standing1.losses) > (standing2.wins + standing2.losses)
+                    switch standingsType {
+                    case .Wins:
+                        if standing1.winpercentage != standing2.winpercentage {
+                            return standing1.winpercentage > standing2.winpercentage
+                        } else if standing1.wins != standing2.wins {
+                            return standing1.wins > standing2.wins
+                        } else {
+                            return (standing1.wins + standing1.losses) > (standing2.wins + standing2.losses)
+                        }
+                    case .Goals:
+                        return standing1.goalsdiff > standing2.goalsdiff
                     }
             }
         }

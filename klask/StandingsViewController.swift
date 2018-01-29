@@ -16,16 +16,25 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     
     // MARK: - Variables
     var selectedStanding: Standing?
-
+    var standings = [Standing]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     // MARK: - IBOutlets
     @IBOutlet var tableView: UITableView!
     @IBOutlet var profileButton: UIBarButtonItem!
     @IBOutlet var submitButton: UIBarButtonItem!
+    @IBOutlet weak var standingsTimeframeButton: UIButton!
+    @IBOutlet weak var standingsTypeButton: UIButton!
+    
     
     // MARK: - IBActions
     @IBAction func profile(_ sender: UIBarButtonItem) {
-        selectedStanding = DataStore.shared.standings?.filter( { $0.user.uid == DataStore.shared.activeuser?.uid } ).first
+        selectedStanding = standings.filter( { $0.user.uid == DataStore.shared.activeuser?.uid } ).first
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
     }
     
@@ -33,6 +42,29 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         self.performSegue(withIdentifier: "SubmitScoreViewController", sender: nil)
     }
     
+    @IBAction func changeStandingsTimeframe(_ sender: UIButton) {
+        switch DataStore.shared.standingsTimeframe {
+        case .Week:
+            DataStore.shared.standingsTimeframe = .Month
+        case .Month:
+            DataStore.shared.standingsTimeframe = .Year
+        case .Year:
+            DataStore.shared.standingsTimeframe = .Alltime
+        case .Alltime:
+            DataStore.shared.standingsTimeframe = .Week
+        }
+        standingsOptionsButtons()
+    }
+    
+    @IBAction func changeStandingsType(_ sender: UIButton) {
+        switch DataStore.shared.standingsType {
+        case .Wins:
+            DataStore.shared.standingsType = .Goals
+        case .Goals:
+            DataStore.shared.standingsType = .Wins
+        }
+        standingsOptionsButtons()
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -40,11 +72,12 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
 
+        standingsOptionsButtons()
+        
         // auth
         let firebaseAuth = Auth.auth()
         if let currentUser = firebaseAuth.currentUser {
             print("Already signed in as \(String(describing: currentUser.displayName)) (\(String(describing: currentUser.email)))")
-            DataStore.shared.getUserDefaults()
         } else {
             presentSignInController()
             DataStore.shared.activeuser = nil
@@ -63,15 +96,18 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let firebaseAuth = Auth.auth()
-        if let currentUser = firebaseAuth.currentUser {
-            print("Already signed in as \(String(describing: currentUser.displayName)) (\(String(describing: currentUser.email)))")
-            DataStore.shared.getUserDefaults()
-        } else {
+        DataStore.shared.standingsDelegate = self
+        DataStore.shared.arenaUsersDelegate = self
+        
+        standingsOptionsButtons()
+        
+        guard (Auth.auth().currentUser != nil) else {
             presentSignInController()
             DataStore.shared.activeuser = nil
             DataStore.shared.activearena = nil
+            return
         }
+        
         reloadStandings()
     }
     
@@ -80,18 +116,20 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     // MARK: - Methods
+    func standingsOptionsButtons() {
+        let timeframeTitle = (DataStore.shared.standingsTimeframe == .Alltime) ? "\(DataStore.shared.standingsTimeframe.rawValue)" : "Last \(DataStore.shared.standingsTimeframe.rawValue)"
+        standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
+        let typeTitle = DataStore.shared.standingsType.rawValue
+        standingsTypeButton.setTitle(typeTitle, for: .normal)
+    }
+    
     func reloadStandings() {
-        print("new standing data")
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        guard let newStandings = DataStore.shared.standings else { return }
+        self.standings = newStandings
     }
     
     func reloadArenaUsers() {
-        print("new user data")
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        reloadStandings()
     }
     
     private func presentSignInController() {
@@ -111,40 +149,34 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
 // MARK: - tableView data source
 extension StandingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let standings = DataStore.shared.standings {
-            print(standings.count)
-            return standings.count
-        }
-        return 0
+        return standings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let standingCell = self.tableView!.dequeueReusableCell(withIdentifier: "StandingsCell", for: indexPath) as! StandingsCell
-        if let standings = DataStore.shared.standings {
-            let standing = standings[indexPath.row]
-            // cell details
-            standingCell.rankLabel.text = String(describing: (standings.index(of: standing)! + 1))
-            if let image = UIImage(named: (standing.user.name)!) {
-                standingCell.profileImage.image = image
-            } else if let photourl = standing.user.photourl, photourl != "" {
-                standingCell.profileImage.downloadedFrom(url: URL(string: photourl)!)
-            } else {
-                standingCell.profileImage.image = #imageLiteral(resourceName: "Default")
-            }
-            if standing.user.nickname != "" {
-                standingCell.nameLabel.text = "\(String(describing: standing.user.nickname!))"
-                standingCell.nickNameLabel.text = "\(String(describing: standing.user.name!))"
-            } else {
-                standingCell.nameLabel.text = "\(String(describing: standing.user.name!))"
-                standingCell.nickNameLabel.text = ""
-            }
-            
-            standingCell.winPercentageLabel.text = "\(String(format: "%.00f", standing.winpercentage))%"
-            if let currentId = DataStore.shared.activeuser?.uid, let name = DataStore.shared.activeuser?.name, standing.user.uid == currentId, standing.user.name == name {
-                standingCell.backgroundColor = #colorLiteral(red: 0.1484079361, green: 0.108229287, blue: 0.1866647303, alpha: 1)
-            } else {
-                standingCell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            }
+        let standing = standings[indexPath.row]
+        // cell details
+        standingCell.rankLabel.text = String(describing: (standings.index(of: standing)! + 1))
+        if let image = UIImage(named: (standing.user.name)!) {
+            standingCell.profileImage.image = image
+        } else if let photourl = standing.user.photourl, photourl != "" {
+            standingCell.profileImage.downloadedFrom(url: URL(string: photourl)!)
+        } else {
+            standingCell.profileImage.image = #imageLiteral(resourceName: "Default")
+        }
+        if standing.user.nickname != "" {
+            standingCell.nameLabel.text = "\(String(describing: standing.user.nickname!))"
+            standingCell.nickNameLabel.text = "\(String(describing: standing.user.name!))"
+        } else {
+            standingCell.nameLabel.text = "\(String(describing: standing.user.name!))"
+            standingCell.nickNameLabel.text = ""
+        }
+        
+        standingCell.winPercentageLabel.text = (DataStore.shared.standingsType == .Wins) ? "\(String(format: "%.00f", standing.winpercentage))%" : "\(standing.goalsdiff)"
+        if let currentId = DataStore.shared.activeuser?.uid, let name = DataStore.shared.activeuser?.name, standing.user.uid == currentId, standing.user.name == name {
+            standingCell.backgroundColor = #colorLiteral(red: 0.1484079361, green: 0.108229287, blue: 0.1866647303, alpha: 1)
+        } else {
+            standingCell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }
         return standingCell
     }
@@ -154,9 +186,7 @@ extension StandingsViewController: UITableViewDataSource {
 // MARK: - tableView delegate
 extension StandingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let standings = DataStore.shared.standings {
-            selectedStanding = standings[indexPath.row]
-        }
+        selectedStanding = standings[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
     }

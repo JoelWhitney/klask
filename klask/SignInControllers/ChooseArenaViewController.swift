@@ -76,18 +76,10 @@ extension ChooseArenaViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text, !searchText.isEmpty {
             DataStore.shared.searchArenas(arenaname: searchText) { matchingarenas in
-                if let matchingarenas = matchingarenas  {
-                    if self.arenas.count == 1 {
-                        self.arenas.insert(matchingarenas, at: 0)
-                    } else {
-                        self.arenas[0] = matchingarenas
-                    }
+                if self.arenas.count == 1 {
+                    self.arenas.insert(matchingarenas, at: 0)
                 } else {
-                    if self.arenas.count == 2 {
-                        self.arenas[0] = []
-                    } else {
-                        self.arenas.insert([], at: 0)
-                    }
+                    self.arenas[0] = matchingarenas
                 }
             }
         }
@@ -137,7 +129,7 @@ extension ChooseArenaViewController: UITableViewDataSource {
         }
         // cell details
         arenaCell.arenaNameLabel.text = arena.arenaname ?? ""
-        arenaCell.numberJoinedLabel.text = "\(String(describing: arena.joinedusers.count)) playing"
+        arenaCell.numberJoinedLabel.text = "\(String(describing: arena.joinedusers?.count ?? 0)) playing"
         return arenaCell
     }
 }
@@ -148,31 +140,30 @@ extension ChooseArenaViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var arena = arenas[indexPath.section][indexPath.row]
         guard var activeuser = DataStore.shared.activeuser else { return }
-        if let arenasjoined = activeuser.arenasjoined, !arenasjoined.contains(arena.aid!) {
-            if arenas.count == 2, indexPath.section == 0 {
-                // joining new arena
-                
-                // update arena
-                if arena.joinedusers == nil {
-                    arena.joinedusers = []
-                }
-                arena.joinedusers.append(activeuser.uid!)
+        if arenas.count == 2, indexPath.section == 0 {
+            // typed out arena -- maybe joining new arena
+            // update arena
+            if arena.joinedusers == nil {
+                arena.joinedusers = []
+            }
+            if !(arena.joinedusers?.contains(activeuser.uid!))! {
+                arena.joinedusers!.append(activeuser.uid!)
                 DataStore.shared.updateArena(arena)
-                
-                // update user
-                if activeuser.arenasjoined == nil {
-                    activeuser.arenasjoined = []
-                }
+            }
+            
+            // update user
+            if activeuser.arenasjoined == nil {
+                activeuser.arenasjoined = []
+            }
+            if !(activeuser.arenasjoined?.contains(arena.aid!))! {
                 activeuser.arenasjoined?.append(arena.aid!)
                 DataStore.shared.updateUser(activeuser)
-                
             }
         }
         DataStore.shared.activearena = arena
         tableView.deselectRow(at: indexPath, animated: true)
         self.dismiss(animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - tableView cell
