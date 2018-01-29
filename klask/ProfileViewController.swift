@@ -25,24 +25,24 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
 
     // MARK: - IBOutlets
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var signOut: UIBarButtonItem!
+    @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var profileImage: UIImageView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var nickNameLabel: UILabel!
     @IBOutlet var rankLabel: UILabel!
     
     // MARK: - IBAction
-    @IBAction func signOut(_ sender: UIBarButtonItem) {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            navigationController?.popViewController(animated: true)
-            DataStore.shared.activeuser = nil
-            DataStore.shared.activearena = nil
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-    }
+//    @IBAction func signOut(_ sender: UIBarButtonItem) {
+//        let firebaseAuth = Auth.auth()
+//        do {
+//            try firebaseAuth.signOut()
+//            navigationController?.popViewController(animated: true)
+//            DataStore.shared.activeuser = nil
+//            DataStore.shared.activearena = nil
+//        } catch let signOutError as NSError {
+//            print ("Error signing out: %@", signOutError)
+//        }
+//    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -54,6 +54,18 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         updateUserInfo()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
+            let editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(editNickname))
+            editButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
+            self.navigationItem.rightBarButtonItem = editButton
+        } else {
+            let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
+            self.navigationItem.rightBarButtonItem = addButton
+        }
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -93,6 +105,44 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             self.updateUserInfo()
             self.tableView.reloadData()
         }
+    }
+    
+    @objc func editNickname() {
+        let nickname = self.userstanding?.user.nickname ?? ""
+        
+        let alert = UIAlertController(title: "Edit Nickname", message: "Enter a creative nickname", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = nickname
+            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+
+        }
+        addUpdateAction = UIAlertAction(title: "Update", style: .default, handler: { [weak alert] (_) in
+            let newNickname = alert?.textFields![0].text ?? ""
+            guard var user = self.userstanding?.user else { return }
+            user.nickname = newNickname
+            DataStore.shared.updateUser(user)
+        })
+        addUpdateAction?.isEnabled = !(nickname.isEmpty)
+        alert.addAction(addUpdateAction!)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: {
+            DispatchQueue.main.async {
+                self.updateUserInfo()
+            }
+        })
+    }
+    
+    @objc
+    func addGame(_ sender: UIBarButtonItem) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
+        let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
+        selectWinnerViewController.challenger = userstanding?.user
+        self.navigationController?.pushViewController(selectWinnerViewController, animated: true)
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        addUpdateAction!.isEnabled = !(textField.text?.isEmpty)!
     }
     
 }
@@ -136,14 +186,16 @@ extension ProfileViewController: UITableViewDataSource {
                 // cell details
                 if let userstanding = userstanding {
                     cell.primaryLabel.text = "Record"
-                    cell.secondaryLabel.text = "\(userstanding.wins) win, \(userstanding.losses) losses · \(String(format: "%.0f", userstanding.winpercentage))%"
+                    cell.secondaryLabel.text = "\(userstanding.wins) won, \(userstanding.losses) lost"
+                    cell.tertiaryLabel.text = "\(String(format: "%.0f", userstanding.winpercentage))%"
                 }
                 return cell
             } else {
                 // cell details
                 if let userstanding = userstanding {
-                    cell.primaryLabel.text = "Total Goals"
-                    cell.secondaryLabel.text = "\(userstanding.goalsfor) for · \(userstanding.goalsagainst) against"
+                    cell.primaryLabel.text = "Goals"
+                    cell.secondaryLabel.text = "\(userstanding.goalsfor) for, \(userstanding.goalsagainst) against"
+                    cell.tertiaryLabel.text = "\(userstanding.goalsdiff)"
                 }
                 return cell
             }
@@ -179,23 +231,6 @@ extension ProfileViewController: UITableViewDataSource {
             }
             return cell
         }
-    }
-    
-
-    @objc
-    func addGame(_ sender: UIBarButtonItem) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
-        let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
-        selectWinnerViewController.challenger = userstanding?.user
-        self.navigationController?.pushViewController(selectWinnerViewController, animated: true)
-    }
-    
-    
-    @objc
-    func handleTextFieldTextDidChangeNotification(notification: NSNotification) {
-        let textField = notification.object as! UITextField
-        // Enforce a minimum length of >= 1 for secure text alerts.
-        addUpdateAction!.isEnabled = !(textField.text?.isEmpty)!
     }
     
     func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
@@ -248,6 +283,7 @@ extension ProfileViewController: UITableViewDelegate {
 class ProfileSummaryCell: UITableViewCell {
     @IBOutlet var primaryLabel: UILabel!
     @IBOutlet var secondaryLabel: UILabel!
+    @IBOutlet var tertiaryLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -35,10 +35,10 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vir-0l-n5u" customClass="GIDSignInButton">
-                                <rect key="frame" x="67" y="324.5" width="240" height="118"/>
+                                <rect key="frame" x="107" y="478" width="160" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="118" id="DBq-Rp-2qb"/>
-                                    <constraint firstAttribute="width" constant="240" id="tNY-5P-wxe"/>
+                                    <constraint firstAttribute="height" constant="30" id="DBq-Rp-2qb"/>
+                                    <constraint firstAttribute="width" constant="160" id="tNY-5P-wxe"/>
                                 </constraints>
                                 <connections>
                                     <action selector="signIn" destination="6cc-yl-zuC" eventType="valueChanged" id="mZ8-Ac-Jnj"/>
@@ -47,10 +47,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Vir-0l-n5u" firstAttribute="centerY" secondItem="KBs-yR-nvd" secondAttribute="centerY" constant="50" id="3iy-ZW-iDq"/>
                             <constraint firstItem="qvM-9m-QJa" firstAttribute="centerY" secondItem="KBs-yR-nvd" secondAttribute="centerY" id="EZN-9v-M05"/>
                             <constraint firstItem="qvM-9m-QJa" firstAttribute="centerX" secondItem="KBs-yR-nvd" secondAttribute="centerX" id="q8U-qp-01h"/>
                             <constraint firstItem="Vir-0l-n5u" firstAttribute="centerX" secondItem="KBs-yR-nvd" secondAttribute="centerX" id="slF-W1-Ba8"/>
+                            <constraint firstItem="Vir-0l-n5u" firstAttribute="top" secondItem="qvM-9m-QJa" secondAttribute="bottom" constant="20" id="vys-SX-xST"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="G7M-EL-yA8"/>
                     </view>

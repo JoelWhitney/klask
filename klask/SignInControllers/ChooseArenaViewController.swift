@@ -129,7 +129,7 @@ extension ChooseArenaViewController: UITableViewDataSource {
         }
         // cell details
         arenaCell.arenaNameLabel.text = arena.arenaname ?? ""
-        arenaCell.numberJoinedLabel.text = "\(String(describing: arena.joinedusers?.count)) playing"
+        arenaCell.numberJoinedLabel.text = "\(String(describing: arena.joinedusers?.count ?? 0)) playing"
         return arenaCell
     }
 }
@@ -146,7 +146,7 @@ extension ChooseArenaViewController: UITableViewDelegate {
             if arena.joinedusers == nil {
                 arena.joinedusers = []
             }
-            if (arena.joinedusers?.contains(arena.aid!))! {
+            if !(arena.joinedusers?.contains(activeuser.uid!))! {
                 arena.joinedusers!.append(activeuser.uid!)
                 DataStore.shared.updateArena(arena)
             }
@@ -155,7 +155,7 @@ extension ChooseArenaViewController: UITableViewDelegate {
             if activeuser.arenasjoined == nil {
                 activeuser.arenasjoined = []
             }
-            if (activeuser.arenasjoined?.contains(arena.aid!))! {
+            if !(activeuser.arenasjoined?.contains(arena.aid!))! {
                 activeuser.arenasjoined?.append(arena.aid!)
                 DataStore.shared.updateUser(activeuser)
             }

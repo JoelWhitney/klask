@@ -26,13 +26,12 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
         super.viewDidLoad()
         addGradientLayer()
         GIDSignIn.sharedInstance().uiDelegate = self
-        googleSignInButton.style = .iconOnly
-        googleSignInButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double(40.0) * M_PI/Double(180)))
+        googleSignInButton.style = .wide
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let activearena = DataStore.shared.activearena {
+        if DataStore.shared.activearena != nil {
             self.dismiss(animated: true, completion: nil)
         }
     }

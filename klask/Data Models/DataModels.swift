@@ -34,7 +34,6 @@ struct Standing {
                 return 0.0
             } else {
                 let percentage = (( Double(wins) / Double(total) ) * 100.0)
-                print(percentage)
                 return percentage
             }
         }()
@@ -75,21 +74,24 @@ struct KlaskUser: Codable {
     var arenasjoined: [String]?
     let name: String?
     var email: String?
-    let nickname: String?
+    var nickname: String?
     let photourl: String?
     
-    init(uid: String, name: String, email: String, photourl: String, nickname: String) {
+    init(uid: String, name: String, email: String, nickname: String, photourl: String) {
         self.uid = uid
-        self.nickname = nickname
-        self.email = email
         self.name = name
+        self.email = email
+        self.nickname = nickname
         self.photourl = photourl
     }
 }
 
 extension KlaskUser: Equatable {
     static func == (lhs: KlaskUser, rhs: KlaskUser) -> Bool {
-        return lhs.uid == rhs.uid
+        return lhs.uid == rhs.uid &&
+            (lhs.arenasjoined ?? nil)! == (rhs.arenasjoined ?? nil)! &&
+            (lhs.nickname ?? nil)! == (rhs.nickname ?? nil)! &&
+            (lhs.photourl ?? nil)! == (rhs.photourl ?? nil)!
     }
 }
 

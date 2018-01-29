@@ -17,6 +17,9 @@
         <array key="KOMIKAH_.ttf">
             <string>KomikaHand</string>
         </array>
+        <array key="KOMIKASK.ttf">
+            <string>KomikaSlick</string>
+        </array>
         <array key="KOMIKASL.ttf">
             <string>KomikaSlim</string>
         </array>
@@ -36,8 +39,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0t-7D-Eq4">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpI-O9-48m">
+                                        <rect key="frame" x="321" y="6" width="39" height="33"/>
+                                        <fontDescription key="fontDescription" name="KomikaSlick" family="Komika Slick" pointSize="17"/>
+                                        <state key="normal" title="Wins">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changeStandingsType:" destination="BYZ-38-t0r" eventType="touchUpInside" id="j4T-DL-9Px"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TzF-dX-hOJ">
+                                        <rect key="frame" x="15" y="6" width="93" height="33"/>
+                                        <fontDescription key="fontDescription" name="KomikaSlick" family="Komika Slick" pointSize="17"/>
+                                        <state key="normal" title="Last Week">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changeStandingsTimeframe:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uf6-M0-R6O"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.1882159411907196" green="0.1882481575012207" blue="0.1882057785987854" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="TzF-dX-hOJ" firstAttribute="leading" secondItem="r0t-7D-Eq4" secondAttribute="leading" constant="15" id="3nN-ut-vDc"/>
+                                    <constraint firstAttribute="height" constant="45" id="8GV-dz-PeK"/>
+                                    <constraint firstItem="kpI-O9-48m" firstAttribute="centerY" secondItem="r0t-7D-Eq4" secondAttribute="centerY" id="OfB-UN-u5y"/>
+                                    <constraint firstItem="TzF-dX-hOJ" firstAttribute="centerY" secondItem="r0t-7D-Eq4" secondAttribute="centerY" id="a0I-oj-PJm"/>
+                                    <constraint firstAttribute="trailing" secondItem="kpI-O9-48m" secondAttribute="trailing" constant="15" id="v36-6a-FXL"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pzw-Ej-ao0">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="45" width="375" height="506"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
@@ -130,10 +166,13 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="r0t-7D-Eq4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9fo-O7-vFY"/>
+                            <constraint firstItem="r0t-7D-Eq4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Etn-23-gBl"/>
                             <constraint firstItem="pzw-Ej-ao0" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="KDk-sA-5Cb"/>
                             <constraint firstItem="pzw-Ej-ao0" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="O7Q-zq-l1c"/>
                             <constraint firstItem="pzw-Ej-ao0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="VCK-ga-YCt"/>
-                            <constraint firstItem="pzw-Ej-ao0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="aaa-qF-sKt"/>
+                            <constraint firstItem="r0t-7D-Eq4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hdc-fn-6OB"/>
+                            <constraint firstItem="pzw-Ej-ao0" firstAttribute="top" secondItem="r0t-7D-Eq4" secondAttribute="bottom" id="kHr-jr-hGc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -152,6 +191,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="profileButton" destination="dj0-ed-FiU" id="VCE-g3-Zqs"/>
+                        <outlet property="standingsTimeframeButton" destination="TzF-dX-hOJ" id="Pi3-ga-bqx"/>
+                        <outlet property="standingsTypeButton" destination="kpI-O9-48m" id="HYg-fO-4da"/>
                         <outlet property="submitButton" destination="hLB-8y-III" id="GVp-qD-aIN"/>
                         <outlet property="tableView" destination="pzw-Ej-ao0" id="aZH-Ye-d60"/>
                         <segue destination="gTK-y8-7xU" kind="show" identifier="ProfileViewController" id="cbH-46-GLW"/>
@@ -264,8 +305,23 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 win, 3 losses - 25%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RgQ-LY-ibN">
-                                                    <rect key="frame" x="184" y="24" width="176" height="21"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSp-bK-I6a">
+                                                    <rect key="frame" x="315" y="24" width="45" height="21"/>
+                                                    <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="45" id="zJh-oD-u0b"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 won, 3 lost" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RgQ-LY-ibN">
+                                                    <rect key="frame" x="188" y="24" width="112" height="21"/>
                                                     <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -273,16 +329,19 @@
                                             </subviews>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstItem="fSp-bK-I6a" firstAttribute="trailing" secondItem="QHB-Hq-v4h" secondAttribute="trailingMargin" id="0Mg-J1-rUn"/>
+                                                <constraint firstItem="fSp-bK-I6a" firstAttribute="centerY" secondItem="QHB-Hq-v4h" secondAttribute="centerY" id="Af3-4f-tpu"/>
+                                                <constraint firstItem="fSp-bK-I6a" firstAttribute="leading" secondItem="RgQ-LY-ibN" secondAttribute="trailing" constant="15" id="Pn8-Sv-ceB"/>
                                                 <constraint firstItem="Up4-Nf-fuW" firstAttribute="centerY" secondItem="QHB-Hq-v4h" secondAttribute="centerY" id="cHd-TS-ao1"/>
                                                 <constraint firstItem="Up4-Nf-fuW" firstAttribute="leading" secondItem="QHB-Hq-v4h" secondAttribute="leadingMargin" id="fz3-E1-DOt"/>
                                                 <constraint firstItem="RgQ-LY-ibN" firstAttribute="centerY" secondItem="QHB-Hq-v4h" secondAttribute="centerY" id="ixe-1v-eDe"/>
-                                                <constraint firstItem="RgQ-LY-ibN" firstAttribute="trailing" secondItem="QHB-Hq-v4h" secondAttribute="trailingMargin" id="rjr-hw-69q"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="primaryLabel" destination="Up4-Nf-fuW" id="3Ah-pr-g4w"/>
                                             <outlet property="secondaryLabel" destination="RgQ-LY-ibN" id="GcR-1X-ukh"/>
+                                            <outlet property="tertiaryLabel" destination="fSp-bK-I6a" id="Eof-GA-vTI"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ProfileGameCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ProfileGameCell" rowHeight="70" id="2Nf-Gm-vDf" customClass="ProfileGameCell" customModule="klask" customModuleProvider="target">
@@ -382,25 +441,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="obS-WM-xWa"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Profile" id="ajY-Rp-gPl">
-                        <barButtonItem key="rightBarButtonItem" title="Sign Out" id="Znc-5T-f2x">
-                            <connections>
-                                <action selector="signOut:" destination="gTK-y8-7xU" id="edQ-9K-Gh2"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Profile" id="ajY-Rp-gPl"/>
                     <connections>
                         <outlet property="nameLabel" destination="Mia-fw-xmq" id="yfb-c5-zak"/>
                         <outlet property="nickNameLabel" destination="01H-oU-gZz" id="ktR-yW-T2y"/>
                         <outlet property="profileImage" destination="aNw-qp-h8u" id="2La-ao-hTZ"/>
                         <outlet property="rankLabel" destination="IPB-gr-lQX" id="gBZ-uT-aI5"/>
-                        <outlet property="signOut" destination="Znc-5T-f2x" id="HhN-aR-gkJ"/>
                         <outlet property="tableView" destination="qmw-2S-25c" id="qPk-RR-yGe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnS-Ds-VFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1234" y="-559"/>
+            <point key="canvasLocation" x="1232.8" y="-559.07046476761627"/>
         </scene>
         <!--Challenger-->
         <scene sceneID="mBO-Y7-G0z">
@@ -692,7 +744,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Score " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8n6-9Q-DsZ">
-                                                                <rect key="frame" x="154" y="56.5" width="67.5" height="23.5"/>
+                                                                <rect key="frame" x="161" y="60" width="54" height="20"/>
                                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -731,13 +783,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JDub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYQ-Kp-Fpf">
-                                                        <rect key="frame" x="168" y="175.5" width="199" height="26"/>
+                                                        <rect key="frame" x="168" y="179.5" width="199" height="22.5"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="19"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2r-F1-Z3t">
-                                                        <rect key="frame" x="168" y="205.5" width="199" height="20.5"/>
+                                                        <rect key="frame" x="168" y="206" width="199" height="20"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -930,7 +982,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Score " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYF-je-hCr">
-                                                                <rect key="frame" x="154" y="8" width="67.5" height="23.5"/>
+                                                                <rect key="frame" x="161" y="8" width="54" height="20"/>
                                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -969,13 +1021,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Velcro" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Atb-9C-CDE">
-                                                        <rect key="frame" x="8" y="70" width="199" height="26"/>
+                                                        <rect key="frame" x="8" y="70" width="199" height="22.5"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="19"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Justin" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1R-w0-Nxl">
-                                                        <rect key="frame" x="8" y="100" width="199" height="20.5"/>
+                                                        <rect key="frame" x="8" y="96.5" width="199" height="20"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -1002,7 +1054,7 @@
                                                 <rect key="frame" x="0.0" y="296" width="375" height="55"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  VS  " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPl-iy-5HO">
-                                                        <rect key="frame" x="158" y="8" width="61" height="38"/>
+                                                        <rect key="frame" x="158" y="8" width="59.5" height="38"/>
                                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="38" id="thg-8F-C8c"/>
