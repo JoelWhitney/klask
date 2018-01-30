@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
+                GIDSignIn.sharedInstance().signOut()
                 DataStore.shared.activeuser = nil
                 DataStore.shared.activearena = nil
                 DataStore.shared.saveUserDefaults()
@@ -82,9 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     }
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        
-        print("didSignInFor")
-        
+                
         if let error = error {
             print(error)
             return

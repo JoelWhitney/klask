@@ -43,27 +43,13 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     @IBAction func changeStandingsTimeframe(_ sender: UIButton) {
-        switch DataStore.shared.standingsTimeframe {
-        case .Week:
-            DataStore.shared.standingsTimeframe = .Month
-        case .Month:
-            DataStore.shared.standingsTimeframe = .Year
-        case .Year:
-            DataStore.shared.standingsTimeframe = .Alltime
-        case .Alltime:
-            DataStore.shared.standingsTimeframe = .Week
-        }
-        standingsOptionsButtons()
+        DataStore.shared.standingsTimeframe.cycleTimeFrame()
+        standingsOptionsUIConfig()
     }
     
     @IBAction func changeStandingsType(_ sender: UIButton) {
-        switch DataStore.shared.standingsType {
-        case .Wins:
-            DataStore.shared.standingsType = .Goals
-        case .Goals:
-            DataStore.shared.standingsType = .Wins
-        }
-        standingsOptionsButtons()
+        DataStore.shared.standingsType.cycleType()
+        standingsOptionsUIConfig()
     }
     
     // MARK: - Lifecycle
@@ -72,7 +58,7 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
 
-        standingsOptionsButtons()
+        standingsOptionsUIConfig()
         
         // auth
         let firebaseAuth = Auth.auth()
@@ -96,10 +82,8 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DataStore.shared.standingsDelegate = self
-        DataStore.shared.arenaUsersDelegate = self
-        
-        standingsOptionsButtons()
+
+        standingsOptionsUIConfig()
         
         guard (Auth.auth().currentUser != nil) else {
             presentSignInController()
@@ -116,13 +100,6 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     // MARK: - Methods
-    func standingsOptionsButtons() {
-        let timeframeTitle = (DataStore.shared.standingsTimeframe == .Alltime) ? "\(DataStore.shared.standingsTimeframe.rawValue)" : "Last \(DataStore.shared.standingsTimeframe.rawValue)"
-        standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
-        let typeTitle = DataStore.shared.standingsType.rawValue
-        standingsTypeButton.setTitle(typeTitle, for: .normal)
-    }
-    
     func reloadStandings() {
         guard let newStandings = DataStore.shared.standings else { return }
         self.standings = newStandings
@@ -139,9 +116,16 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         self.present(signInViewController, animated: true, completion: nil)
     }
     
+    private func standingsOptionsUIConfig() {
+        let timeframeTitle = (DataStore.shared.standingsTimeframe == .Alltime) ? "All-Time" : "Last \(DataStore.shared.standingsTimeframe.rawValue)"
+        standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
+        let typeTitle = DataStore.shared.standingsType.rawValue
+        standingsTypeButton.setTitle(typeTitle, for: .normal)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destVC = (segue.destination as? ProfileViewController) {
-            destVC.selectedUser = selectedStanding
+            destVC.userstandinguid = selectedStanding?.user.uid
         }
     }
 }

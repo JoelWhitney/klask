@@ -14,11 +14,12 @@ import Firebase
 class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     // MARK: - Variables
     var selectedUser: Standing?
+    var userstandinguid: String?
     var userstanding: Standing? {
-        return DataStore.shared.standings?.filter( { $0.user.uid == self.selectedUser?.user.uid } ).first
+        return DataStore.shared.standings?.filter( { $0.user.uid == userstandinguid } ).first
     }
     var usergames: [KlaskGame]? {
-        return DataStore.shared.arenagames.filter( { $0.player1id == (self.selectedUser?.user.uid) || $0.player2id == (self.selectedUser?.user.uid) } )
+        return DataStore.shared.arenagames.filter( { $0.player1id == (userstandinguid) || $0.player2id == (userstandinguid) } )
             .sorted(by: { $0.datetime! > $1.datetime! } )
     }
     weak var addUpdateAction: UIAlertAction?
@@ -32,24 +33,12 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     @IBOutlet var rankLabel: UILabel!
     
     // MARK: - IBAction
-//    @IBAction func signOut(_ sender: UIBarButtonItem) {
-//        let firebaseAuth = Auth.auth()
-//        do {
-//            try firebaseAuth.signOut()
-//            navigationController?.popViewController(animated: true)
-//            DataStore.shared.activeuser = nil
-//            DataStore.shared.activearena = nil
-//        } catch let signOutError as NSError {
-//            print ("Error signing out: %@", signOutError)
-//        }
-//    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
-
         tableView.tableFooterView = UIView()
         updateUserInfo()
     }
@@ -57,9 +46,8 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
-            let editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(editNickname))
-            editButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
-            self.navigationItem.rightBarButtonItem = editButton
+            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
+            self.navigationItem.rightBarButtonItem = overflowButton
         } else {
             let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
             self.navigationItem.rightBarButtonItem = addButton
@@ -92,7 +80,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func reloadStandings() {
-        print("profile reloading")
         DispatchQueue.main.async {
             self.updateUserInfo()
             self.tableView.reloadData()
@@ -100,41 +87,33 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func reloadArenaUsers() {
-        print("new user data")
         DispatchQueue.main.async {
             self.updateUserInfo()
             self.tableView.reloadData()
         }
     }
     
-    @objc func editNickname() {
-        let nickname = self.userstanding?.user.nickname ?? ""
-        
-        let alert = UIAlertController(title: "Edit Nickname", message: "Enter a creative nickname", preferredStyle: .alert)
-        alert.addTextField { (textField) in
-            textField.text = nickname
-            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
-
-        }
-        addUpdateAction = UIAlertAction(title: "Update", style: .default, handler: { [weak alert] (_) in
-            let newNickname = alert?.textFields![0].text ?? ""
-            guard var user = self.userstanding?.user else { return }
-            user.nickname = newNickname
-            DataStore.shared.updateUser(user)
-        })
-        addUpdateAction?.isEnabled = !(nickname.isEmpty)
-        alert.addAction(addUpdateAction!)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: {
-            DispatchQueue.main.async {
-                self.updateUserInfo()
-            }
-        })
-    }
     
-    @objc
-    func addGame(_ sender: UIBarButtonItem) {
+    @objc func overflowMenu() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Edit Nickname", style: .default , handler:{ (UIAlertAction) in
+            self.editNickname()
+        }))
+        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
+            //
+        }))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive , handler:{ (UIAlertAction) in
+            self.signOut()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
+    @objc func addGame(_ sender: UIBarButtonItem) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
         let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
         selectWinnerViewController.challenger = userstanding?.user
@@ -145,6 +124,45 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         addUpdateAction!.isEnabled = !(textField.text?.isEmpty)!
     }
     
+    private func editNickname() {
+        let nickname = self.userstanding?.user.nickname ?? ""
+        
+        let alert = UIAlertController(title: "Edit Nickname", message: "Enter a creative nickname", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = nickname
+            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+            
+        }
+        addUpdateAction = UIAlertAction(title: "Update", style: .default, handler: { [weak alert] (_) in
+            let newNickname = alert?.textFields![0].text ?? ""
+            guard var user = self.userstanding?.user else { return }
+            user.nickname = newNickname
+            DataStore.shared.updateUser(user)
+        })
+        addUpdateAction?.isEnabled = !(nickname.isEmpty)
+        alert.addAction(addUpdateAction!)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: {
+            DispatchQueue.main.async {
+                self.updateUserInfo()
+            }
+        })
+    }
+    
+    private func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            GIDSignIn.sharedInstance().signOut()
+            navigationController?.popViewController(animated: true)
+            DataStore.shared.activeuser = nil
+            DataStore.shared.activearena = nil
+            DataStore.shared.saveUserDefaults()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+    }
 }
 
 // MARK: - tableView data source
