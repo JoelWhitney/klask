@@ -31,21 +31,21 @@ protocol ArenasJoinedDelegate {
 
 // MARK: - Enums
 enum StandingsTimeframe: String {
-    case Day
+    case Today
     case Week
     case Month
     case Alltime
     
     mutating func cycleTimeFrame() {
         switch self {
-        case .Day:
+        case .Today:
             self = .Week
         case .Week:
             self = .Month
         case .Month:
             self = .Alltime
         case .Alltime:
-            self = .Day
+            self = .Today
         }
     }
 }
@@ -447,8 +447,8 @@ class DataStore {
             var relevantgames = [KlaskGame]()
             
             switch standingsTimeframe {
-            case .Day:
-                relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -1, to: Date())?.timeIntervalSince1970)! } )
+            case .Today:
+                relevantgames = arenagames.filter( { $0.datetime! >= Date().startTime().timeIntervalSince1970 } )
             case .Week:
                 relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -7, to: Date())?.timeIntervalSince1970)! } )
             case .Month:

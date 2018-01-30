@@ -19,8 +19,16 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         return DataStore.shared.standings?.filter( { $0.user.uid == userstandinguid } ).first
     }
     var usergames: [KlaskGame]? {
-        return DataStore.shared.arenagames.filter( { $0.player1id == (userstandinguid) || $0.player2id == (userstandinguid) } )
-            .sorted(by: { $0.datetime! > $1.datetime! } )
+        switch DataStore.shared.standingsTimeframe {
+        case .Today:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= Date().startTime().timeIntervalSince1970) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Week:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= (Calendar.current.date(byAdding: .day, value: -7, to: Date())?.timeIntervalSince1970)!) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Month:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= (Calendar.current.date(byAdding: .day, value: -30, to: Date())?.timeIntervalSince1970)!) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Alltime:
+            return DataStore.shared.arenagames.filter({ $0.player1id == (userstandinguid) || $0.player2id == (userstandinguid) }).sorted(by: { $0.datetime! > $1.datetime! })
+        }
     }
     weak var addUpdateAction: UIAlertAction?
 
@@ -255,14 +263,7 @@ extension ProfileViewController: UITableViewDataSource {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             if let usergames = self.usergames {
                 let game = usergames[indexPath.row]
-                let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this game?", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (alert) -> Void in
-                    print("deleting")
-                    print(game.gid!)
-                    DataStore.shared.deleteGame(game)
-                }))
-                self.present(alert, animated: true, completion: nil)
+                DataStore.shared.deleteGame(game)
             }
         }
         action.image = UIImage(named: "Trash")
@@ -291,8 +292,9 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
-        let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
-        return swipeConfig
+        let swipeDeleteAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeDeleteAction.performsFirstActionWithFullSwipe = false
+        return swipeDeleteAction
     }
     
 }

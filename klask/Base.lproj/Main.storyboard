@@ -85,7 +85,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="42v-7h-i2y">
-                                                    <rect key="frame" x="47" y="11" width="48" height="48"/>
+                                                    <rect key="frame" x="53" y="11" width="48" height="48"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="Q9Y-el-CQI"/>
                                                         <constraint firstAttribute="width" constant="48" id="cKy-8V-ijP"/>
@@ -103,12 +103,12 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afL-ib-Kjq">
-                                                    <rect key="frame" x="115" y="11" width="185" height="26"/>
+                                                    <rect key="frame" x="121" y="11" width="179" height="26"/>
                                                     <fontDescription key="fontDescription" name="KomikaHand-Italic" family="Komika Hand" pointSize="19"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POk-dC-MuC">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POk-dC-MuC">
                                                     <rect key="frame" x="15" y="21" width="28" height="27.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="28" id="qFR-Zs-Rj1"/>
@@ -118,7 +118,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JDub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJ7-gT-3RV">
-                                                    <rect key="frame" x="115" y="40" width="185" height="21"/>
+                                                    <rect key="frame" x="121" y="40" width="179" height="21"/>
                                                     <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -145,7 +145,7 @@
                                                 <constraint firstItem="vJ7-gT-3RV" firstAttribute="leading" secondItem="42v-7h-i2y" secondAttribute="trailing" constant="20" id="pOR-Fx-gqr"/>
                                                 <constraint firstItem="afL-ib-Kjq" firstAttribute="top" secondItem="2Rt-gZ-Y6m" secondAttribute="topMargin" id="rjh-tm-uQR"/>
                                                 <constraint firstItem="vJ7-gT-3RV" firstAttribute="top" secondItem="afL-ib-Kjq" secondAttribute="bottom" constant="3" id="w65-5j-75h"/>
-                                                <constraint firstItem="42v-7h-i2y" firstAttribute="leading" secondItem="POk-dC-MuC" secondAttribute="trailing" constant="4" id="yx1-wS-SCe"/>
+                                                <constraint firstItem="42v-7h-i2y" firstAttribute="leading" secondItem="POk-dC-MuC" secondAttribute="trailing" constant="10" id="yx1-wS-SCe"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -55,10 +55,6 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataStore.shared.standingsDelegate = self
-        DataStore.shared.arenaUsersDelegate = self
-
-        standingsOptionsUIConfig()
         
         // auth
         let firebaseAuth = Auth.auth()
@@ -76,13 +72,14 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         backButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
         navigationItem.backBarButtonItem = backButton
         
-        reloadStandings()
-
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // was not updating 
+        DataStore.shared.standingsDelegate = self
+        DataStore.shared.arenaUsersDelegate = self
+        
         standingsOptionsUIConfig()
         
         guard (Auth.auth().currentUser != nil) else {
@@ -164,6 +161,25 @@ extension StandingsViewController: UITableViewDataSource {
         }
         return standingCell
     }
+    
+    func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            //
+        }
+        action.image = UIImage(named: "Trash")
+        action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+        return action
+    }
+    
+    func contextualChallengeAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Challenge") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            //
+        }
+        action.image = UIImage(named: "Trash")
+        action.backgroundColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
+        return action
+    }
+    
 }
 
 
@@ -173,6 +189,21 @@ extension StandingsViewController: UITableViewDelegate {
         selectedStanding = standings[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
+        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+        let trailingActions = UISwipeActionsConfiguration(actions: [deleteAction, challengeAction])
+        trailingActions.performsFirstActionWithFullSwipe = false
+        return trailingActions
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+        leadingActions.performsFirstActionWithFullSwipe = false
+        return leadingActions
     }
     
 }
