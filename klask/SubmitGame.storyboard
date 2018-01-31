@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,23 +25,23 @@
             <objects>
                 <viewController storyboardIdentifier="SelectWinnerViewController" id="BIA-LX-CL7" customClass="SelectWinnerViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SuX-gb-Z6q">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z8F-Gg-4nM">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="758"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zlr-GT-uLZ" customClass="AngleView" customModule="klask" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                                         <subviews>
                                             <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RmX-lt-gg6" userLabel="Player1View">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="296"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="351.66666666666669"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19D-Jf-o4L" userLabel="ScoreView">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IIq-YA-nDp">
-                                                                <rect key="frame" x="54.5" y="15" width="265" height="40"/>
+                                                                <rect key="frame" x="54.666666666666657" y="15" width="265" height="40"/>
                                                                 <subviews>
                                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KKD-A9-9Tl">
                                                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -170,7 +169,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xo9-RC-fKc">
-                                                                        <rect key="frame" x="225" y="0.0" width="40" height="40"/>
+                                                                        <rect key="frame" x="225.00000000000003" y="0.0" width="39.999999999999972" height="40"/>
                                                                         <color key="backgroundColor" red="0.1484079361" green="0.10822928699999999" blue="0.1866647303" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="pmK-hd-VH9"/>
@@ -212,7 +211,7 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Joel" translatesAutoresizingMaskIntoConstraints="NO" id="LuF-MQ-EjF">
-                                                        <rect key="frame" x="25" y="106" width="140" height="140"/>
+                                                        <rect key="frame" x="25" y="161.66666666666666" width="140" height="139.99999999999997"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="140" id="Gx2-tF-Vj2"/>
                                                             <constraint firstAttribute="width" constant="140" id="Qwx-5R-PCg"/>
@@ -224,13 +223,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JDub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="4Ci-g9-i7X">
-                                                        <rect key="frame" x="178" y="139.5" width="189" height="49.5"/>
+                                                        <rect key="frame" x="178" y="195.33333333333334" width="189" height="49.333333333333343"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kon-uv-oB1">
-                                                        <rect key="frame" x="178" y="193" width="189" height="23"/>
+                                                        <rect key="frame" x="178" y="248.66666666666669" width="189" height="23"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="19"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -255,10 +254,10 @@
                                                 </constraints>
                                             </view>
                                             <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-ci-sWi" userLabel="Player2View">
-                                                <rect key="frame" x="0.0" y="351" width="375" height="296"/>
+                                                <rect key="frame" x="0.0" y="406.66666666666674" width="375" height="351.33333333333326"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YWF-sg-TLW" userLabel="ScoreView">
-                                                        <rect key="frame" x="0.0" y="206" width="375" height="90"/>
+                                                        <rect key="frame" x="0.0" y="261.33333333333331" width="375" height="90"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dTE-59-Da4">
                                                                 <rect key="frame" x="55" y="34" width="265" height="40"/>
@@ -424,7 +423,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXa-EK-ZGA" userLabel="WinnerView">
-                                                        <rect key="frame" x="0.0" y="206" width="375" height="90"/>
+                                                        <rect key="frame" x="0.0" y="261.33333333333331" width="375" height="90"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="90" id="RLu-4V-jgJ"/>
@@ -443,13 +442,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Velcro" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="OE0-Mj-MpN">
-                                                        <rect key="frame" x="8" y="70" width="189" height="49.5"/>
+                                                        <rect key="frame" x="8" y="70" width="189" height="49.333333333333343"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Justin" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lcY-Eu-9s4">
-                                                        <rect key="frame" x="8" y="123.5" width="189" height="23"/>
+                                                        <rect key="frame" x="8" y="123.33333333333331" width="189" height="23"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="19"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -473,10 +472,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0op-OT-jd6">
-                                                <rect key="frame" x="0.0" y="296" width="375" height="55"/>
+                                                <rect key="frame" x="0.0" y="351.66666666666669" width="375" height="55"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  VS  " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWP-fW-xke">
-                                                        <rect key="frame" x="157.5" y="8" width="61" height="38"/>
+                                                        <rect key="frame" x="157.66666666666666" y="8" width="61" height="38"/>
                                                         <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="38" id="A7v-BW-8kc"/>
@@ -523,12 +522,11 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="z8F-Gg-4nM" firstAttribute="top" secondItem="PKR-IS-rG7" secondAttribute="top" id="MGv-Tm-wiA"/>
+                            <constraint firstItem="z8F-Gg-4nM" firstAttribute="top" secondItem="SuX-gb-Z6q" secondAttribute="top" constant="20" symbolic="YES" id="MGv-Tm-wiA"/>
                             <constraint firstItem="z8F-Gg-4nM" firstAttribute="leading" secondItem="PKR-IS-rG7" secondAttribute="leading" id="Zlu-Ul-Myq"/>
-                            <constraint firstItem="z8F-Gg-4nM" firstAttribute="bottom" secondItem="PKR-IS-rG7" secondAttribute="bottom" id="fxH-Nk-Lho"/>
                             <constraint firstItem="z8F-Gg-4nM" firstAttribute="trailing" secondItem="PKR-IS-rG7" secondAttribute="trailing" id="hXh-b4-vTb"/>
                             <constraint firstItem="z8F-Gg-4nM" firstAttribute="leading" secondItem="PKR-IS-rG7" secondAttribute="leading" id="jdf-Ha-jRY"/>
                             <constraint firstItem="z8F-Gg-4nM" firstAttribute="bottom" secondItem="PKR-IS-rG7" secondAttribute="bottom" id="kz4-v9-pfz"/>
@@ -568,7 +566,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kRc-vQ-GgJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2505" y="146"/>
+            <point key="canvasLocation" x="2504.8000000000002" y="145.56650246305421"/>
         </scene>
     </scenes>
     <resources>

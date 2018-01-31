@@ -179,8 +179,18 @@ extension StandingsViewController: UITableViewDataSource {
         let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             //
         }
-        action.image = UIImage(named: "Trash")
+        //action.image = UIImage(named: "Trash")
+        action.title = "Win"
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+        return action
+    }
+
+    func contextualWinAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            //
+        }
+        action.image = UIImage(named: "Trash")
+        action.backgroundColor = #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 1)
         return action
     }
     
@@ -207,20 +217,18 @@ extension StandingsViewController: UITableViewDelegate {
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
     }
     
-//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
-//        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
-//        let trailingActions = UISwipeActionsConfiguration(actions: [lossAction, challengeAction])
-//        trailingActions.performsFirstActionWithFullSwipe = false
-//        return trailingActions
-//    }
-//
-//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
-//        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
-//        leadingActions.performsFirstActionWithFullSwipe = false
-//        return leadingActions
-//    }
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
+        let winAction = self.contextualWinAction(forRowAtIndexPath: indexPath)
+        let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        return trailingActions
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+        return leadingActions
+    }
     
 }
 
