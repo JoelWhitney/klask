@@ -115,7 +115,19 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     private func standingsOptionsUIConfig() {
-        let timeframeTitle = (DataStore.shared.standingsTimeframe == .Alltime) ? "All-Time" : "Last \(DataStore.shared.standingsTimeframe.rawValue)"
+        let timeframeTitle: String?
+        
+        switch DataStore.shared.standingsTimeframe {
+        case .Today:
+            timeframeTitle = "Today"
+        case .Week:
+            timeframeTitle = "Last 7 Days"
+        case .Month:
+            timeframeTitle = "Last 30 Days"
+        case .Alltime:
+            timeframeTitle = "All Time"
+        }
+
         standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
         let typeTitle = DataStore.shared.standingsType.rawValue
         standingsTypeButton.setTitle(typeTitle, for: .normal)
@@ -195,20 +207,20 @@ extension StandingsViewController: UITableViewDelegate {
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
-        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
-        let trailingActions = UISwipeActionsConfiguration(actions: [lossAction, challengeAction])
-        trailingActions.performsFirstActionWithFullSwipe = false
-        return trailingActions
-    }
-    
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
-        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
-        leadingActions.performsFirstActionWithFullSwipe = false
-        return leadingActions
-    }
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
+//        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+//        let trailingActions = UISwipeActionsConfiguration(actions: [lossAction, challengeAction])
+//        trailingActions.performsFirstActionWithFullSwipe = false
+//        return trailingActions
+//    }
+//
+//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+//        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+//        leadingActions.performsFirstActionWithFullSwipe = false
+//        return leadingActions
+//    }
     
 }
 

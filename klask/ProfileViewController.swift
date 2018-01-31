@@ -108,9 +108,9 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         alert.addAction(UIAlertAction(title: "Edit Nickname", style: .default , handler:{ (UIAlertAction) in
             self.editNickname()
         }))
-        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
-            //
-        }))
+//        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
+//            //
+//        }))
         alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive , handler:{ (UIAlertAction) in
             self.signOut()
         }))

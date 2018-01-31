@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
             print("Message ID: \(messageID)")
         }
         
-        presentChallengeAlert()
+        //presentChallengeAlert()
         
         // Print full message.
         print(userInfo)
@@ -133,7 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         // Print full message.
         print(userInfo)
         
-        presentChallengeAlert()
+        //presentChallengeAlert()
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -228,7 +228,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             print("Message ID: \(messageID)")
         }
         
-        presentChallengeAlert()
+        //presentChallengeAlert()
         
         // Print full message.
         print(userInfo)
@@ -246,7 +246,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             print("Message ID: \(messageID)")
         }
 
-        presentChallengeAlert()
+        //presentChallengeAlert()
         
         // Print full message.
         print(userInfo)
