@@ -265,6 +265,7 @@ extension ProfileViewController: UITableViewDataSource {
                 let game = usergames[indexPath.row]
                 DataStore.shared.deleteGame(game)
             }
+            completionHandler(true)
         }
         action.image = UIImage(named: "Trash")
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)

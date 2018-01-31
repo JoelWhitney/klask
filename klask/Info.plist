@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.421656896618-0ejsolpig2vfh6kl68shubqj8and2v1f</string>
+				<string>com.googleusercontent.apps.421656896618-4r7rfcg3bbou4bm66brn3h7ohvkcs15h</string>
 			</array>
 		</dict>
 	</array>
@@ -57,6 +57,10 @@
 		<string>KOMIKAHB.ttf</string>
 		<string>KOMIKASL.ttf</string>
 		<string></string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

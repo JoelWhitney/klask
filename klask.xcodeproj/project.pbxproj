@@ -17,7 +17,7 @@
 		D61D5B07200CF1FF00CB19F4 /* SubmitGame.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */; };
 		D61D5B09200D48CC00CB19F4 /* NoConnection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */; };
 		D61D5B0B200D48F200CB19F4 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */; };
-		D63FBE04200EC32400D289F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */; };
+		D631C032202133150068165E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D631C031202133140068165E /* GoogleService-Info.plist */; };
 		D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6806C1E200ED52600070195 /* SignIn.storyboard */; };
 		D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6806C20200EDA9B00070195 /* SignInViewController.swift */; };
 		E563C92F20094EED004A0BF9 /* Daniel Midgley.txt in Resources */ = {isa = PBXBuildFile; fileRef = E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */; };
@@ -58,7 +58,8 @@
 		D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SubmitGame.storyboard; sourceTree = "<group>"; };
 		D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnection.storyboard; sourceTree = "<group>"; };
 		D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
-		D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D631C031202133140068165E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D631C0332021349F0068165E /* klask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = klask.entitlements; sourceTree = "<group>"; };
 		D6806C1E200ED52600070195 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		D6806C20200EDA9B00070195 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Daniel Midgley.txt"; sourceTree = "<group>"; };
@@ -204,6 +205,7 @@
 		E57E7D7C2005AF540039748E /* klask */ = {
 			isa = PBXGroup;
 			children = (
+				D631C0332021349F0068165E /* klask.entitlements */,
 				E57E7D862005AF540039748E /* LaunchScreen.storyboard */,
 				E57E7D812005AF540039748E /* Main.storyboard */,
 				D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */,
@@ -220,7 +222,7 @@
 				D60AB23D200AD7EF003359B1 /* UI Extras */,
 				E563C91C20094DE6004A0BF9 /* fonts */,
 				E57E7D892005AF540039748E /* Info.plist */,
-				D63FBE03200EC32400D289F4 /* GoogleService-Info.plist */,
+				D631C031202133140068165E /* GoogleService-Info.plist */,
 			);
 			path = klask;
 			sourceTree = "<group>";
@@ -270,6 +272,14 @@
 					E57E7D792005AF540039748E = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -315,7 +325,7 @@
 				D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */,
 				E563C94720095B1B004A0BF9 /* KOMIKJ__.ttf in Resources */,
 				E563C93220094EED004A0BF9 /* Daniel-Regular.otf in Resources */,
-				D63FBE04200EC32400D289F4 /* GoogleService-Info.plist in Resources */,
+				D631C032202133150068165E /* GoogleService-Info.plist in Resources */,
 				E563C94320095B1B004A0BF9 /* KOMIKASK.ttf in Resources */,
 				E563C93020094EED004A0BF9 /* Daniel-Black.otf in Resources */,
 				E57E7D832005AF540039748E /* Main.storyboard in Resources */,
@@ -336,6 +346,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -345,6 +356,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -547,10 +559,12 @@
 			baseConfigurationReference = AE6FD42C2EA1033E53A644F5 /* Pods-klask.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = klask/klask.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5SREPW8963;
 				INFOPLIST_FILE = klask/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JoelWhitney.klask-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -565,10 +579,12 @@
 			baseConfigurationReference = 69F628A82F24232C397A0C8A /* Pods-klask.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = klask/klask.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5SREPW8963;
 				INFOPLIST_FILE = klask/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JoelWhitney.klask-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";

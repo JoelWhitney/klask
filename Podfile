@@ -12,5 +12,5 @@ target 'klask' do
   pod 'FirebaseUI/Google'
   pod 'Firebase/Database'
   pod 'CodableFirebase'
-  
+  pod 'Firebase/Messaging'
 end

@@ -11,6 +11,7 @@ import Foundation
 import GoogleSignIn
 import Firebase
 import CodableFirebase
+import FirebaseMessaging
 
 class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     
@@ -162,8 +163,8 @@ extension StandingsViewController: UITableViewDataSource {
         return standingCell
     }
     
-    func contextualDeleteAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+    func contextualLossAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             //
         }
         action.image = UIImage(named: "Trash")
@@ -172,8 +173,11 @@ extension StandingsViewController: UITableViewDataSource {
     }
     
     func contextualChallengeAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Challenge") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            //
+        let action = UIContextualAction(style: .normal, title: "Challenge") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            let message: [AnyHashable: Any] = ["google.c.a.c_l": "Klask match", "google.c.a.e": "1", "google.c.a.ts": "1517362628", "google.c.a.udt": "0", "gcm.n.e": "1", "alert": "Eh Eh Ron challenges you to a match"]
+            let fcmtoken = "ezX8u7qnOTE:APA91bGDghcL3UnwVQ0cxEI0jT7yLO_LmKZ2bBOsQGdMNvUWpbPtzsPltmrwMmzRjQ6BOlr1r4xXCSgB1X3e-dLR6-OHMeiEcq8IKs7hCmkbZxXtgFq_aDLncr0Q9E7O5higKzsyd5sy"
+            Messaging.messaging().sendMessage(message, to: fcmtoken, withMessageID: UUID().uuidString, timeToLive: 123)
+            completionHandler(true)
         }
         action.image = UIImage(named: "Trash")
         action.backgroundColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
@@ -192,9 +196,9 @@ extension StandingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
+        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
         let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
-        let trailingActions = UISwipeActionsConfiguration(actions: [deleteAction, challengeAction])
+        let trailingActions = UISwipeActionsConfiguration(actions: [lossAction, challengeAction])
         trailingActions.performsFirstActionWithFullSwipe = false
         return trailingActions
     }
