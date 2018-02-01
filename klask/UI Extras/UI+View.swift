@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 extension UIImageView {
     func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
@@ -30,3 +31,18 @@ extension UIImageView {
         downloadedFrom(url: url, contentMode: mode)
     }
 }
+
+extension Date {
+    func startTime() -> Date {
+        return Calendar.current.startOfDay(for: self)
+    }
+    
+    func endTime() -> Date {
+        var components = DateComponents()
+        components.day = 1
+        components.second = -1
+        return Calendar.current.date(byAdding: components, to: startTime())!
+    }
+}
+
+

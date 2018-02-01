@@ -11,21 +11,50 @@ import Firebase
 import GoogleSignIn
 import Firebase
 import CodableFirebase
-
+import UserNotifications
+import FirebaseInstanceID
+import FirebaseMessaging
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
-    
+    let gcmMessageIDKey = "gcm.message_id"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
         FirebaseApp.configure()
         
+        // Set upp push notifications
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {_, _ in })
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        
+        Messaging.messaging().delegate = self
+        Messaging.messaging().shouldEstablishDirectChannel = true
+        
+        let token = Messaging.messaging().fcmToken
+        print("FCM token: \(token ?? "")")
+        
+        // Firebase connection
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
     
+        // Check if app has been launched before otherwise clears out any cached creds  (ie re-install)
         let userDefaults = UserDefaults.standard
         
         if userDefaults.bool(forKey: "hasRunBefore") == false {
@@ -34,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
+                GIDSignIn.sharedInstance().signOut()
                 DataStore.shared.activeuser = nil
                 DataStore.shared.activearena = nil
                 DataStore.shared.saveUserDefaults()
@@ -52,6 +82,90 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         return true
     }
 
+
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(String(describing: challenger))"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
+            }
+            completionHandler(UIBackgroundFetchResult.newData)
+        })
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        // update user here? or store in local cache maybe?
+    }
+    
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+            //  This method is called on iOS 10 devices to handle data messages received via FCM through its direct channel (not via APNS). For iOS 9 and below, the FCM data message is delivered via the UIApplicationDelegate’s -application:didReceiveRemoteNotification: method.
+    }
+
+    func application(received remoteMessage: MessagingRemoteMessage) {
+        //The callback to handle data message received via FCM for devices running iOS 10 or above.
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken as Data
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        // TODO: Handle data of notification
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Print message ID.
+        if let messageID = userInfo[gcmMessageIDKey] {
+            print("Message ID: \(messageID)")
+        }
+        
+        //presentChallengeAlert()
+        
+        // Print full message.
+        print(userInfo)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        // TODO: Handle data of notification
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Print message ID.
+        if let messageID = userInfo[gcmMessageIDKey] {
+            print("Message ID: \(messageID)")
+        }
+        
+        // Print full message.
+        print(userInfo)
+        
+        //presentChallengeAlert()
+        
+        completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
             return GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
     }
@@ -81,9 +195,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         DataStore.shared.saveUserDefaults()
     }
 
+    func presentChallengeAlert() {
+        let alertController = UIAlertController(title: "Challenge", message: "blah", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Google Sign In stuff
+extension AppDelegate: GIDSignInDelegate {
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        
-        print("didSignInFor")
         
         if let error = error {
             print(error)
@@ -114,6 +236,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // ...
         print("disconnected")
     }
+}
 
+// MARK: - Push notification stuff
+@available(iOS 10, *)
+extension AppDelegate : UNUserNotificationCenterDelegate {
+
+    // Receive and show alert while app in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        // Print message ID.
+        if let messageID = userInfo[gcmMessageIDKey] {
+            print("Message ID: \(messageID)")
+        }
+        
+        //presentChallengeAlert()
+    
+        print(userInfo)
+        
+        // present alert if app in foreground for remote notifications
+        completionHandler(.alert)
+    }
+
+    // What to do when opened
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        
+        // if challenge alert will need to present challenge alert
+        if response.notification.request.content.categoryIdentifier == "challenge" {
+            print(response.notification.request.content.title)
+            print(response.notification.request.content.body)
+            print(response.notification.request.content.userInfo)
+            //presentChallengeAlert()
+        } else {
+            // otherwise from Firebase FCM
+            if let messageID = userInfo[gcmMessageIDKey] {
+                print("Message ID: \(messageID)")
+            }
+            print(userInfo)
+        }
+
+        completionHandler()
+    }
+    
+    
 }
 

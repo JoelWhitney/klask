@@ -52,6 +52,25 @@ extension Standing: Equatable {
     }
 }
 
+// MARK: - KlaskChallenge
+struct KlaskChallenge: Codable {
+    let datetime: Double?
+    let arenaid: String?
+    var challengeruid: String?
+    var challengername: String?
+    var challengeduid: String?
+    
+    init(challengeduid: String) {
+        self.challengeduid = challengeduid
+        let nickname = DataStore.shared.activeuser?.nickname
+        self.challengername = (nickname != "") ? DataStore.shared.activeuser?.nickname : DataStore.shared.activeuser?.name
+        self.challengeruid = DataStore.shared.activeuser?.uid
+        self.datetime = NSDate().timeIntervalSince1970
+        self.arenaid = DataStore.shared.activearena?.aid
+    }
+    
+}
+
 // MARK: - KlaskGame
 struct KlaskGame: Codable {
     var gid: String?

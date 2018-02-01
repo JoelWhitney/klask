@@ -10,16 +10,26 @@ import UIKit
 import Foundation
 import GoogleSignIn
 import Firebase
+import UserNotifications
 
 class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     // MARK: - Variables
     var selectedUser: Standing?
+    var userstandinguid: String?
     var userstanding: Standing? {
-        return DataStore.shared.standings?.filter( { $0.user.uid == self.selectedUser?.user.uid } ).first
+        return DataStore.shared.standings?.filter( { $0.user.uid == userstandinguid } ).first
     }
     var usergames: [KlaskGame]? {
-        return DataStore.shared.arenagames.filter( { $0.player1id == (self.selectedUser?.user.uid) || $0.player2id == (self.selectedUser?.user.uid) } )
-            .sorted(by: { $0.datetime! > $1.datetime! } )
+        switch DataStore.shared.standingsTimeframe {
+        case .Today:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= Date().startTime().timeIntervalSince1970) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Week:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= (Calendar.current.date(byAdding: .day, value: -7, to: Date())?.timeIntervalSince1970)!) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Month:
+            return DataStore.shared.arenagames.filter({ ($0.player1id == (userstandinguid) || $0.player2id == (userstandinguid)) && ($0.datetime! >= (Calendar.current.date(byAdding: .day, value: -30, to: Date())?.timeIntervalSince1970)!) } ).sorted(by: { $0.datetime! > $1.datetime! })
+        case .Alltime:
+            return DataStore.shared.arenagames.filter({ $0.player1id == (userstandinguid) || $0.player2id == (userstandinguid) }).sorted(by: { $0.datetime! > $1.datetime! })
+        }
     }
     weak var addUpdateAction: UIAlertAction?
 
@@ -32,24 +42,12 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     @IBOutlet var rankLabel: UILabel!
     
     // MARK: - IBAction
-//    @IBAction func signOut(_ sender: UIBarButtonItem) {
-//        let firebaseAuth = Auth.auth()
-//        do {
-//            try firebaseAuth.signOut()
-//            navigationController?.popViewController(animated: true)
-//            DataStore.shared.activeuser = nil
-//            DataStore.shared.activearena = nil
-//        } catch let signOutError as NSError {
-//            print ("Error signing out: %@", signOutError)
-//        }
-//    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
-
         tableView.tableFooterView = UIView()
         updateUserInfo()
     }
@@ -57,13 +55,14 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
-            let editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(editNickname))
-            editButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
-            self.navigationItem.rightBarButtonItem = editButton
+            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
+            self.navigationItem.rightBarButtonItem = overflowButton
         } else {
             let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
             self.navigationItem.rightBarButtonItem = addButton
         }
+        
+        getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -92,49 +91,63 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func reloadStandings() {
-        print("profile reloading")
         DispatchQueue.main.async {
             self.updateUserInfo()
             self.tableView.reloadData()
         }
     }
     
-    func reloadArenaUsers() {
-        print("new user data")
-        DispatchQueue.main.async {
-            self.updateUserInfo()
-            self.tableView.reloadData()
-        }
-    }
-    
-    @objc func editNickname() {
-        let nickname = self.userstanding?.user.nickname ?? ""
-        
-        let alert = UIAlertController(title: "Edit Nickname", message: "Enter a creative nickname", preferredStyle: .alert)
-        alert.addTextField { (textField) in
-            textField.text = nickname
-            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
-
-        }
-        addUpdateAction = UIAlertAction(title: "Update", style: .default, handler: { [weak alert] (_) in
-            let newNickname = alert?.textFields![0].text ?? ""
-            guard var user = self.userstanding?.user else { return }
-            user.nickname = newNickname
-            DataStore.shared.updateUser(user)
-        })
-        addUpdateAction?.isEnabled = !(nickname.isEmpty)
-        alert.addAction(addUpdateAction!)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        // 4. Present the alert.
-        self.present(alert, animated: true, completion: {
-            DispatchQueue.main.async {
-                self.updateUserInfo()
+    func getUserChallenges() {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(challenger)"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
             }
         })
     }
     
-    @objc
-    func addGame(_ sender: UIBarButtonItem) {
+    func reloadArenaUsers() {
+        DispatchQueue.main.async {
+            self.updateUserInfo()
+            self.tableView.reloadData()
+        }
+    }
+    
+    
+    @objc func overflowMenu() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Edit Nickname", style: .default , handler:{ (UIAlertAction) in
+            self.editNickname()
+        }))
+//        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
+//            //
+//        }))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive , handler:{ (UIAlertAction) in
+            self.signOut()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
+    @objc func addGame(_ sender: UIBarButtonItem) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
         let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
         selectWinnerViewController.challenger = userstanding?.user
@@ -145,6 +158,45 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         addUpdateAction!.isEnabled = !(textField.text?.isEmpty)!
     }
     
+    private func editNickname() {
+        let nickname = self.userstanding?.user.nickname ?? ""
+        
+        let alert = UIAlertController(title: "Edit Nickname", message: "Enter a creative nickname", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = nickname
+            textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+            
+        }
+        addUpdateAction = UIAlertAction(title: "Update", style: .default, handler: { [weak alert] (_) in
+            let newNickname = alert?.textFields![0].text ?? ""
+            guard var user = self.userstanding?.user else { return }
+            user.nickname = newNickname
+            DataStore.shared.updateUser(user)
+        })
+        addUpdateAction?.isEnabled = !(nickname.isEmpty)
+        alert.addAction(addUpdateAction!)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: {
+            DispatchQueue.main.async {
+                self.updateUserInfo()
+            }
+        })
+    }
+    
+    private func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            GIDSignIn.sharedInstance().signOut()
+            navigationController?.popViewController(animated: true)
+            DataStore.shared.activeuser = nil
+            DataStore.shared.activearena = nil
+            DataStore.shared.saveUserDefaults()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+    }
 }
 
 // MARK: - tableView data source
@@ -224,9 +276,9 @@ extension ProfileViewController: UITableViewDataSource {
                 }
                 cell.scoreLabel.text = "\(String(describing: userscore!)) - \(String(describing: opponentscore!))"
                 if (userscore! > opponentscore!) {
-                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.7753607866, green: 0.8709772825, blue: 0.6619649412, alpha: 1)
                 } else {
-                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.9975132346, green: 0.6256488676, blue: 0.5714625452, alpha: 1)
                 }
             }
             return cell
@@ -237,15 +289,9 @@ extension ProfileViewController: UITableViewDataSource {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             if let usergames = self.usergames {
                 let game = usergames[indexPath.row]
-                let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this game?", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (alert) -> Void in
-                    print("deleting")
-                    print(game.gid!)
-                    DataStore.shared.deleteGame(game)
-                }))
-                self.present(alert, animated: true, completion: nil)
+                DataStore.shared.deleteGame(game)
             }
+            completionHandler(true)
         }
         action.image = UIImage(named: "Trash")
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
@@ -273,8 +319,9 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = self.contextualDeleteAction(forRowAtIndexPath: indexPath)
-        let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
-        return swipeConfig
+        let swipeDeleteAction = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeDeleteAction.performsFirstActionWithFullSwipe = false
+        return swipeDeleteAction
     }
     
 }

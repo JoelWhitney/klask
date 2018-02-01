@@ -9,12 +9,14 @@
 import Foundation
 import Firebase
 import CodableFirebase
+import UserNotifications
 
 typealias FirebaseArenaClosure = (KlaskArena?) -> Void
 typealias FirebaseArenasClosure = ([KlaskArena]) -> Void
 typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
 typealias FirebaseGameClosure = ([KlaskGame]) -> Void
 
+// MARK: - Delegates
 protocol StandingsDelegate {
     func reloadStandings()
 }
@@ -27,16 +29,39 @@ protocol ArenasJoinedDelegate {
     func reloadArenasJoined()
 }
 
+// MARK: - Enums
 enum StandingsTimeframe: String {
+    case Today
     case Week
     case Month
-    case Year
     case Alltime
+    
+    mutating func cycleTimeFrame() {
+        switch self {
+        case .Today:
+            self = .Week
+        case .Week:
+            self = .Month
+        case .Month:
+            self = .Alltime
+        case .Alltime:
+            self = .Today
+        }
+    }
 }
 
 enum StandingsType: String {
     case Goals
     case Wins
+    
+    mutating func cycleType() {
+        switch self {
+        case .Goals:
+            self = .Wins
+        case .Wins:
+            self = .Goals
+        }
+    }
 }
 
 // MARK: - DataStore
@@ -62,6 +87,9 @@ class DataStore {
             getArenasJoined() { arenas in
                 self.arenasjoined = arenas
             }
+//            observeUserChallenges(onComplete: { challenges in
+//                self.displayNotifications(challenges: challenges)
+//            })
         }
     }
     var activearena: KlaskArena? {
@@ -70,6 +98,7 @@ class DataStore {
             observeArenaGames() { games in
                 self.arenagames = games
             }
+            observeForUserRemoved()
             observeForUserAdded()
             observeForUserChanged()
         }
@@ -202,6 +231,57 @@ class DataStore {
         }
     }
     
+    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]) -> Void) {
+        var challenges = [KlaskChallenge]()
+        
+        if let activeuser = activeuser {
+            ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let value = snapshot.value  else { return }
+                
+                do {
+                    let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                    for (_, value) in challengeDict {
+                        challenges.append(value)
+                    }
+                } catch {
+                    print(error)
+                }
+                
+                onComplete(challenges)
+                
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func observeUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]) -> Void) {
+        var challenges = [KlaskChallenge]()
+        
+        if let activeuser = activeuser {
+            ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observe(.value, with: { (snapshot) in
+                
+                guard let value = snapshot.value  else { return }
+                
+                do {
+                    let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                    for (_, value) in challengeDict {
+                        challenges.append(value)
+                    }
+                 } catch {
+                    print(error)
+                }
+                
+                onComplete(challenges)
+                
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
     func observeArenaGames(onComplete: @escaping FirebaseGameClosure) {
         var games = [KlaskGame]()
         
@@ -257,27 +337,16 @@ class DataStore {
     func observeForUserAdded() {
         ref.child("users").observe(.childAdded, with: { (snapshot) in
             guard let value = snapshot.value  else { return }
-            //print("someone added...")
+
             do {
-                let addedUser  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
+                let user  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
                 
                 if let arenausers = self.arenausers {
-                    guard !arenausers.contains(addedUser) else { return } // return if exists
+                    guard !arenausers.contains(user) else { return } // return if exists
                 }
                 
-                if let activearena = self.activearena, let arenasjoined = addedUser.arenasjoined {
-                    self.getArena(aid: activearena.aid!, onComplete: { arena in
-                        if let arena = arena, arenasjoined.contains(arena.aid!) {
-                            //print("someone added was in activearena, reload!!!")
-                            self.activearena = arena
-                            self.updateArenaUsers(onComplete: { users in
-                                DispatchQueue.main.async {
-                                    self.arenausers = users
-                                }
-                            })
-                        }
-                    })
-                }
+                self.observedUserChangesPredicateMet(user)
+                
             } catch {
                 print(error)
             }
@@ -295,19 +364,8 @@ class DataStore {
                     guard let existinguser = arenausers.first(where: { existing in (existing.uid == user.uid) }), existinguser != user else { return } // don't reload if user not updated with certain properties
                 }
             
-                if let activearena = self.activearena, let arenasjoined = user.arenasjoined {
-                    self.getArena(aid: activearena.aid!, onComplete: { arena in
-                        if let arena = arena, arenasjoined.contains(arena.aid!) {
-                            //print("someone changed was in activearena, reload!!!")
-                            self.activearena = arena
-                            self.updateArenaUsers(onComplete: { users in
-                                DispatchQueue.main.async {
-                                    self.arenausers = users
-                                }
-                            })
-                        }
-                    })
-                }
+                self.observedUserChangesPredicateMet(user)
+                
             } catch {
                 print(error)
             }
@@ -319,33 +377,41 @@ class DataStore {
             guard let value = snapshot.value  else { return }
             
             do {
-                let userremoved  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
+                let user  = try FirebaseDecoder().decode(KlaskUser.self, from: value)
                 
                 if let arenausers = self.arenausers {
-                    guard arenausers.contains(where: { user in (user.uid == userremoved.uid) }) else { return } // return if does not exist in arena
+                    guard arenausers.contains(where: { existing in (existing.uid == user.uid) }) else { return } // return if does not exist in arena
                 }
                 
-                if let activearena = self.activearena, let arenasjoined = userremoved.arenasjoined {
-                    self.getArena(aid: activearena.aid!, onComplete: { arena in
-                        if let arena = arena, arenasjoined.contains(arena.aid!) {
-                            //print("someone changed was in activearena, reload!!!")
-                            self.activearena = arena
-                            self.updateArenaUsers(onComplete: { users in
-                                DispatchQueue.main.async {
-                                    self.arenausers = users
-                                }
-                            })
-                        }
-                    })
-                }
+                self.observedUserChangesPredicateMet(user)
+                
             } catch {
                 print(error)
             }
         })
     }
     
+    // MARK: - Private GET methods
+    private func observedUserChangesPredicateMet(_ user: KlaskUser) {
+        if let activearena = self.activearena, let arenasjoined = user.arenasjoined {
+            
+            self.getArena(aid: activearena.aid!, onComplete: { arena in
+                if let arena = arena, arenasjoined.contains(arena.aid!) {
+                    self.activearena = arena
+                    
+                    self.updatedArenaUsers(onComplete: { users in
+                        DispatchQueue.main.async {
+                            self.arenausers = users
+                        }
+                    })
+                    
+                }
+            })
+            
+        }
+    }
 
-    func updateArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
+    private func updatedArenaUsers(onComplete: @escaping FirebaseArenaUsersClosure) {
         var arenausers = [KlaskUser]()
         
         let dispatchGroup = DispatchGroup()
@@ -402,6 +468,19 @@ class DataStore {
         }
     }
     
+    func postChallenge(_ challenge: KlaskChallenge, onComplete: @escaping (_ error: Error?) -> Void) {
+        do {
+            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else { return }
+            let cid = "\(challengeruid)-\(challengeduid)"
+            let challenge = try FirebaseEncoder().encode(challenge)
+            ref.child("challenges").child(cid).setValue(challenge, withCompletionBlock: { (error, ref) in
+                onComplete(error)
+            })
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateArena(_ arena: KlaskArena) {
         do {
             let updateArena = try FirebaseEncoder().encode(arena)
@@ -412,23 +491,26 @@ class DataStore {
     }
     
     func updateUser(_ user: KlaskUser) {
-        // ran into permission denied issue trying to use updateArena flow (maybe rules?) had to remove and then add
-        ref.child("users").child(user.uid!).removeValue { error, ref1  in
+        do {
+            let updateUser = try FirebaseEncoder().encode(user)
+            ref.child("users").child(user.uid!).setValue(updateUser)
+        } catch {
+            print(error)
+        }
+    }
+    
+    // MARK: - DELETE methods
+    func deleteGame(_ game: KlaskGame) {
+        ref.child("games").child(game.gid!).removeValue { error, ref  in
             if error != nil {
                 print("error \(String(describing: error))")
-            }
-            do {
-                let updateUser = try FirebaseEncoder().encode(user)
-                ref1.setValue(updateUser)
-            } catch {
-                print(error)
             }
         }
     }
     
-    // MARK: - Delete methods
-    func deleteGame(_ game: KlaskGame) {
-        ref.child("games").child(game.gid!).removeValue { error, ref  in
+    func deleteChallenge(_ challenge: KlaskChallenge) {
+        let cid = "\(challenge.challengeruid!)-\(challenge.challengeduid!)"
+        ref.child("challenges").child(cid).removeValue { error, ref  in
             if error != nil {
                 print("error \(String(describing: error))")
             }
@@ -441,12 +523,12 @@ class DataStore {
             var relevantgames = [KlaskGame]()
             
             switch standingsTimeframe {
+            case .Today:
+                relevantgames = arenagames.filter( { $0.datetime! >= Date().startTime().timeIntervalSince1970 } )
             case .Week:
                 relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -7, to: Date())?.timeIntervalSince1970)! } )
             case .Month:
                 relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -30, to: Date())?.timeIntervalSince1970)! } )
-            case .Year:
-                relevantgames = arenagames.filter( {$0.datetime! >= (Calendar.current.date(byAdding: .day, value: -365, to: Date())?.timeIntervalSince1970)! } )
             case .Alltime:
                 relevantgames = arenagames
             }
@@ -493,6 +575,27 @@ class DataStore {
                         return standing1.goalsdiff > standing2.goalsdiff
                     }
             }
+        }
+    }
+    
+    private func displayNotifications(challenges: [KlaskChallenge]) {
+        print(challenges)
+        for challenge in challenges {
+            let content = UNMutableNotificationContent()
+            content.title = "Challenge"
+            content.categoryIdentifier = "challenge"
+            let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername
+            content.body = "You've been challenged by \(String(describing: challenger)))"
+            content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                if error == nil {
+                    print("deleting notification")
+                    DataStore.shared.deleteChallenge(challenge)
+                }
+            })
         }
     }
 }

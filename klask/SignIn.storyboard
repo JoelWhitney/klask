@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -24,18 +23,18 @@
             <objects>
                 <viewController storyboardIdentifier="SignInViewController" id="6cc-yl-zuC" customClass="SignInViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KBs-yR-nvd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="qvM-9m-QJa">
-                                <rect key="frame" x="62" y="208" width="250" height="250"/>
+                                <rect key="frame" x="62" y="281" width="250" height="250"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="dYu-Kq-5g0"/>
                                     <constraint firstAttribute="width" constant="250" id="n1c-3c-xKl"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vir-0l-n5u" customClass="GIDSignInButton">
-                                <rect key="frame" x="107" y="478" width="160" height="30"/>
+                                <rect key="frame" x="107" y="551" width="160" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="DBq-Rp-2qb"/>
                                     <constraint firstAttribute="width" constant="160" id="tNY-5P-wxe"/>
@@ -69,11 +68,11 @@
             <objects>
                 <viewController storyboardIdentifier="ChooseArenaViewController" id="DNi-nK-bXT" customClass="ChooseArenaViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tHP-Uh-zPh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ox6-NL-LT1">
-                                <rect key="frame" x="0.0" y="152" width="375" height="515"/>
+                                <rect key="frame" x="0.0" y="152" width="375" height="660"/>
                                 <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,17 +81,17 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1d9-Tx-zXQ" id="CcJ-me-Eeq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.666666666666671"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uva-hQ-OXM">
-                                                    <rect key="frame" x="15" y="11" width="54.5" height="26"/>
+                                                    <rect key="frame" x="14.999999999999996" y="11" width="54.666666666666657" height="26"/>
                                                     <fontDescription key="fontDescription" name="KomikaHand-Italic" family="Komika Hand" pointSize="19"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 playing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpC-05-rAv">
-                                                    <rect key="frame" x="15" y="38" width="78.5" height="21"/>
+                                                    <rect key="frame" x="15" y="38" width="78.666666666666671" height="21"/>
                                                     <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -150,7 +149,7 @@
                             <constraint firstItem="mJI-K8-OI1" firstAttribute="leading" secondItem="EUz-Qe-5T1" secondAttribute="leading" id="fVs-OP-les"/>
                             <constraint firstItem="Ox6-NL-LT1" firstAttribute="top" secondItem="ijB-5v-hod" secondAttribute="bottom" id="j1s-sh-N34"/>
                             <constraint firstItem="mJI-K8-OI1" firstAttribute="top" secondItem="tHP-Uh-zPh" secondAttribute="top" id="jtG-Nt-7ll"/>
-                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="bottom" secondItem="EUz-Qe-5T1" secondAttribute="bottom" id="ryV-Pv-H3t"/>
+                            <constraint firstItem="Ox6-NL-LT1" firstAttribute="bottom" secondItem="tHP-Uh-zPh" secondAttribute="bottom" id="ryV-Pv-H3t"/>
                             <constraint firstItem="ijB-5v-hod" firstAttribute="trailing" secondItem="EUz-Qe-5T1" secondAttribute="trailing" id="wqa-wr-Ixt"/>
                             <constraint firstItem="ijB-5v-hod" firstAttribute="top" secondItem="mJI-K8-OI1" secondAttribute="bottom" id="xtJ-3A-Zcn"/>
                         </constraints>
@@ -163,7 +162,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lk3-4x-vcu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="70" y="-668"/>
+            <point key="canvasLocation" x="428" y="-687"/>
         </scene>
     </scenes>
     <resources>

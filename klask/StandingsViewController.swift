@@ -11,6 +11,8 @@ import Foundation
 import GoogleSignIn
 import Firebase
 import CodableFirebase
+import FirebaseMessaging
+import UserNotifications
 
 class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     
@@ -43,36 +45,18 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     @IBAction func changeStandingsTimeframe(_ sender: UIButton) {
-        switch DataStore.shared.standingsTimeframe {
-        case .Week:
-            DataStore.shared.standingsTimeframe = .Month
-        case .Month:
-            DataStore.shared.standingsTimeframe = .Year
-        case .Year:
-            DataStore.shared.standingsTimeframe = .Alltime
-        case .Alltime:
-            DataStore.shared.standingsTimeframe = .Week
-        }
-        standingsOptionsButtons()
+        DataStore.shared.standingsTimeframe.cycleTimeFrame()
+        standingsOptionsUIConfig()
     }
     
     @IBAction func changeStandingsType(_ sender: UIButton) {
-        switch DataStore.shared.standingsType {
-        case .Wins:
-            DataStore.shared.standingsType = .Goals
-        case .Goals:
-            DataStore.shared.standingsType = .Wins
-        }
-        standingsOptionsButtons()
+        DataStore.shared.standingsType.cycleType()
+        standingsOptionsUIConfig()
     }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataStore.shared.standingsDelegate = self
-        DataStore.shared.arenaUsersDelegate = self
-
-        standingsOptionsButtons()
         
         // auth
         let firebaseAuth = Auth.auth()
@@ -90,16 +74,15 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         backButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
         navigationItem.backBarButtonItem = backButton
         
-        reloadStandings()
-
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // was not updating 
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
         
-        standingsOptionsButtons()
+        standingsOptionsUIConfig()
         
         guard (Auth.auth().currentUser != nil) else {
             presentSignInController()
@@ -109,6 +92,8 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         }
         
         reloadStandings()
+        
+        getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -116,13 +101,6 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     }
     
     // MARK: - Methods
-    func standingsOptionsButtons() {
-        let timeframeTitle = (DataStore.shared.standingsTimeframe == .Alltime) ? "\(DataStore.shared.standingsTimeframe.rawValue)" : "Last \(DataStore.shared.standingsTimeframe.rawValue)"
-        standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
-        let typeTitle = DataStore.shared.standingsType.rawValue
-        standingsTypeButton.setTitle(typeTitle, for: .normal)
-    }
-    
     func reloadStandings() {
         guard let newStandings = DataStore.shared.standings else { return }
         self.standings = newStandings
@@ -132,6 +110,29 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         reloadStandings()
     }
     
+    func getUserChallenges() {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(challenger)"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
+            }
+        })
+    }
+    
     private func presentSignInController() {
         print("present sign in")
         let storyBoard: UIStoryboard = UIStoryboard(name: "SignIn", bundle: nil)
@@ -139,9 +140,28 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         self.present(signInViewController, animated: true, completion: nil)
     }
     
+    private func standingsOptionsUIConfig() {
+        let timeframeTitle: String?
+        
+        switch DataStore.shared.standingsTimeframe {
+        case .Today:
+            timeframeTitle = "Today"
+        case .Week:
+            timeframeTitle = "Last 7 Days"
+        case .Month:
+            timeframeTitle = "Last 30 Days"
+        case .Alltime:
+            timeframeTitle = "All Time"
+        }
+
+        standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
+        let typeTitle = DataStore.shared.standingsType.rawValue
+        standingsTypeButton.setTitle(typeTitle, for: .normal)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destVC = (segue.destination as? ProfileViewController) {
-            destVC.selectedUser = selectedStanding
+            destVC.userstandinguid = selectedStanding?.user.uid
         }
     }
 }
@@ -180,6 +200,47 @@ extension StandingsViewController: UITableViewDataSource {
         }
         return standingCell
     }
+    
+    func contextualLossAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            //
+        }
+        //action.image = UIImage(named: "Trash")
+        action.title = "Win"
+        action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+        return action
+    }
+
+    func contextualWinAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            //
+        }
+        action.image = UIImage(named: "Trash")
+        action.backgroundColor = #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 1)
+        return action
+    }
+    
+    func contextualChallengeAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Challenge") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            let user = self.standings[indexPath.row].user
+            print(user)
+            guard let challengeduid = user.uid, let challengedname = user.nickname ?? user.name else { return }
+            let challenge = KlaskChallenge(challengeduid: challengeduid)
+            DataStore.shared.postChallenge(challenge, onComplete: { error in
+                if error != nil {
+                    let alertController = UIAlertController(title: "Error", message: "Hmm, try going to ask \(challengedname) instead of challenging again.", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            })
+            completionHandler(true)
+        }
+        //action.image = UIImage(named: "Trash")
+        action.title = "Challenge"
+        action.backgroundColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
+        return action
+    }
+    
 }
 
 
@@ -189,6 +250,22 @@ extension StandingsViewController: UITableViewDelegate {
         selectedStanding = standings[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "ProfileViewController", sender: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
+        let winAction = self.contextualWinAction(forRowAtIndexPath: indexPath)
+        //let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        let trailingActions = UISwipeActionsConfiguration(actions: [])
+        return trailingActions
+    }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let user = self.standings[indexPath.row].user
+        guard user.uid != DataStore.shared.activeuser?.uid! else { return nil }
+        let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
+        let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+        return leadingActions
     }
     
 }
