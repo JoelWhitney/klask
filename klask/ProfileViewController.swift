@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import GoogleSignIn
 import Firebase
+import UserNotifications
 
 class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     // MARK: - Variables
@@ -60,6 +61,8 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
             self.navigationItem.rightBarButtonItem = addButton
         }
+        
+        getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -92,6 +95,29 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             self.updateUserInfo()
             self.tableView.reloadData()
         }
+    }
+    
+    func getUserChallenges() {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(challenger)"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
+            }
+        })
     }
     
     func reloadArenaUsers() {

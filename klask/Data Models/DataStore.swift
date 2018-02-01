@@ -9,12 +9,12 @@
 import Foundation
 import Firebase
 import CodableFirebase
+import UserNotifications
 
 typealias FirebaseArenaClosure = (KlaskArena?) -> Void
 typealias FirebaseArenasClosure = ([KlaskArena]) -> Void
 typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
 typealias FirebaseGameClosure = ([KlaskGame]) -> Void
-
 
 // MARK: - Delegates
 protocol StandingsDelegate {
@@ -87,6 +87,9 @@ class DataStore {
             getArenasJoined() { arenas in
                 self.arenasjoined = arenas
             }
+//            observeUserChallenges(onComplete: { challenges in
+//                self.displayNotifications(challenges: challenges)
+//            })
         }
     }
     var activearena: KlaskArena? {
@@ -227,6 +230,57 @@ class DataStore {
                 print(error.localizedDescription)
         }
     }
+    
+    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]) -> Void) {
+        var challenges = [KlaskChallenge]()
+        
+        if let activeuser = activeuser {
+            ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let value = snapshot.value  else { return }
+                
+                do {
+                    let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                    for (_, value) in challengeDict {
+                        challenges.append(value)
+                    }
+                } catch {
+                    print(error)
+                }
+                
+                onComplete(challenges)
+                
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func observeUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]) -> Void) {
+        var challenges = [KlaskChallenge]()
+        
+        if let activeuser = activeuser {
+            ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observe(.value, with: { (snapshot) in
+                
+                guard let value = snapshot.value  else { return }
+                
+                do {
+                    let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                    for (_, value) in challengeDict {
+                        challenges.append(value)
+                    }
+                 } catch {
+                    print(error)
+                }
+                
+                onComplete(challenges)
+                
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     
     func observeArenaGames(onComplete: @escaping FirebaseGameClosure) {
         var games = [KlaskGame]()
@@ -414,6 +468,19 @@ class DataStore {
         }
     }
     
+    func postChallenge(_ challenge: KlaskChallenge, onComplete: @escaping (_ error: Error?) -> Void) {
+        do {
+            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else { return }
+            let cid = "\(challengeruid)-\(challengeduid)"
+            let challenge = try FirebaseEncoder().encode(challenge)
+            ref.child("challenges").child(cid).setValue(challenge, withCompletionBlock: { (error, ref) in
+                onComplete(error)
+            })
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateArena(_ arena: KlaskArena) {
         do {
             let updateArena = try FirebaseEncoder().encode(arena)
@@ -435,6 +502,15 @@ class DataStore {
     // MARK: - DELETE methods
     func deleteGame(_ game: KlaskGame) {
         ref.child("games").child(game.gid!).removeValue { error, ref  in
+            if error != nil {
+                print("error \(String(describing: error))")
+            }
+        }
+    }
+    
+    func deleteChallenge(_ challenge: KlaskChallenge) {
+        let cid = "\(challenge.challengeruid!)-\(challenge.challengeduid!)"
+        ref.child("challenges").child(cid).removeValue { error, ref  in
             if error != nil {
                 print("error \(String(describing: error))")
             }
@@ -499,6 +575,27 @@ class DataStore {
                         return standing1.goalsdiff > standing2.goalsdiff
                     }
             }
+        }
+    }
+    
+    private func displayNotifications(challenges: [KlaskChallenge]) {
+        print(challenges)
+        for challenge in challenges {
+            let content = UNMutableNotificationContent()
+            content.title = "Challenge"
+            content.categoryIdentifier = "challenge"
+            let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername
+            content.body = "You've been challenged by \(String(describing: challenger)))"
+            content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                if error == nil {
+                    print("deleting notification")
+                    DataStore.shared.deleteChallenge(challenge)
+                }
+            })
         }
     }
 }

@@ -12,6 +12,7 @@ import GoogleSignIn
 import Firebase
 import CodableFirebase
 import FirebaseMessaging
+import UserNotifications
 
 class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDelegate {
     
@@ -91,6 +92,8 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         }
         
         reloadStandings()
+        
+        getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -105,6 +108,29 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     
     func reloadArenaUsers() {
         reloadStandings()
+    }
+    
+    func getUserChallenges() {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(challenger)"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
+            }
+        })
     }
     
     private func presentSignInController() {
@@ -196,12 +222,21 @@ extension StandingsViewController: UITableViewDataSource {
     
     func contextualChallengeAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Challenge") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            let message: [AnyHashable: Any] = ["google.c.a.c_l": "Klask match", "google.c.a.e": "1", "google.c.a.ts": "1517362628", "google.c.a.udt": "0", "gcm.n.e": "1", "alert": "Eh Eh Ron challenges you to a match"]
-            let fcmtoken = "ezX8u7qnOTE:APA91bGDghcL3UnwVQ0cxEI0jT7yLO_LmKZ2bBOsQGdMNvUWpbPtzsPltmrwMmzRjQ6BOlr1r4xXCSgB1X3e-dLR6-OHMeiEcq8IKs7hCmkbZxXtgFq_aDLncr0Q9E7O5higKzsyd5sy"
-            Messaging.messaging().sendMessage(message, to: fcmtoken, withMessageID: UUID().uuidString, timeToLive: 123)
+            let user = self.standings[indexPath.row].user
+            print(user)
+            guard let challengeduid = user.uid, let challengedname = user.nickname ?? user.name else { return }
+            let challenge = KlaskChallenge(challengeduid: challengeduid)
+            DataStore.shared.postChallenge(challenge, onComplete: { error in
+                if error != nil {
+                    let alertController = UIAlertController(title: "Error", message: "Hmm, try going to ask \(challengedname) instead of challenging again.", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            })
             completionHandler(true)
         }
-        action.image = UIImage(named: "Trash")
+        //action.image = UIImage(named: "Trash")
+        action.title = "Challenge"
         action.backgroundColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
         return action
     }
@@ -220,11 +255,14 @@ extension StandingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
         let winAction = self.contextualWinAction(forRowAtIndexPath: indexPath)
-        let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        //let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        let trailingActions = UISwipeActionsConfiguration(actions: [])
         return trailingActions
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let user = self.standings[indexPath.row].user
+        guard user.uid != DataStore.shared.activeuser?.uid! else { return nil }
         let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
         let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
         return leadingActions

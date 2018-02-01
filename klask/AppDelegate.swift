@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         FirebaseApp.configure()
         
         // Set upp push notifications
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
@@ -80,6 +82,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         return true
     }
 
+
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+            print(challenges)
+            for challenge in challenges {
+                let content = UNMutableNotificationContent()
+                content.title = "Challenge"
+                content.categoryIdentifier = "challenge"
+                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                content.body = "You've been challenged by \(String(describing: challenger))"
+                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error == nil {
+                        print("deleting notification")
+                        DataStore.shared.deleteChallenge(challenge)
+                    }
+                })
+            }
+            completionHandler(UIBackgroundFetchResult.newData)
+        })
+    }
+    
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         // update user here? or store in local cache maybe?
@@ -214,45 +242,47 @@ extension AppDelegate: GIDSignInDelegate {
 @available(iOS 10, *)
 extension AppDelegate : UNUserNotificationCenterDelegate {
 
-    // Receive displayed notifications for iOS 10 devices.
+    // Receive and show alert while app in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
         
         //presentChallengeAlert()
-        
-        // Print full message.
+    
         print(userInfo)
         
-        // Change this to your preferred presentation option
+        // present alert if app in foreground for remote notifications
         completionHandler(.alert)
     }
 
+    // What to do when opened
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-
-        //presentChallengeAlert()
         
-        // Print full message.
-        print(userInfo)
+        // if challenge alert will need to present challenge alert
+        if response.notification.request.content.categoryIdentifier == "challenge" {
+            print(response.notification.request.content.title)
+            print(response.notification.request.content.body)
+            print(response.notification.request.content.userInfo)
+            //presentChallengeAlert()
+        } else {
+            // otherwise from Firebase FCM
+            if let messageID = userInfo[gcmMessageIDKey] {
+                print("Message ID: \(messageID)")
+            }
+            print(userInfo)
+        }
 
         completionHandler()
     }
+    
     
 }
 
