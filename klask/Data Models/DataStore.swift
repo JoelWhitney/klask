@@ -231,8 +231,8 @@ class DataStore {
         }
     }
     
-    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]) -> Void) {
-        var challenges = [KlaskChallenge]()
+    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]?) -> Void) {
+        var challenges: [KlaskChallenge]?
         
         if let activeuser = activeuser {
             ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -241,15 +241,14 @@ class DataStore {
                 
                 do {
                     let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                    challenges = [KlaskChallenge]()
                     for (_, value) in challengeDict {
-                        challenges.append(value)
+                        challenges?.append(value)
                     }
                 } catch {
                     print(error)
                 }
-                
                 onComplete(challenges)
-                
             }) { (error) in
                 print(error.localizedDescription)
             }
