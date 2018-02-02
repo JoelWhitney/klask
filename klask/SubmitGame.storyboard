@@ -211,25 +211,25 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Joel" translatesAutoresizingMaskIntoConstraints="NO" id="LuF-MQ-EjF">
-                                                        <rect key="frame" x="25" y="161.66666666666666" width="140" height="139.99999999999997"/>
+                                                        <rect key="frame" x="25" y="211.66666666666663" width="120" height="120"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="140" id="Gx2-tF-Vj2"/>
-                                                            <constraint firstAttribute="width" constant="140" id="Qwx-5R-PCg"/>
+                                                            <constraint firstAttribute="height" constant="120" id="Gx2-tF-Vj2"/>
+                                                            <constraint firstAttribute="width" constant="120" id="Qwx-5R-PCg"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                <integer key="value" value="70"/>
+                                                                <integer key="value" value="60"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JDub" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="4Ci-g9-i7X">
-                                                        <rect key="frame" x="178" y="195.33333333333334" width="189" height="49.333333333333343"/>
+                                                        <rect key="frame" x="158" y="225.33333333333334" width="209" height="49.333333333333343"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kon-uv-oB1">
-                                                        <rect key="frame" x="178" y="248.66666666666669" width="189" height="23"/>
+                                                        <rect key="frame" x="158" y="278.66666666666669" width="209" height="23"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="19"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -237,14 +237,14 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="19D-Jf-o4L" secondAttribute="trailing" id="2qN-cO-aFh"/>
-                                                    <constraint firstAttribute="bottom" secondItem="LuF-MQ-EjF" secondAttribute="bottom" constant="50" id="39d-Vq-RQ0"/>
+                                                    <constraint firstAttribute="bottom" secondItem="LuF-MQ-EjF" secondAttribute="bottom" constant="20" id="39d-Vq-RQ0"/>
                                                     <constraint firstAttribute="trailing" secondItem="4Ci-g9-i7X" secondAttribute="trailing" constant="8" id="BH9-9w-AmX"/>
                                                     <constraint firstItem="GVc-OH-BMk" firstAttribute="top" secondItem="RmX-lt-gg6" secondAttribute="top" id="DFD-Xu-T8K"/>
                                                     <constraint firstAttribute="trailing" secondItem="GVc-OH-BMk" secondAttribute="trailing" id="M8K-d5-vy9"/>
                                                     <constraint firstItem="GVc-OH-BMk" firstAttribute="top" secondItem="RmX-lt-gg6" secondAttribute="top" id="MMH-al-mnD"/>
                                                     <constraint firstItem="LuF-MQ-EjF" firstAttribute="leading" secondItem="RmX-lt-gg6" secondAttribute="leading" constant="25" id="Sc8-E6-z40"/>
                                                     <constraint firstItem="GVc-OH-BMk" firstAttribute="leading" secondItem="RmX-lt-gg6" secondAttribute="leading" id="aR6-91-yAY"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Kon-uv-oB1" secondAttribute="bottom" constant="80" id="cXF-YW-TXk"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Kon-uv-oB1" secondAttribute="bottom" constant="50" id="cXF-YW-TXk"/>
                                                     <constraint firstItem="Kon-uv-oB1" firstAttribute="top" secondItem="4Ci-g9-i7X" secondAttribute="bottom" constant="4" id="eNI-i3-eWX"/>
                                                     <constraint firstItem="Kon-uv-oB1" firstAttribute="leading" secondItem="LuF-MQ-EjF" secondAttribute="trailing" constant="13" id="hge-zI-pIl"/>
                                                     <constraint firstItem="19D-Jf-o4L" firstAttribute="top" secondItem="RmX-lt-gg6" secondAttribute="top" id="iMt-cg-17z"/>
@@ -430,25 +430,25 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Justin" translatesAutoresizingMaskIntoConstraints="NO" id="DAc-gV-dSC">
-                                                        <rect key="frame" x="210" y="50" width="140" height="140"/>
+                                                        <rect key="frame" x="230" y="20" width="120" height="120"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="140" id="8tT-EL-3Hp"/>
-                                                            <constraint firstAttribute="height" constant="140" id="mkd-MN-aNg"/>
+                                                            <constraint firstAttribute="width" constant="120" id="8tT-EL-3Hp"/>
+                                                            <constraint firstAttribute="height" constant="120" id="mkd-MN-aNg"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                <integer key="value" value="70"/>
+                                                                <integer key="value" value="60"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Velcro" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="OE0-Mj-MpN">
-                                                        <rect key="frame" x="8" y="70" width="189" height="49.333333333333343"/>
+                                                        <rect key="frame" x="8" y="50" width="209" height="49.333333333333343"/>
                                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Justin" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lcY-Eu-9s4">
-                                                        <rect key="frame" x="8" y="123.33333333333331" width="189" height="23"/>
+                                                        <rect key="frame" x="8" y="103.33333333333331" width="209" height="23"/>
                                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="19"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -464,11 +464,11 @@
                                                     <constraint firstAttribute="bottom" secondItem="yXa-EK-ZGA" secondAttribute="bottom" id="gy1-hq-Kaf"/>
                                                     <constraint firstItem="yXa-EK-ZGA" firstAttribute="leading" secondItem="Kmr-ci-sWi" secondAttribute="leading" id="lQ7-YR-JD8"/>
                                                     <constraint firstAttribute="bottom" secondItem="YWF-sg-TLW" secondAttribute="bottom" id="liP-Sa-RpF"/>
-                                                    <constraint firstItem="DAc-gV-dSC" firstAttribute="top" secondItem="Kmr-ci-sWi" secondAttribute="top" constant="50" id="o8q-nu-Ooe"/>
+                                                    <constraint firstItem="DAc-gV-dSC" firstAttribute="top" secondItem="Kmr-ci-sWi" secondAttribute="top" constant="20" id="o8q-nu-Ooe"/>
                                                     <constraint firstItem="OE0-Mj-MpN" firstAttribute="leading" secondItem="Kmr-ci-sWi" secondAttribute="leading" constant="8" id="pKm-wZ-gBG"/>
                                                     <constraint firstItem="DAc-gV-dSC" firstAttribute="leading" secondItem="lcY-Eu-9s4" secondAttribute="trailing" constant="13" id="q0b-SS-ey5"/>
                                                     <constraint firstItem="lcY-Eu-9s4" firstAttribute="top" secondItem="OE0-Mj-MpN" secondAttribute="bottom" constant="3.5" id="tox-Hr-OG4"/>
-                                                    <constraint firstItem="OE0-Mj-MpN" firstAttribute="top" secondItem="Kmr-ci-sWi" secondAttribute="top" constant="70" id="y0y-Gm-RII"/>
+                                                    <constraint firstItem="OE0-Mj-MpN" firstAttribute="top" secondItem="Kmr-ci-sWi" secondAttribute="top" constant="50" id="y0y-Gm-RII"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0op-OT-jd6">

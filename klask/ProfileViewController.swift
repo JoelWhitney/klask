@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             self.navigationItem.rightBarButtonItem = addButton
         }
         
-        getUserChallenges()
+        //getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -98,24 +98,25 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func getUserChallenges() {
-        DataStore.shared.getUserChallenges(onComplete: { (challenges) in
-            print(challenges)
-            for challenge in challenges {
-                let content = UNMutableNotificationContent()
-                content.title = "Challenge"
-                content.categoryIdentifier = "challenge"
-                let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
-                content.body = "You've been challenged by \(challenger)"
-                content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                
-                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                    if error == nil {
-                        print("deleting notification")
-                        DataStore.shared.deleteChallenge(challenge)
-                    }
-                })
+        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
+            if let challenges = challenges {
+                for challenge in challenges {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Challenge"
+                    content.categoryIdentifier = "challenge"
+                    let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+                    content.body = "You've been challenged by \(challenger)"
+                    content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                    
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                        if error == nil {
+                            print("deleting notification")
+                            DataStore.shared.deleteChallenge(challenge)
+                        }
+                    })
+                }
             }
         })
     }
@@ -276,9 +277,9 @@ extension ProfileViewController: UITableViewDataSource {
                 }
                 cell.scoreLabel.text = "\(String(describing: userscore!)) - \(String(describing: opponentscore!))"
                 if (userscore! > opponentscore!) {
-                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.7753607866, green: 0.8709772825, blue: 0.6619649412, alpha: 1)
+                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
                 } else {
-                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.9975132346, green: 0.6256488676, blue: 0.5714625452, alpha: 1)
+                    cell.scoreLabel.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
                 }
             }
             return cell
