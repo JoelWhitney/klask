@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             self.navigationItem.rightBarButtonItem = addButton
         }
         
-        getUserChallenges()
+        //getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

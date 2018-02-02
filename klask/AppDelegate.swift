@@ -84,10 +84,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     }
 
 
-    
+
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        var newData: Bool?
+
         DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
+
             if let challenges = challenges {
+                newData = (challenges.count > 0) ? true : false
+
                 for challenge in challenges {
                     let content = UNMutableNotificationContent()
                     content.title = "Challenge"
@@ -97,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
                     content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                    
+
                     UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
                         if error == nil {
                             print("deleting notification")
@@ -105,11 +110,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
                         }
                     })
                 }
-                completionHandler(.newData)
             }
-            completionHandler(.noData)
         })
+
+        completionHandler(newData! ? .newData : .noData)
     }
+
+    
+//    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//
+//        let content = UNMutableNotificationContent()
+//        content.title = "Test"
+//        content.body = "Test fetch"
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+//        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+//
+//        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+//            if error == nil {
+//                //
+//            }
+//        })
+//
+//        completionHandler(.newData)
+//    }
+    
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")

@@ -93,7 +93,7 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         
         reloadStandings()
         
-        getUserChallenges()
+        //getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
