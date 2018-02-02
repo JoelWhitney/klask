@@ -580,6 +580,8 @@ class DataStore {
     }
     
     private func displayNotification(challenge: KlaskChallenge) {
+        // should prob check presentedVC and make sure not on choose arena screen or sign in screen
+        
         let content = UNMutableNotificationContent()
         content.title = "Challenge"
         content.categoryIdentifier = "challenge"
