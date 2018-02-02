@@ -86,12 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        var newData: Bool?
 
         DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
 
-            if let challenges = challenges {
-                newData = (challenges.count > 0) ? true : false
+            if let challenges = challenges, challenges.count > 0 {
 
                 for challenge in challenges {
                     let content = UNMutableNotificationContent()
@@ -110,10 +108,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
                         }
                     })
                 }
+                completionHandler(.newData)
+            } else {
+                completionHandler(.noData)
             }
         })
-
-        completionHandler(newData! ? .newData : .noData)
     }
 
     
