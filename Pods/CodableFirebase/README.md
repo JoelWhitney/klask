@@ -1,16 +1,20 @@
 # CodableFirebase
 Use [Codable](https://developer.apple.com/documentation/swift/codable) with [Firebase](https://firebase.google.com)
 
+[![CocoaPods](https://img.shields.io/cocoapods/p/CodableFirebase.svg)]()
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) 
 [![Build Status](https://travis-ci.org/alickbass/CodableFirebase.svg?branch=master)](https://travis-ci.org/alickbass/CodableFirebase)
-[![codecov](https://codecov.io/gh/alickbass/CodableFirebase/branch/master/graph/badge.svg)](https://codecov.io/gh/alickbass/CodableFirebase)
 
 ## Overview
 
-This library helps you to use your custom type that conform to `Codable` protocol with Firebase. Here's an example of model:
+This library helps you to use your custom types that conform to `Codable` protocol with Firebase. Here's an example of a custom model:
 
 ```swift
 struct Model: Codable {
+    enum MyEnum: Int, Codable {
+        case one, two, three
+    }
+    
     let stringExample: String
     let booleanExample: Bool
     let numberExample: Double
@@ -18,6 +22,7 @@ struct Model: Codable {
     let arrayExample: [String]
     let nullExample: Int?
     let objectExample: [String: String]
+    let myEnum: MyEnum
 }
 ```
 
@@ -79,4 +84,43 @@ Firestore.firestore().collection("data").document("one").getDocument { (document
         print("Document does not exist")
     }
 }
+```
+
+### How to use `GeoPoint`, `DocumentRefence`, `FieldValue` in Firestore
+
+In order to use these 2 types with `Firestore`, you need to add the following code somewhere in your app:
+
+```swift
+extension DocumentReference: DocumentReferenceType {}
+extension GeoPoint: GeoPointType {}
+extension FieldValue: FieldValueType {}
+```
+
+and now they become `Codable` and can be used properly with `FirestoreEncoder` and `FirestoreDecoder`.
+
+***PLEASE NOTE*** that as `FieldValue` is only used to [`setData()` and `updateData()`](https://firebase.google.com/docs/reference/swift/firebasefirestore/api/reference/Classes/FieldValue), it only adopts the `Encodable` protocol. 
+
+## Integration
+
+### CocoaPods (iOS 9+)
+
+You can use CocoaPods to install CodableFirebase by adding it to your Podfile:
+
+```swift
+platform :ios, '9.0'
+use_frameworks!
+
+target 'MyApp' do
+pod 'CodableFirebase'
+end
+```
+
+Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 9.0:
+
+### Carthage (iOS 9+)
+
+You can use Carthage to install CodableFirebase by adding it to your Cartfile:
+
+```swift
+github "alickbass/CodableFirebase"
 ```

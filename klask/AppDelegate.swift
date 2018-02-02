@@ -85,7 +85,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch", title: "Background Fetch", subtitle: "trying to update data in the background", body: nil)
+
         DataStore.shared.getUserChallenges(onComplete: { (challenges) in
+
+            UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch-success", title: "Background Fetch", subtitle: "The query completed with \(challenges.count) challenges", body: nil)
+
+
             print(challenges)
             for challenge in challenges {
                 let content = UNMutableNotificationContent()
@@ -286,3 +293,24 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     
 }
 
+extension UNUserNotificationCenter {
+
+    static func scheduleNotification(withIdentifier identifier: String, title: String?, subtitle: String?, body: String?) {
+
+        let content = UNMutableNotificationContent()
+        content.title = title ?? ""
+        content.body = body ?? ""
+        content.subtitle = subtitle ?? ""
+
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+
+        UNUserNotificationCenter.current().add(request) { error in
+
+            if let error = error {
+                print("Error scheduling the notification: \(error)")
+            } else {
+                print("Scheduled notification")
+            }
+        }
+    }
+}
