@@ -29,13 +29,6 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
         googleSignInButton.style = .wide
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if DataStore.shared.activearena != nil {
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     // MARK: - Methods
     func addGradientLayer() {
         var gradientLayer: CAGradientLayer!

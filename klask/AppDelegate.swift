@@ -67,14 +67,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
                 GIDSignIn.sharedInstance().signOut()
                 DataStore.shared.activeuser = nil
                 DataStore.shared.activearena = nil
-                DataStore.shared.saveUserDefaults()
+                DataStore.shared.deleteUserDefaults()
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
             
-            // update the flag indicator
             userDefaults.set(true, forKey: "hasRunBefore")
-            userDefaults.synchronize() // forces the app to update the NSUserDefaults
             
         } else {
             DataStore.shared.getUserDefaults()
@@ -82,8 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         
         return true
     }
-
-
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
@@ -115,24 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         })
     }
 
-    
-//    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//
-//        let content = UNMutableNotificationContent()
-//        content.title = "Test"
-//        content.body = "Test fetch"
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-//        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-//
-//        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-//            if error == nil {
-//                //
-//            }
-//        })
-//
-//        completionHandler(.newData)
-//    }
-    
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
@@ -248,11 +226,11 @@ extension AppDelegate: GIDSignInDelegate {
             }
             // fetch active user and set locally
             if let user = user {
-                DataStore.shared.getActiveUser(user)
-            }
-            
-            if let navController = self.window?.rootViewController as? UINavigationController, let signInVC = navController.presentedViewController as? SignInViewController {
-                signInVC.performSegue(withIdentifier: "ChooseArenaViewController", sender: nil)
+                DataStore.shared.getActiveUser(user) {
+                    if let navController = self.window?.rootViewController as? UINavigationController, let signInVC = navController.presentedViewController as? SignInViewController {
+                        signInVC.dismiss(animated: true, completion: nil)
+                    }
+                }
             }
         }
     }

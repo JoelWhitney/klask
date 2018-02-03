@@ -61,8 +61,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
             self.navigationItem.rightBarButtonItem = addButton
         }
-        
-        //getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -97,30 +95,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         }
     }
     
-    func getUserChallenges() {
-        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
-            if let challenges = challenges {
-                for challenge in challenges {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Challenge"
-                    content.categoryIdentifier = "challenge"
-                    let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
-                    content.body = "You've been challenged by \(challenger)"
-                    content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                    
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                        if error == nil {
-                            print("deleting notification")
-                            DataStore.shared.deleteChallenge(challenge)
-                        }
-                    })
-                }
-            }
-        })
-    }
-    
     func reloadArenaUsers() {
         DispatchQueue.main.async {
             self.updateUserInfo()
@@ -135,9 +109,15 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         alert.addAction(UIAlertAction(title: "Edit Nickname", style: .default , handler:{ (UIAlertAction) in
             self.editNickname()
         }))
-//        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
-//            //
-//        }))
+        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
+            DataStore.shared.activearena = nil
+            DataStore.shared.saveUserDefaults()
+            let storyBoard: UIStoryboard = UIStoryboard(name: "ChooseArena", bundle: nil)
+            let chooseArenaViewController = storyBoard.instantiateViewController(withIdentifier: "ChooseArenaViewController") as! ChooseArenaViewController
+            self.present(chooseArenaViewController, animated: true, completion: {
+                self.navigationController?.popViewController(animated: true)
+            })
+        }))
         alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive , handler:{ (UIAlertAction) in
             self.signOut()
         }))
@@ -190,10 +170,10 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         do {
             try firebaseAuth.signOut()
             GIDSignIn.sharedInstance().signOut()
-            navigationController?.popViewController(animated: true)
             DataStore.shared.activeuser = nil
             DataStore.shared.activearena = nil
-            DataStore.shared.saveUserDefaults()
+            DataStore.shared.deleteUserDefaults()
+            navigationController?.popViewController(animated: true)
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
