@@ -164,6 +164,32 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         self.present(chooseArenaViewController, animated: true, completion: nil)
     }
     
+    private func presentEnterScoreController(opponent: KlaskUser, actionType: ContextualActionType) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
+        let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
+        enterScoreViewController.actionType = actionType
+        enterScoreViewController.opponent = opponent
+        self.present(enterScoreViewController, animated: true, completion: nil)
+    }
+    
+    private func animateCellByAction(indexPath: IndexPath, actionType: ContextualActionType){
+        let animationColor: UIColor = {
+            switch actionType {
+            case .Loss:
+                return #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 0.2)
+            case .Won:
+                return #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 0.2)
+            case .Challenge:
+                return #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 0.2)
+            }
+        }()
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 3, animations: {
+            cell?.backgroundColor = animationColor
+            cell?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        })
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destVC = (segue.destination as? ProfileViewController) {
             destVC.userstandinguid = selectedStanding?.user.uid
@@ -208,19 +234,26 @@ extension StandingsViewController: UITableViewDataSource {
     
     func contextualLossAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            //
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Loss)
+            let opponent = self.standings[indexPath.row].user
+            self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Loss)
+            completionHandler(true)
         }
         //action.image = UIImage(named: "Trash")
-        action.title = "Win"
+        action.title = "Loss"
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
         return action
     }
 
     func contextualWinAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            //
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Won)
+            let opponent = self.standings[indexPath.row].user
+            self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Won)
+            completionHandler(true)
         }
-        action.image = UIImage(named: "Trash")
+        //action.image = UIImage(named: "Trash")
+        action.title = "Won"
         action.backgroundColor = #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 1)
         return action
     }
@@ -238,6 +271,7 @@ extension StandingsViewController: UITableViewDataSource {
                     self.present(alertController, animated: true, completion: nil)
                 }
             })
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Challenge)
             completionHandler(true)
         }
         //action.image = UIImage(named: "Trash")
@@ -258,10 +292,12 @@ extension StandingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let user = self.standings[indexPath.row].user
+        guard user.uid != DataStore.shared.activeuser?.uid! else { return UISwipeActionsConfiguration(actions: []) }
         let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
         let winAction = self.contextualWinAction(forRowAtIndexPath: indexPath)
-        //let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
-        let trailingActions = UISwipeActionsConfiguration(actions: [])
+        let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        //let trailingActions = UISwipeActionsConfiguration(actions: [])
         return trailingActions
     }
 
@@ -270,9 +306,16 @@ extension StandingsViewController: UITableViewDelegate {
         guard user.uid != DataStore.shared.activeuser?.uid! else { return nil }
         let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
         let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+        leadingActions.performsFirstActionWithFullSwipe = false
         return leadingActions
     }
     
+}
+
+enum ContextualActionType {
+    case Challenge
+    case Won
+    case Loss
 }
 
 // MARK: - tableView cell
