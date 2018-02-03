@@ -25,6 +25,12 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
             }
         }
     }
+    var signedIn: Bool {
+        return Auth.auth().currentUser != nil && DataStore.shared.activeuser != nil
+    }
+    var arenaChosen: Bool {
+        return DataStore.shared.activearena != nil
+    }
     
     // MARK: - IBOutlets
     @IBOutlet var tableView: UITableView!
@@ -46,104 +52,92 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
     
     @IBAction func changeStandingsTimeframe(_ sender: UIButton) {
         DataStore.shared.standingsTimeframe.cycleTimeFrame()
-        standingsOptionsUIConfig()
+        setupToolbarUI()
     }
     
     @IBAction func changeStandingsType(_ sender: UIButton) {
         DataStore.shared.standingsType.cycleType()
-        standingsOptionsUIConfig()
+        setupToolbarUI()
     }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // auth
-        let firebaseAuth = Auth.auth()
-        if let currentUser = firebaseAuth.currentUser {
-            print("Already signed in as \(String(describing: currentUser.displayName)) (\(String(describing: currentUser.email)))")
-        } else {
-            presentSignInController()
-            DataStore.shared.activeuser = nil
-            DataStore.shared.activearena = nil
-        }
-  
         // ui
-        tableView.tableFooterView = UIView()
-        let backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: nil)
-        backButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
-        navigationItem.backBarButtonItem = backButton
-        
+        setupNavBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // was not updating 
+        // was not updating after viewing profile
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
-        
-        standingsOptionsUIConfig()
-        
-        guard (Auth.auth().currentUser != nil) else {
-            presentSignInController()
-            DataStore.shared.activeuser = nil
-            DataStore.shared.activearena = nil
-            return
-        }
-        
+        // ui
+        setupToolbarUI()
+        setupTableView()
+        // auth
+        verifySignedIn()
+        verifyArenaChosen()
+        // data source
         reloadStandings()
-        
-        //getUserChallenges()
+
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    // MARK: - Methods
+    // MARK: - Protocol methods
     func reloadStandings() {
         guard let newStandings = DataStore.shared.standings else { return }
         self.standings = newStandings
     }
     
     func reloadArenaUsers() {
+        // don't need to do anything here except reload standings
         reloadStandings()
     }
     
-    func getUserChallenges() {
-        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
-            if let challenges = challenges {
-                for challenge in challenges {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Challenge"
-                    content.categoryIdentifier = "challenge"
-                    let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
-                    content.body = "You've been challenged by \(challenger)"
-                    content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                    
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                        if error == nil {
-                            print("deleting notification")
-                            DataStore.shared.deleteChallenge(challenge)
-                        }
-                    })
-                }
-            }
-        })
+    // MARK: - Methods
+    private func verifySignedIn() {
+        guard signedIn else {
+            presentSignInController()
+            DataStore.shared.activeuser = nil
+            DataStore.shared.activearena = nil
+            return
+        }
+        profileButton.isEnabled = (signedIn) ? true : false
     }
     
-    private func presentSignInController() {
-        print("present sign in")
-        let storyBoard: UIStoryboard = UIStoryboard(name: "SignIn", bundle: nil)
-        let signInViewController = storyBoard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
-        self.present(signInViewController, animated: true, completion: nil)
+    private func verifyArenaChosen() {
+        guard signedIn else {
+            return
+        }
+        guard arenaChosen else {
+            presentChooseArenaController()
+            DataStore.shared.activearena = nil
+            return
+        }
     }
     
-    private func standingsOptionsUIConfig() {
+    private func setupTableView() {
+        tableView.tableFooterView = UIView()
+        tableView.alpha = (signedIn && arenaChosen) ? 1.0 : 0.0
+
+    }
+    
+    private func setupNavBar() {
+        let backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: nil)
+        backButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Komika Slim", size: 17)!], for: UIControlState.normal)
+        navigationItem.backBarButtonItem = backButton
+    }
+    
+    private func setupToolbarUI() {
+        let buttonAlpha = (signedIn && arenaChosen) ? 1.0 : 0.0
+        standingsTimeframeButton.alpha = CGFloat(buttonAlpha)
+        standingsTypeButton.alpha = CGFloat(buttonAlpha)
+
         let timeframeTitle: String?
-        
         switch DataStore.shared.standingsTimeframe {
         case .Today:
             timeframeTitle = "Today"
@@ -154,10 +148,46 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         case .Alltime:
             timeframeTitle = "All Time"
         }
-
         standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
-        let typeTitle = DataStore.shared.standingsType.rawValue
-        standingsTypeButton.setTitle(typeTitle, for: .normal)
+        standingsTypeButton.setTitle(DataStore.shared.standingsType.rawValue, for: .normal)
+    }
+    
+    private func presentSignInController() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "SignIn", bundle: nil)
+        let signInViewController = storyBoard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
+        self.present(signInViewController, animated: true, completion: nil)
+    }
+    
+    private func presentChooseArenaController() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "ChooseArena", bundle: nil)
+        let chooseArenaViewController = storyBoard.instantiateViewController(withIdentifier: "ChooseArenaViewController") as! ChooseArenaViewController
+        self.present(chooseArenaViewController, animated: true, completion: nil)
+    }
+    
+    private func presentEnterScoreController(opponent: KlaskUser, actionType: ContextualActionType) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
+        let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
+        enterScoreViewController.actionType = actionType
+        enterScoreViewController.opponent = opponent
+        self.present(enterScoreViewController, animated: true, completion: nil)
+    }
+    
+    private func animateCellByAction(indexPath: IndexPath, actionType: ContextualActionType){
+        let animationColor: UIColor = {
+            switch actionType {
+            case .Loss:
+                return #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 0.2)
+            case .Won:
+                return #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 0.2)
+            case .Challenge:
+                return #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 0.2)
+            }
+        }()
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 3, animations: {
+            cell?.backgroundColor = animationColor
+            cell?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -204,19 +234,26 @@ extension StandingsViewController: UITableViewDataSource {
     
     func contextualLossAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            //
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Loss)
+            let opponent = self.standings[indexPath.row].user
+            self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Loss)
+            completionHandler(true)
         }
         //action.image = UIImage(named: "Trash")
-        action.title = "Win"
+        action.title = "Loss"
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
         return action
     }
 
     func contextualWinAction(forRowAtIndexPath indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: "Loss") { (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            //
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Won)
+            let opponent = self.standings[indexPath.row].user
+            self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Won)
+            completionHandler(true)
         }
-        action.image = UIImage(named: "Trash")
+        //action.image = UIImage(named: "Trash")
+        action.title = "Won"
         action.backgroundColor = #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 1)
         return action
     }
@@ -234,6 +271,7 @@ extension StandingsViewController: UITableViewDataSource {
                     self.present(alertController, animated: true, completion: nil)
                 }
             })
+            self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Challenge)
             completionHandler(true)
         }
         //action.image = UIImage(named: "Trash")
@@ -254,10 +292,12 @@ extension StandingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let user = self.standings[indexPath.row].user
+        guard user.uid != DataStore.shared.activeuser?.uid! else { return UISwipeActionsConfiguration(actions: []) }
         let lossAction = self.contextualLossAction(forRowAtIndexPath: indexPath)
         let winAction = self.contextualWinAction(forRowAtIndexPath: indexPath)
-        //let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
-        let trailingActions = UISwipeActionsConfiguration(actions: [])
+        let trailingActions = UISwipeActionsConfiguration(actions: [winAction, lossAction])
+        //let trailingActions = UISwipeActionsConfiguration(actions: [])
         return trailingActions
     }
 
@@ -266,9 +306,16 @@ extension StandingsViewController: UITableViewDelegate {
         guard user.uid != DataStore.shared.activeuser?.uid! else { return nil }
         let challengeAction = self.contextualChallengeAction(forRowAtIndexPath: indexPath)
         let leadingActions = UISwipeActionsConfiguration(actions: [challengeAction])
+        leadingActions.performsFirstActionWithFullSwipe = false
         return leadingActions
     }
     
+}
+
+enum ContextualActionType {
+    case Challenge
+    case Won
+    case Loss
 }
 
 // MARK: - tableView cell
