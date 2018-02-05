@@ -18,8 +18,11 @@
 		D61D5B09200D48CC00CB19F4 /* NoConnection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */; };
 		D61D5B0B200D48F200CB19F4 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */; };
 		D631C032202133150068165E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D631C031202133140068165E /* GoogleService-Info.plist */; };
+		D641A78E2025423D001FFCC6 /* ChooseArena.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */; };
 		D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6806C1E200ED52600070195 /* SignIn.storyboard */; };
 		D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6806C20200EDA9B00070195 /* SignInViewController.swift */; };
+		D6E2F3AA202608CB003599AC /* EnterScore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6E2F3A9202608CB003599AC /* EnterScore.storyboard */; };
+		D6E2F3AC20260E47003599AC /* EnterScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2F3AB20260E47003599AC /* EnterScoreViewController.swift */; };
 		E563C92F20094EED004A0BF9 /* Daniel Midgley.txt in Resources */ = {isa = PBXBuildFile; fileRef = E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */; };
 		E563C93020094EED004A0BF9 /* Daniel-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E563C92B20094EED004A0BF9 /* Daniel-Black.otf */; };
 		E563C93120094EED004A0BF9 /* Daniel-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E563C92C20094EED004A0BF9 /* Daniel-Bold.otf */; };
@@ -60,8 +63,11 @@
 		D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
 		D631C031202133140068165E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D631C0332021349F0068165E /* klask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = klask.entitlements; sourceTree = "<group>"; };
+		D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseArena.storyboard; sourceTree = "<group>"; };
 		D6806C1E200ED52600070195 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		D6806C20200EDA9B00070195 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		D6E2F3A9202608CB003599AC /* EnterScore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EnterScore.storyboard; sourceTree = "<group>"; };
+		D6E2F3AB20260E47003599AC /* EnterScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterScoreViewController.swift; sourceTree = "<group>"; };
 		E563C92A20094EED004A0BF9 /* Daniel Midgley.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Daniel Midgley.txt"; sourceTree = "<group>"; };
 		E563C92B20094EED004A0BF9 /* Daniel-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Daniel-Black.otf"; sourceTree = "<group>"; };
 		E563C92C20094EED004A0BF9 /* Daniel-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Daniel-Bold.otf"; sourceTree = "<group>"; };
@@ -207,14 +213,17 @@
 			children = (
 				D631C0332021349F0068165E /* klask.entitlements */,
 				E57E7D862005AF540039748E /* LaunchScreen.storyboard */,
-				E57E7D812005AF540039748E /* Main.storyboard */,
-				D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */,
 				D6806C1E200ED52600070195 /* SignIn.storyboard */,
+				D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */,
+				E57E7D812005AF540039748E /* Main.storyboard */,
+				D6E2F3A9202608CB003599AC /* EnterScore.storyboard */,
+				D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */,
 				D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */,
 				E57E7D842005AF540039748E /* Assets.xcassets */,
 				E57E7D7D2005AF540039748E /* AppDelegate.swift */,
 				D60DAD7E2013EDFA008777B0 /* SignInControllers */,
 				E57E7D7F2005AF540039748E /* StandingsViewController.swift */,
+				D6E2F3AB20260E47003599AC /* EnterScoreViewController.swift */,
 				E57E7D8F2005B2250039748E /* ProfileViewController.swift */,
 				D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */,
 				D60AB23C200AD479003359B1 /* SubmitGameContollers */,
@@ -311,6 +320,7 @@
 				E563C94B20095B1B004A0BF9 /* readme.txt in Resources */,
 				E563C94920095B1B004A0BF9 /* KOMIKSKI.ttf in Resources */,
 				E563C93120094EED004A0BF9 /* Daniel-Bold.otf in Resources */,
+				D641A78E2025423D001FFCC6 /* ChooseArena.storyboard in Resources */,
 				E563C94120095B1B004A0BF9 /* KOMIKAH_.ttf in Resources */,
 				E563C92F20094EED004A0BF9 /* Daniel Midgley.txt in Resources */,
 				E57E7D882005AF540039748E /* LaunchScreen.storyboard in Resources */,
@@ -322,6 +332,7 @@
 				D61D5B07200CF1FF00CB19F4 /* SubmitGame.storyboard in Resources */,
 				E563C94420095B1B004A0BF9 /* KOMIKASL.ttf in Resources */,
 				E563C94520095B1B004A0BF9 /* KOMIKHBI.ttf in Resources */,
+				D6E2F3AA202608CB003599AC /* EnterScore.storyboard in Resources */,
 				D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */,
 				E563C94720095B1B004A0BF9 /* KOMIKJ__.ttf in Resources */,
 				E563C93220094EED004A0BF9 /* Daniel-Regular.otf in Resources */,
@@ -372,8 +383,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
-				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle,
+				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
+				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -402,7 +413,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -424,6 +435,7 @@
 				D60DAD80201433CF008777B0 /* UI+View.swift in Sources */,
 				D60AB23F200AD809003359B1 /* AngleView.swift in Sources */,
 				E57E7D7E2005AF540039748E /* AppDelegate.swift in Sources */,
+				D6E2F3AC20260E47003599AC /* EnterScoreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

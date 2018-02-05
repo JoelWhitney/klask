@@ -1,3 +1,6 @@
+.DS_Store
+build
+xcuserdatad
 
 Pods
 Pods/Pods.xcodeproj/xcuserdata/joel-mini.xcuserdatad/xcschemes/CodableFirebase.xcscheme

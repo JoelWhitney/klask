@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KOMIKASL.ttf">
+            <string>KomikaSlim</string>
+        </array>
+        <array key="KOMIKHI_.ttf">
+            <string>KomikaHand-Italic</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Choose Arena View Controller-->
+        <scene sceneID="OPx-kU-mG4">
+            <objects>
+                <viewController storyboardIdentifier="ChooseArenaViewController" id="J9z-Fn-uL8" customClass="ChooseArenaViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Dmc-RW-Ou2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PWL-Ka-T8r">
+                                <rect key="frame" x="0.0" y="152" width="375" height="515"/>
+                                <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ArenaCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ArenaCell" rowHeight="70" id="uYP-QO-ubA" customClass="ArenaCell" customModule="klask" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uYP-QO-ubA" id="CuT-Ly-dO1">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C59-JJ-SLl">
+                                                    <rect key="frame" x="15" y="11" width="54.5" height="26"/>
+                                                    <fontDescription key="fontDescription" name="KomikaHand-Italic" family="Komika Hand" pointSize="19"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 playing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pej-vs-tns">
+                                                    <rect key="frame" x="15" y="38" width="78.5" height="21"/>
+                                                    <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Pej-vs-tns" firstAttribute="top" secondItem="C59-JJ-SLl" secondAttribute="bottom" constant="1" id="1Je-Hu-bjF"/>
+                                                <constraint firstItem="Pej-vs-tns" firstAttribute="leading" secondItem="CuT-Ly-dO1" secondAttribute="leadingMargin" id="8Vp-PM-C2h"/>
+                                                <constraint firstItem="C59-JJ-SLl" firstAttribute="leading" secondItem="CuT-Ly-dO1" secondAttribute="leadingMargin" id="kv9-m5-ubf"/>
+                                                <constraint firstItem="C59-JJ-SLl" firstAttribute="top" secondItem="CuT-Ly-dO1" secondAttribute="topMargin" id="nIb-wv-w2r"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.076768197120000006" green="0.076862581070000005" blue="0.076782830060000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="arenaNameLabel" destination="C59-JJ-SLl" id="xf1-ud-Uc7"/>
+                                            <outlet property="numberJoinedLabel" destination="Pej-vs-tns" id="Ksf-9Z-BiC"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="J9z-Fn-uL8" id="QTv-fD-S3V"/>
+                                    <outlet property="delegate" destination="J9z-Fn-uL8" id="pla-GJ-3Tq"/>
+                                </connections>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OFO-1X-Lhy">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
+                                <color key="barTintColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="largeTitleTextAttributes">
+                                    <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="28"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Choose Arena" id="WRp-f0-050"/>
+                                </items>
+                            </navigationBar>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Join new league" translatesAutoresizingMaskIntoConstraints="NO" id="6vF-Wt-nhp">
+                                <rect key="frame" x="0.0" y="96" width="375" height="56"/>
+                                <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="J9z-Fn-uL8" id="CNX-CG-6xk"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="PWL-Ka-T8r" firstAttribute="trailing" secondItem="u8B-82-VCs" secondAttribute="trailing" id="5GN-lh-EBY"/>
+                            <constraint firstItem="6vF-Wt-nhp" firstAttribute="leading" secondItem="u8B-82-VCs" secondAttribute="leading" id="9BO-PW-oBJ"/>
+                            <constraint firstItem="PWL-Ka-T8r" firstAttribute="bottom" secondItem="Dmc-RW-Ou2" secondAttribute="bottom" id="AQM-Gy-1nR"/>
+                            <constraint firstItem="OFO-1X-Lhy" firstAttribute="leading" secondItem="u8B-82-VCs" secondAttribute="leading" id="Mab-NT-ayJ"/>
+                            <constraint firstItem="OFO-1X-Lhy" firstAttribute="top" secondItem="Dmc-RW-Ou2" secondAttribute="top" id="ZSs-DG-Ldh"/>
+                            <constraint firstItem="6vF-Wt-nhp" firstAttribute="trailing" secondItem="u8B-82-VCs" secondAttribute="trailing" id="aKO-KM-S0s"/>
+                            <constraint firstItem="6vF-Wt-nhp" firstAttribute="top" secondItem="OFO-1X-Lhy" secondAttribute="bottom" id="c0o-WU-UB7"/>
+                            <constraint firstItem="PWL-Ka-T8r" firstAttribute="leading" secondItem="u8B-82-VCs" secondAttribute="leading" id="d9c-15-Z1E"/>
+                            <constraint firstItem="OFO-1X-Lhy" firstAttribute="trailing" secondItem="u8B-82-VCs" secondAttribute="trailing" id="keN-5b-HYY"/>
+                            <constraint firstItem="PWL-Ka-T8r" firstAttribute="top" secondItem="6vF-Wt-nhp" secondAttribute="bottom" id="zZA-er-2yJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="u8B-82-VCs"/>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="6vF-Wt-nhp" id="Hca-WA-IIW"/>
+                        <outlet property="tableView" destination="PWL-Ka-T8r" id="xFi-ef-ecJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R5f-58-d6v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="393" y="-644"/>
+        </scene>
+    </scenes>
+</document>

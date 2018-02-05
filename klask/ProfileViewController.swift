@@ -40,8 +40,31 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var nickNameLabel: UILabel!
     @IBOutlet var rankLabel: UILabel!
+    @IBOutlet var challengeButton: UIButton!
+    @IBOutlet var wonButton: UIButton!
+    @IBOutlet var lossButton: UIButton!
     
     // MARK: - IBAction
+    @IBAction func challenge(_ sender: UIButton) {
+        let opponent = userstanding?.user
+        guard let challengeduid = opponent?.uid, let challengedname = opponent?.nickname ?? opponent?.name else { return }
+        let challenge = KlaskChallenge(challengeduid: challengeduid)
+        DataStore.shared.postChallenge(challenge, onComplete: { error in
+            if error != nil {
+                let alertController = UIAlertController(title: "Error", message: "Hmm, try going to ask \(challengedname) instead of challenging again.", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        })
+    }
+    @IBAction func won(_ sender: UIButton) {
+        let opponent = userstanding?.user
+        self.presentEnterScoreController(opponent: opponent!, actionType: ContextualActionType.Won)
+    }
+    @IBAction func loss(_ sender: UIButton) {
+        let opponent = userstanding?.user
+        self.presentEnterScoreController(opponent: opponent!, actionType: ContextualActionType.Loss)
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -49,6 +72,7 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
         tableView.tableFooterView = UIView()
+        buttonUI()
         updateUserInfo()
     }
 
@@ -58,11 +82,9 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
             let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
             self.navigationItem.rightBarButtonItem = overflowButton
         } else {
-            let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
-            self.navigationItem.rightBarButtonItem = addButton
+//            let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
+//            self.navigationItem.rightBarButtonItem = addButton
         }
-        
-        //getUserChallenges()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -90,35 +112,38 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         }
     }
     
+    func buttonUI() {
+        if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
+            challengeButton.isEnabled = false
+            challengeButton.alpha = 0.0
+            wonButton.isEnabled = false
+            wonButton.alpha = 0.0
+            lossButton.isEnabled = false
+            lossButton.alpha = 0.0
+        } else {
+            challengeButton.isEnabled = true
+            challengeButton.alpha = 1.0
+            wonButton.isEnabled = true
+            wonButton.alpha = 1.0
+            lossButton.isEnabled = true
+            lossButton.alpha = 1.0
+            challengeButton.layer.borderWidth = 0.25
+            challengeButton.layer.borderColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
+            challengeButton.tintColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
+            wonButton.layer.borderWidth = 0.25
+            wonButton.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+            wonButton.tintColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+            lossButton.layer.borderWidth = 0.25
+            lossButton.layer.borderColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+            lossButton.tintColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+        }
+    }
+    
     func reloadStandings() {
         DispatchQueue.main.async {
             self.updateUserInfo()
             self.tableView.reloadData()
         }
-    }
-    
-    func getUserChallenges() {
-        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
-            if let challenges = challenges {
-                for challenge in challenges {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Challenge"
-                    content.categoryIdentifier = "challenge"
-                    let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
-                    content.body = "You've been challenged by \(challenger)"
-                    content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                    
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                        if error == nil {
-                            print("deleting notification")
-                            DataStore.shared.deleteChallenge(challenge)
-                        }
-                    })
-                }
-            }
-        })
     }
     
     func reloadArenaUsers() {
@@ -135,9 +160,15 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         alert.addAction(UIAlertAction(title: "Edit Nickname", style: .default , handler:{ (UIAlertAction) in
             self.editNickname()
         }))
-//        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
-//            //
-//        }))
+        alert.addAction(UIAlertAction(title: "Switch Arena", style: .default , handler:{ (UIAlertAction) in
+            DataStore.shared.activearena = nil
+            DataStore.shared.saveUserDefaults()
+            let storyBoard: UIStoryboard = UIStoryboard(name: "ChooseArena", bundle: nil)
+            let chooseArenaViewController = storyBoard.instantiateViewController(withIdentifier: "ChooseArenaViewController") as! ChooseArenaViewController
+            self.present(chooseArenaViewController, animated: true, completion: {
+                self.navigationController?.popViewController(animated: true)
+            })
+        }))
         alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive , handler:{ (UIAlertAction) in
             self.signOut()
         }))
@@ -185,15 +216,23 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         })
     }
     
+    private func presentEnterScoreController(opponent: KlaskUser, actionType: ContextualActionType) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
+        let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
+        enterScoreViewController.actionType = actionType
+        enterScoreViewController.opponent = opponent
+        self.present(enterScoreViewController, animated: true, completion: nil)
+    }
+
     private func signOut() {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
             GIDSignIn.sharedInstance().signOut()
-            navigationController?.popViewController(animated: true)
             DataStore.shared.activeuser = nil
             DataStore.shared.activearena = nil
-            DataStore.shared.saveUserDefaults()
+            DataStore.shared.deleteUserDefaults()
+            navigationController?.popViewController(animated: true)
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
@@ -239,7 +278,7 @@ extension ProfileViewController: UITableViewDataSource {
                 // cell details
                 if let userstanding = userstanding {
                     cell.primaryLabel.text = "Record"
-                    cell.secondaryLabel.text = "\(userstanding.wins) won, \(userstanding.losses) lost"
+                    cell.secondaryLabel.text = "\(Int(userstanding.wins)) won, \(Int(userstanding.losses)) lost"
                     cell.tertiaryLabel.text = "\(String(format: "%.0f", userstanding.winpercentage))%"
                 }
                 return cell

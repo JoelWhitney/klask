@@ -13,17 +13,24 @@ import CodableFirebase
 // MARK: - Standing
 struct Standing {
     var user: KlaskUser
-    var wins: Int
-    var losses: Int
+    var wins: Double
+    var losses: Double
     var goalsfor: Int
     var goalsagainst: Int
     var goalsdiff: Int
     var winpercentage: Double
-    var rank: Int?
     
-    init(user: KlaskUser, wins: Int, losses: Int, goalsfor: Int, goalsagainst: Int) {
+    var games: [KlaskGame]?
+    var opponents: [KlaskUser]?
+    var opponentwins: Double?
+    var opponentlosses: Double?
+    var modifiedrank: Double?
+    
+    init(user: KlaskUser, games: [KlaskGame], opponents: [KlaskUser], wins: Double, losses: Double, goalsfor: Int, goalsagainst: Int) {
         self.user = user
         self.wins = wins
+        self.games = games
+        self.opponents = opponents
         self.losses = losses
         self.goalsfor = goalsfor
         self.goalsagainst = goalsagainst

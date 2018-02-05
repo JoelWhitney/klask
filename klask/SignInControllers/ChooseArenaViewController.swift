@@ -26,35 +26,17 @@ class ChooseArenaViewController: UIViewController, ArenasJoinedDelegate {
     // MARK: - IBOutlets
     @IBOutlet var tableView: UITableView!
     @IBOutlet var searchBar: UISearchBar!
-    @IBOutlet weak var signOut: UIBarButtonItem!
     
     
     // MARK: - IBActions
-    @IBAction func signOut(_ sender: UIBarButtonItem) {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            DataStore.shared.activeuser = nil
-            DataStore.shared.activearena = nil
-            self.dismiss(animated: true, completion: nil)
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-    }
+
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         DataStore.shared.arenasJoinedDelegate = self
         
-        let firebaseAuth = Auth.auth()
-        if let currentUser = firebaseAuth.currentUser {
-            print("Already signed in as \(String(describing: currentUser.displayName)) (\(String(describing: currentUser.email)))")
-            DataStore.shared.getUserDefaults()
-        } else {
-            DataStore.shared.activeuser = nil
-            DataStore.shared.activearena = nil
-        }
+
         tableView.tableFooterView = UIView()
         
         arenas.append(DataStore.shared.arenasjoined)
@@ -64,7 +46,8 @@ class ChooseArenaViewController: UIViewController, ArenasJoinedDelegate {
     func reloadArenasJoined() {
         print("reload arenas")
         var arenas = self.arenas
-        if arenas.count == 1{
+        if arenas.count == 1 {
+            print(DataStore.shared.arenasjoined)
             arenas[0] = DataStore.shared.arenasjoined
         }
         self.arenas = arenas
@@ -75,7 +58,7 @@ class ChooseArenaViewController: UIViewController, ArenasJoinedDelegate {
 extension ChooseArenaViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text, !searchText.isEmpty {
-            DataStore.shared.searchArenas(arenaname: searchText) { matchingarenas in
+            DataStore.shared.getArenas(arenaname: searchText) { matchingarenas in
                 if self.arenas.count == 1 {
                     self.arenas.insert(matchingarenas, at: 0)
                 } else {
