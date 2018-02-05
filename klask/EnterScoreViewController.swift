@@ -76,10 +76,8 @@ class EnterScoreViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         requirementsMet()
-        dismiss.layer.borderWidth = 0.75
-        dismiss.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
-        backgroundView.layer.borderWidth = 0.25
-        backgroundView.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+        dismiss.layer.borderWidth = 0.25
+        backgroundView.layer.borderWidth = 0.15
         scoreButtons = [s0, s1, s2, s3, s4, s5]
         gameSetup()
     }
@@ -106,9 +104,17 @@ class EnterScoreViewController: UIViewController {
             switch actionType! {
             case .Won:
                 game.player1score = 6
+                dismiss.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+                dismiss.tintColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+                backgroundView.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
+                submit.layer.backgroundColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
                 return opponent
             case .Loss:
                 game.player2score = 6
+                dismiss.layer.borderColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+                dismiss.tintColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+                backgroundView.layer.borderColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+                submit.layer.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
                 return DataStore.shared.activeuser!
             default:
                 return nil
