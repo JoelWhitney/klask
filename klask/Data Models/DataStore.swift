@@ -53,13 +53,16 @@ enum StandingsTimeframe: String {
 enum StandingsType: String {
     case Goals
     case Wins
+    case Points
     
     mutating func cycleType() {
         switch self {
-        case .Goals:
+        case .Points:
             self = .Wins
         case .Wins:
             self = .Goals
+        case .Goals:
+            self = .Points
         }
     }
 }
@@ -129,7 +132,7 @@ class DataStore {
             calculateStandings()
         }
     }
-    var standingsType: StandingsType = .Wins {
+    var standingsType: StandingsType = .Points {
         didSet {
             calculateStandings()
         }
@@ -552,50 +555,87 @@ class DataStore {
             case .Alltime:
                 relevantgames = arenagames
             }
-
-            self.standings = arenausers.map{ (klaskuser: KlaskUser) in
-                var wins = 0
-                var losses = 0
-                var goalsfor = 0
-                var goalsagainst = 0
-                let usergames = relevantgames.filter( { ($0.player1id == klaskuser.uid)  || ($0.player2id == klaskuser.uid) } )
-                for game in usergames {
-                    if (game.player1id == klaskuser.uid) {
-                        if (game.player1score! > game.player2score!) {
-                            wins += 1
-                        } else {
-                            losses += 1
-                        }
-                        goalsfor += game.player1score!
-                        goalsagainst += game.player2score!
-                    } else if (game.player2id == klaskuser.uid) {
-                        if (game.player2score! > game.player1score!) {
-                            wins += 1
-                        } else {
-                            losses += 1
-                        }
-                        goalsfor += game.player2score!
-                        goalsagainst += game.player1score!
-                    }
+            
+            self.standings = {
+                switch standingsType {
+                case .Goals, .Wins:
+                    return defaultStandings(arenausers: arenausers, relevantgames: relevantgames)
+                case .Points:
+                    return modifiedStandings(arenausers: arenausers, relevantgames: relevantgames)
                 }
-                return Standing(user: klaskuser, wins: wins, losses: losses, goalsfor: goalsfor, goalsagainst: goalsagainst)
-                }
-                // .filter({ ($0.wins + $0.losses) > 0 })
-                .sorted { (standing1, standing2) in
-                    switch standingsType {
-                    case .Wins:
-                        if standing1.winpercentage != standing2.winpercentage {
-                            return standing1.winpercentage > standing2.winpercentage
-                        } else if standing1.wins != standing2.wins {
-                            return standing1.wins > standing2.wins
-                        } else {
-                            return (standing1.wins + standing1.losses) > (standing2.wins + standing2.losses)
-                        }
-                    case .Goals:
-                        return standing1.goalsdiff > standing2.goalsdiff
-                    }
-            }
+            }()
         }
+    }
+    
+    private func defaultStandings(arenausers: [KlaskUser], relevantgames: [KlaskGame]) -> [Standing] {
+        return arenausers.map{ (klaskuser: KlaskUser) in
+            var wins = 0.0
+            var losses = 0.0
+            var goalsfor = 0
+            var goalsagainst = 0
+            var opponents = [KlaskUser]()
+            let usergames = relevantgames.filter( { ($0.player1id == klaskuser.uid)  || ($0.player2id == klaskuser.uid) } )
+            for game in usergames {
+                if (game.player1id == klaskuser.uid) {
+                    if (game.player1score! > game.player2score!) {
+                        wins += 1
+                    } else {
+                        losses += 1
+                    }
+                    goalsfor += game.player1score!
+                    goalsagainst += game.player2score!
+                    opponents.append(arenausers.filter{ (user: KlaskUser) in user.uid == game.player2id }.first!)
+                } else if (game.player2id == klaskuser.uid) {
+                    if (game.player2score! > game.player1score!) {
+                        wins += 1
+                    } else {
+                        losses += 1
+                    }
+                    goalsfor += game.player2score!
+                    goalsagainst += game.player1score!
+                    opponents.append(arenausers.filter{ (user: KlaskUser) in user.uid == game.player1id }.first!)
+                }
+            }
+            return Standing(user: klaskuser, games: usergames, opponents: opponents, wins: wins, losses: losses, goalsfor: goalsfor, goalsagainst: goalsagainst)
+            }
+            // .filter({ ($0.wins + $0.losses) > 0 })
+            .sorted { (standing1, standing2) in
+                switch standingsType {
+                case .Wins:
+                    if standing1.winpercentage != standing2.winpercentage {
+                        return standing1.winpercentage > standing2.winpercentage
+                    } else if standing1.wins != standing2.wins {
+                        return standing1.wins > standing2.wins
+                    } else {
+                        return (standing1.wins + standing1.losses) > (standing2.wins + standing2.losses)
+                    }
+                default: // must be goals
+                    return standing1.goalsdiff > standing2.goalsdiff
+                }
+        }
+    }
+    
+    private func modifiedStandings(arenausers: [KlaskUser], relevantgames: [KlaskGame]) -> [Standing] {
+        let standings =  self.defaultStandings(arenausers: arenausers, relevantgames: relevantgames)
+        return standings.map{ (standing: Standing) in
+            var standing = standing
+            
+            standing.opponentwins = standing.opponents?.map{ (user: KlaskUser) in
+                return standings.filter({$0.user.uid == user.uid}).first!.wins
+            }
+                .reduce(0, +)
+            
+            standing.opponentlosses = standing.opponents?.map{ (user: KlaskUser) in
+                return standings.filter({$0.user.uid == user.uid}).first!.wins
+            }
+                .reduce(0, +)
+            
+            standing.modifiedrank = (standing.games?.count ?? 0 > 0) ? ((standing.wins * 1.0) + (standing.losses * 0)) * (standing.opponentwins! / (standing.opponentwins! + standing.opponentlosses!)) : 0.0
+            return standing
+            }
+            //.filter({ ($0.wins + $0.losses) > 0 })
+            .sorted{ ($0.modifiedrank! > $1.modifiedrank!) }
+
     }
     
     private func displayNotification(challenge: KlaskChallenge) {

@@ -136,20 +136,30 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         let buttonAlpha = (signedIn && arenaChosen) ? 1.0 : 0.0
         standingsTimeframeButton.alpha = CGFloat(buttonAlpha)
         standingsTypeButton.alpha = CGFloat(buttonAlpha)
-
-        let timeframeTitle: String?
-        switch DataStore.shared.standingsTimeframe {
-        case .Today:
-            timeframeTitle = "Today"
-        case .Week:
-            timeframeTitle = "Last 7 Days"
-        case .Month:
-            timeframeTitle = "Last 30 Days"
-        case .Alltime:
-            timeframeTitle = "All Time"
-        }
+        let timeframeTitle: String = {
+            switch DataStore.shared.standingsTimeframe {
+            case .Today:
+                return "Today"
+            case .Week:
+                return "Last 7 Days"
+            case .Month:
+                return "Last 30 Days"
+            case .Alltime:
+                return "All Time"
+            }
+        }()
         standingsTimeframeButton.setTitle(timeframeTitle, for: .normal)
-        standingsTypeButton.setTitle(DataStore.shared.standingsType.rawValue, for: .normal)
+        let typeTitle: String = {
+            switch DataStore.shared.standingsType {
+            case .Wins:
+                return "Win %"
+            case .Goals:
+                return "Goals +/-"
+            case .Points:
+                return "Points earned"
+            }
+        }()
+        standingsTypeButton.setTitle(typeTitle, for: .normal)
     }
     
     private func presentSignInController() {
@@ -208,6 +218,7 @@ extension StandingsViewController: UITableViewDataSource {
         let standing = standings[indexPath.row]
         // cell details
         standingCell.rankLabel.text = String(describing: (standings.index(of: standing)! + 1))
+
         if let image = UIImage(named: (standing.user.name)!) {
             standingCell.profileImage.image = image
         } else if let photourl = standing.user.photourl, photourl != "" {
@@ -222,8 +233,18 @@ extension StandingsViewController: UITableViewDataSource {
             standingCell.nameLabel.text = "\(String(describing: standing.user.name!))"
             standingCell.nickNameLabel.text = ""
         }
+        standingCell.winPercentageLabel.text = {
+            switch DataStore.shared.standingsType {
+            case .Wins:
+                return "\(String(format: "%.00f", standing.winpercentage))%"
+            case .Goals:
+                return "\(standing.goalsdiff)"
+            case .Points:
+                return "\(standing.modifiedrank!)"
+            }
+        }()
         
-        standingCell.winPercentageLabel.text = (DataStore.shared.standingsType == .Wins) ? "\(String(format: "%.00f", standing.winpercentage))%" : "\(standing.goalsdiff)"
+
         if let currentId = DataStore.shared.activeuser?.uid, let name = DataStore.shared.activeuser?.name, standing.user.uid == currentId, standing.user.name == name {
             standingCell.backgroundColor = #colorLiteral(red: 0.1484079361, green: 0.108229287, blue: 0.1866647303, alpha: 1)
         } else {
