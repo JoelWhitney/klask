@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         FirebaseApp.configure()
         
         // Set upp push notifications
-        UIApplication.shared.setMinimumBackgroundFetchInterval(30)
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
         print("background fetch status \(UIApplication.shared.backgroundRefreshStatus)")
         
         if #available(iOS 10.0, *) {
@@ -82,9 +82,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+       
+        UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch", title: "Background Fetch", subtitle: "trying to update data in the background", body: nil)
 
         DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
 
+            UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch-success", title: "Background Fetch", subtitle: "The query completed with \(challenges?.count ?? 0) challenges", body: nil)
+            
             if let challenges = challenges, challenges.count > 0 {
 
                 for challenge in challenges {
@@ -288,5 +292,27 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
     
     
+}
+
+extension UNUserNotificationCenter {
+    
+    static func scheduleNotification(withIdentifier identifier: String, title: String?, subtitle: String?, body: String?) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = title ?? ""
+        content.body = body ?? ""
+        content.subtitle = subtitle ?? ""
+        
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            
+            if let error = error {
+                print("Error scheduling the notification: \(error)")
+            } else {
+                print("Scheduled notification")
+            }
+        }
+    }
 }
 

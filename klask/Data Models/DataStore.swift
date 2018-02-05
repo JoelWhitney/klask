@@ -252,7 +252,10 @@ class DataStore {
         var arenas = [KlaskArena]()
         ref.child("arenas").queryOrdered(byChild: "arenaname").queryEqual(toValue: arenaname).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            guard let value = snapshot.value  else { return }
+            guard let value = snapshot.value  else {
+                onComplete(nil)
+                return
+            }
             
             do {
                 let arenaDict = try FirebaseDecoder().decode([String: KlaskArena].self, from: value)
@@ -268,6 +271,7 @@ class DataStore {
             }
         }) { (error) in
             print(error.localizedDescription)
+            onComplete(arenas)
         }
     }
     
@@ -322,7 +326,10 @@ class DataStore {
         
         if let activearena = activearena {
             
-            guard let joinedusers = activearena.joinedusers else { return }
+            guard let joinedusers = activearena.joinedusers else {
+                onComplete(nil)
+                return
+            }
             
             for uid in joinedusers {
                 
@@ -375,7 +382,10 @@ class DataStore {
     
     func postChallenge(_ challenge: KlaskChallenge, onComplete: @escaping (_ error: Error?) -> Void) {
         do {
-            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else { return }
+            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else {
+                onComplete(error)
+                return
+            }
             let cid = "\(challengeruid)-\(challengeduid)"
             let challenge = try FirebaseEncoder().encode(challenge)
             ref.child("challenges").child(cid).setValue(challenge, withCompletionBlock: { (error, ref) in
@@ -383,6 +393,7 @@ class DataStore {
             })
         } catch {
             print(error)
+            onComplete(error)
         }
     }
     
@@ -428,18 +439,25 @@ class DataStore {
             ref.child("challenges").removeAllObservers()
             ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observe(.childAdded, with: { (snapshot) in
                 
-                guard let value = snapshot.value  else { return }
+                guard let value = snapshot.value  else {
+                    onComplete(nil)
+                    return
+                }
                 
                 do {
                     let challenge  = try FirebaseDecoder().decode(KlaskChallenge.self, from: value)
                     onComplete(challenge)
                 } catch {
                     print(error)
+                    onComplete(error)
                 }
                 
             }) { (error) in
                 print(error.localizedDescription)
+                onComplete(error)
             }
+        } else {
+            onComplete(nil)
         }
     }
     
@@ -451,7 +469,11 @@ class DataStore {
             ref.child("games").removeAllObservers()
             ref.child("games").queryOrdered(byChild: "arenaid").queryEqual(toValue: activearena.aid).observe(.value, with: { (snapshot) in
                 
-                guard let value = snapshot.value  else { return }
+                guard let value = snapshot.value  else {
+                    onComplete(nil)
+                    return
+                }
+                
                 games = []
                 
                 do {
@@ -469,6 +491,7 @@ class DataStore {
                 }
             }) { (error) in
                 print(error.localizedDescription)
+                onComplete(error)
             }
         }
     }
