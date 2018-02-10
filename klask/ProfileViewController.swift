@@ -43,6 +43,8 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     @IBOutlet var challengeButton: UIButton!
     @IBOutlet var wonButton: UIButton!
     @IBOutlet var lossButton: UIButton!
+    @IBOutlet weak var bottomGradientView: UIView!
+    @IBOutlet weak var actionFAB: UIButton!
     
     // MARK: - IBAction
     @IBAction func challenge(_ sender: UIButton) {
@@ -76,6 +78,14 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         updateUserInfo()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        setBottomGradientView()
+        CATransaction.commit()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
@@ -153,6 +163,19 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         }
     }
     
+    func setBottomGradientView() {
+        var gradientLayer: CAGradientLayer!
+        
+        let colorTop = UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 0.0).cgColor
+        let colorBottom = UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 0.35).cgColor
+        
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bottomGradientView.bounds
+        gradientLayer.colors = [colorTop, colorBottom]
+        gradientLayer.locations = [0.0, 1.0]
+        
+        bottomGradientView.layer.insertSublayer(gradientLayer, at: 0)
+    }
     
     @objc func overflowMenu() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

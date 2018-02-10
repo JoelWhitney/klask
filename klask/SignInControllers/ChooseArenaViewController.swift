@@ -59,10 +59,12 @@ extension ChooseArenaViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchBar.text, !searchText.isEmpty {
             DataStore.shared.getArenas(arenaname: searchText) { matchingarenas in
-                if self.arenas.count == 1 {
-                    self.arenas.insert(matchingarenas, at: 0)
-                } else {
-                    self.arenas[0] = matchingarenas
+                if let matchingarenas = matchingarenas {
+                    if self.arenas.count == 1 {
+                        self.arenas.insert(matchingarenas, at: 0)
+                    } else {
+                        self.arenas[0] = matchingarenas
+                    }
                 }
             }
         }

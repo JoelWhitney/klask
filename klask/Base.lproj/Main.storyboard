@@ -474,15 +474,45 @@
                                     <outlet property="delegate" destination="gTK-y8-7xU" id="eYc-xs-u5l"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJB-qH-thg">
+                                <rect key="frame" x="0.0" y="612" width="375" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="rmZ-Ly-228"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODR-5V-0s2">
+                                <rect key="frame" x="290" y="587" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.48829269409999998" green="0.2027361989" blue="0.76744025950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="6Yx-qI-y3W"/>
+                                    <constraint firstAttribute="height" constant="70" id="ZxF-GG-NPK"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="Add">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="leading" secondItem="401-et-ogc" secondAttribute="leading" id="1vf-qv-zQj"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="trailing" secondItem="401-et-ogc" secondAttribute="trailing" id="LXp-Fw-X3C"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="LYb-fs-TZ6"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="RA6-dJ-6Vr"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="SDW-xO-O8O"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="trailing" secondItem="obS-WM-xWa" secondAttribute="trailing" id="Ur1-GI-f5u"/>
+                            <constraint firstAttribute="bottom" secondItem="NJB-qH-thg" secondAttribute="bottom" id="YLc-61-ivC"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="top" secondItem="SFG-mP-o5Y" secondAttribute="bottom" id="ZPQ-Gp-0q2"/>
+                            <constraint firstAttribute="bottom" secondItem="ODR-5V-0s2" secondAttribute="bottom" constant="15" id="aJT-FD-unT"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="top" secondItem="obS-WM-xWa" secondAttribute="top" id="dcp-L7-MQD"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="trailing" secondItem="401-et-ogc" secondAttribute="trailing" id="fa0-s7-xyZ"/>
+                            <constraint firstAttribute="trailing" secondItem="ODR-5V-0s2" secondAttribute="trailing" constant="15" id="gtO-RZ-29o"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="bottom" secondItem="401-et-ogc" secondAttribute="bottom" id="pTZ-T4-mBA"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="leading" secondItem="401-et-ogc" secondAttribute="leading" id="sYA-HT-ybr"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="trailing" secondItem="obS-WM-xWa" secondAttribute="trailing" id="we8-Yu-agW"/>
@@ -491,6 +521,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="ajY-Rp-gPl"/>
                     <connections>
+                        <outlet property="actionFAB" destination="ODR-5V-0s2" id="pVX-76-vAc"/>
+                        <outlet property="bottomGradientView" destination="NJB-qH-thg" id="sDd-Fn-0d0"/>
                         <outlet property="challengeButton" destination="rlj-2S-qVD" id="hST-Ac-c09"/>
                         <outlet property="lossButton" destination="2L5-x7-pVR" id="OFN-CO-9Uv"/>
                         <outlet property="nameLabel" destination="Mia-fw-xmq" id="yfb-c5-zak"/>
@@ -503,7 +535,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnS-Ds-VFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1232.8" y="-559.07046476761627"/>
+            <point key="canvasLocation" x="1232.8" y="-559.35960591133005"/>
         </scene>
         <!--Challenger-->
         <scene sceneID="mBO-Y7-G0z">

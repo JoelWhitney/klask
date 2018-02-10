@@ -12,9 +12,9 @@ import CodableFirebase
 import UserNotifications
 
 typealias FirebaseArenaClosure = (KlaskArena?) -> Void
-typealias FirebaseArenasClosure = ([KlaskArena]) -> Void
-typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
-typealias FirebaseGameClosure = ([KlaskGame]) -> Void
+typealias FirebaseArenasClosure = ([KlaskArena]?) -> Void
+typealias FirebaseArenaUsersClosure = ([KlaskUser]?) -> Void
+typealias FirebaseGameClosure = ([KlaskGame]?) -> Void
 
 // MARK: - Delegates
 protocol StandingsDelegate {
@@ -89,8 +89,10 @@ class DataStore {
             saveUserDefaults()
             
             getArenasJoined() { arenas in
-                print(arenas)
-                self.arenasjoined = arenas
+                if let arenas = arenas {
+                    print(arenas)
+                    self.arenasjoined = arenas
+                }
             }
             observeUserChallenges(onComplete: { challenge in
                 if let challenge = challenge {
@@ -111,7 +113,9 @@ class DataStore {
             saveUserDefaults()
             
             observeArenaGames() { games in
-                self.arenagames = games
+                if let games = games {
+                    self.arenagames = games
+                }
             }
             getAndObserveArenaUsers()
         }
@@ -276,23 +280,25 @@ class DataStore {
     }
     
     func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]?) -> Void) {
-        var challenges: [KlaskChallenge]?
+        var challenges = [KlaskChallenge]()
         
         if let activeuser = activeuser {
             ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                
+
                 guard let value = snapshot.value  else { onComplete(challenges) ; return }
                 
                 do {
                     let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
-                    challenges = [KlaskChallenge]()
+                    
                     for (_, value) in challengeDict {
-                        challenges?.append(value)
+                        challenges.append(value)
                     }
                 } catch {
                     print(error)
                 }
-                onComplete(challenges)
+                DispatchQueue.main.async() {
+                    onComplete(challenges)
+                }
             }) { (error) in
                 print(error.localizedDescription)
             }
@@ -383,7 +389,7 @@ class DataStore {
     func postChallenge(_ challenge: KlaskChallenge, onComplete: @escaping (_ error: Error?) -> Void) {
         do {
             guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else {
-                onComplete(error)
+                onComplete(nil)
                 return
             }
             let cid = "\(challengeruid)-\(challengeduid)"
@@ -449,12 +455,12 @@ class DataStore {
                     onComplete(challenge)
                 } catch {
                     print(error)
-                    onComplete(error)
+                    onComplete(nil)
                 }
                 
             }) { (error) in
                 print(error.localizedDescription)
-                onComplete(error)
+                onComplete(nil)
             }
         } else {
             onComplete(nil)
@@ -491,7 +497,7 @@ class DataStore {
                 }
             }) { (error) in
                 print(error.localizedDescription)
-                onComplete(error)
+                onComplete(nil)
             }
         }
     }
