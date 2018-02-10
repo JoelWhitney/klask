@@ -19,6 +19,8 @@
 		D61D5B0B200D48F200CB19F4 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */; };
 		D631C032202133150068165E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D631C031202133140068165E /* GoogleService-Info.plist */; };
 		D641A78E2025423D001FFCC6 /* ChooseArena.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */; };
+		D65AD5C7202E860700ACAF2B /* ActionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65AD5C6202E860700ACAF2B /* ActionPickerViewController.swift */; };
+		D65AD5C9202E88F100ACAF2B /* ActionPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D65AD5C8202E88F100ACAF2B /* ActionPicker.storyboard */; };
 		D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6806C1E200ED52600070195 /* SignIn.storyboard */; };
 		D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6806C20200EDA9B00070195 /* SignInViewController.swift */; };
 		D6E2F3AA202608CB003599AC /* EnterScore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6E2F3A9202608CB003599AC /* EnterScore.storyboard */; };
@@ -64,6 +66,8 @@
 		D631C031202133140068165E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D631C0332021349F0068165E /* klask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = klask.entitlements; sourceTree = "<group>"; };
 		D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseArena.storyboard; sourceTree = "<group>"; };
+		D65AD5C6202E860700ACAF2B /* ActionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionPickerViewController.swift; sourceTree = "<group>"; };
+		D65AD5C8202E88F100ACAF2B /* ActionPicker.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ActionPicker.storyboard; sourceTree = "<group>"; };
 		D6806C1E200ED52600070195 /* SignIn.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		D6806C20200EDA9B00070195 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		D6E2F3A9202608CB003599AC /* EnterScore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EnterScore.storyboard; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				D6806C1E200ED52600070195 /* SignIn.storyboard */,
 				D641A78D2025423D001FFCC6 /* ChooseArena.storyboard */,
 				E57E7D812005AF540039748E /* Main.storyboard */,
+				D65AD5C8202E88F100ACAF2B /* ActionPicker.storyboard */,
 				D6E2F3A9202608CB003599AC /* EnterScore.storyboard */,
 				D61D5B06200CF1FF00CB19F4 /* SubmitGame.storyboard */,
 				D61D5B08200D48CC00CB19F4 /* NoConnection.storyboard */,
@@ -225,6 +230,7 @@
 				E57E7D7F2005AF540039748E /* StandingsViewController.swift */,
 				D6E2F3AB20260E47003599AC /* EnterScoreViewController.swift */,
 				E57E7D8F2005B2250039748E /* ProfileViewController.swift */,
+				D65AD5C6202E860700ACAF2B /* ActionPickerViewController.swift */,
 				D61D5B0A200D48F200CB19F4 /* NoConnectionViewController.swift */,
 				D60AB23C200AD479003359B1 /* SubmitGameContollers */,
 				E57E7D912005B2350039748E /* Data Models */,
@@ -331,6 +337,7 @@
 				E563C94020095B1B004A0BF9 /* Komika.txt in Resources */,
 				D61D5B07200CF1FF00CB19F4 /* SubmitGame.storyboard in Resources */,
 				E563C94420095B1B004A0BF9 /* KOMIKASL.ttf in Resources */,
+				D65AD5C9202E88F100ACAF2B /* ActionPicker.storyboard in Resources */,
 				E563C94520095B1B004A0BF9 /* KOMIKHBI.ttf in Resources */,
 				D6E2F3AA202608CB003599AC /* EnterScore.storyboard in Resources */,
 				D6806C1F200ED52600070195 /* SignIn.storyboard in Resources */,
@@ -383,8 +390,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-klask/Pods-klask-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseGoogleAuthUI.bundle,
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -423,6 +430,7 @@
 			files = (
 				D6806C21200EDA9B00070195 /* SignInViewController.swift in Sources */,
 				E57E7D902005B2250039748E /* ProfileViewController.swift in Sources */,
+				D65AD5C7202E860700ACAF2B /* ActionPickerViewController.swift in Sources */,
 				E57E7D932005B24B0039748E /* DataModels.swift in Sources */,
 				D60AB243200ADBDF003359B1 /* SelectChallengerViewController.swift in Sources */,
 				D60DAD7D2013E42F008777B0 /* ChooseArenaViewController.swift in Sources */,

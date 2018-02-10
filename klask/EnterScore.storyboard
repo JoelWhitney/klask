@@ -303,22 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pe0-lD-Yj8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167" y="116"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="kRH-M0-VCv">
-            <objects>
-                <viewController id="oxs-yf-oJa" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="9RO-HS-LUW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="bg3-jm-i9R"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JAY-4T-Fnd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="602" y="103"/>
+            <point key="canvasLocation" x="385" y="115"/>
         </scene>
     </scenes>
     <resources>
