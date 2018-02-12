@@ -75,7 +75,12 @@ struct KlaskChallenge: Codable {
         self.datetime = NSDate().timeIntervalSince1970
         self.arenaid = DataStore.shared.activearena?.aid
     }
-    
+}
+
+extension KlaskChallenge: Equatable {
+    static func == (lhs: KlaskChallenge, rhs: KlaskChallenge) -> Bool {
+        return ("\(lhs.challengeruid!)-\(lhs.challengeduid!)" == "\(rhs.challengeruid!)-\(rhs.challengeduid!)")
+    }
 }
 
 // MARK: - KlaskGame

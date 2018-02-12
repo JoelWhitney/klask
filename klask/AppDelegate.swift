@@ -83,30 +83,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
        
-        UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch", title: "Background Fetch", subtitle: "trying to update data in the background", body: nil)
-
-        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge]?) in
-
-            UNUserNotificationCenter.scheduleNotification(withIdentifier: "bgfetch-success", title: "Background Fetch", subtitle: "The query completed with \(challenges?.count ?? 0) challenges", body: nil)
+        DataStore.shared.getUserDefaults()
+        
+        DataStore.shared.getUserChallenges(onComplete: { (challenges: [KlaskChallenge], error: Error?) in
             
-            if let challenges = challenges, challenges.count > 0 {
-
+            if challenges.count > 0 {
+                var challenges = challenges
+                
+                challenges.removeDuplicates()
+                
                 for challenge in challenges {
-                    let content = UNMutableNotificationContent()
-                    content.title = "Challenge"
-                    content.categoryIdentifier = "challenge"
-                    let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
-                    content.body = "You've been challenged by \(String(describing: challenger))"
-                    content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                    
+                    UNUserNotificationCenter.scheduleChallengeNotification(challenge: challenge)
 
-                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                        if error == nil {
-                            print("deleting notification")
-                            DataStore.shared.deleteChallenge(challenge)
-                        }
-                    })
                 }
                 completionHandler(.newData)
             } else {
@@ -202,12 +191,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         DataStore.shared.saveUserDefaults()
     }
-
-    func presentChallengeAlert() {
-        let alertController = UIAlertController(title: "Challenge", message: "blah", preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-    }
 }
 
 // MARK: - Google Sign In stuff
@@ -295,6 +278,26 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 }
 
 extension UNUserNotificationCenter {
+    static func scheduleChallengeNotification(challenge: KlaskChallenge) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Challenge"
+        content.categoryIdentifier = "challenge"
+        let challenger = (challenge.challengername == "") ? "someone" : challenge.challengername!
+        content.body = "You've been challenged by \(String(describing: challenger))"
+        content.userInfo = ["datetime": String(describing: challenge.datetime ?? 0), "arenaid": String(describing: challenge.arenaid ?? ""), "challengeruid": String(describing: challenge.challengeruid ?? ""), "challengername": String(describing: challenge.challengername ?? "")]
+        let request = UNNotificationRequest(identifier: "\(challenge.challengeruid!)-\(challenge.challengeduid!)", content: content, trigger: nil)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            
+            if let error = error {
+                print("Error scheduling the notification: \(error)")
+            } else {
+                print("Scheduled notification")
+                DataStore.shared.deleteChallenge(challenge)
+            }
+        }
+    }
     
     static func scheduleNotification(withIdentifier identifier: String, title: String?, subtitle: String?, body: String?) {
         

@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
         tableView.tableFooterView = UIView()
-        buttonUI()
+        
         updateUserInfo()
     }
 
@@ -70,13 +70,7 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
-            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
-            self.navigationItem.rightBarButtonItem = overflowButton
-        } else {
-//            let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
-//            self.navigationItem.rightBarButtonItem = addButton
-        }
+        buttonUI()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -105,11 +99,17 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func buttonUI() {
-        actionFAB.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        actionFAB.layer.borderWidth = 1.5
+        actionFAB.layer.borderColor = #colorLiteral(red: 0.9996390939, green: 1, blue: 0.9997561574, alpha: 1)
+        actionFAB.layer.borderWidth = 2.5
+        actionFAB.layer.shadowColor = #colorLiteral(red: 0.1865964234, green: 0.1867694855, blue: 0.1866232157, alpha: 1)
+        actionFAB.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        actionFAB.layer.shadowOpacity = 0.8
+        actionFAB.layer.shadowRadius = 0.2
         if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
             actionFAB.isEnabled = false
             actionFAB.alpha = 0.0
+            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
+            self.navigationItem.rightBarButtonItem = overflowButton
         } else {
             actionFAB.isEnabled = true
             actionFAB.alpha = 1.0
@@ -166,14 +166,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
         self.present(alert, animated: true, completion: nil)
-    }
-
-    
-    @objc func addGame(_ sender: UIBarButtonItem) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
-        let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
-        selectWinnerViewController.challenger = userstanding?.user
-        self.navigationController?.pushViewController(selectWinnerViewController, animated: true)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {

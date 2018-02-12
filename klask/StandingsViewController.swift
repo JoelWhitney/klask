@@ -80,7 +80,6 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         verifyArenaChosen()
         // data source
         reloadStandings()
-
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -98,7 +97,7 @@ class StandingsViewController: UIViewController, StandingsDelegate, ArenaUsersDe
         reloadStandings()
     }
     
-    // MARK: - Methods
+    // MARK: - Methods    
     private func verifySignedIn() {
         guard signedIn else {
             presentSignInController()
@@ -240,7 +239,7 @@ extension StandingsViewController: UITableViewDataSource {
             case .Goals:
                 return "\(standing.goalsdiff)"
             case .Points:
-                return "\(standing.modifiedrank!)"
+                return "\(String(format: "%.01f", standing.modifiedrank!))"
             }
         }()
         
@@ -260,7 +259,7 @@ extension StandingsViewController: UITableViewDataSource {
             self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Loss)
             completionHandler(true)
         }
-        //action.image = UIImage(named: "Trash")
+        action.image = #imageLiteral(resourceName: "Loser")
         action.title = "Loss"
         action.backgroundColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
         return action
@@ -273,7 +272,7 @@ extension StandingsViewController: UITableViewDataSource {
             self.presentEnterScoreController(opponent: opponent, actionType: ContextualActionType.Won)
             completionHandler(true)
         }
-        //action.image = UIImage(named: "Trash")
+        action.image = #imageLiteral(resourceName: "Won")
         action.title = "Won"
         action.backgroundColor = #colorLiteral(red: 0.4695706824, green: 0.7674402595, blue: 0.2090922746, alpha: 1)
         return action
@@ -295,7 +294,7 @@ extension StandingsViewController: UITableViewDataSource {
             self.animateCellByAction(indexPath: indexPath, actionType: ContextualActionType.Challenge)
             completionHandler(true)
         }
-        //action.image = UIImage(named: "Trash")
+        action.image = #imageLiteral(resourceName: "Challenge")
         action.title = "Challenge"
         action.backgroundColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
         return action

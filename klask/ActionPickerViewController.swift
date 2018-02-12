@@ -40,27 +40,13 @@ class ActionPickerViewController: UIViewController {
         })
     }
     @IBAction func won(_ sender: UIButton) {
-        let opponent = userstanding?.user
-        let actionType = ContextualActionType.Won
-        weak var presentingViewController = self.presentingViewController
         self.dismiss(animated: true, completion: {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
-            let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
-            enterScoreViewController.actionType = actionType
-            enterScoreViewController.opponent = opponent
-            presentingViewController?.present(enterScoreViewController, animated: true, completion: nil)
+            self.presentEnterScoreViewController(opponent: (self.userstanding?.user)!, actionType: ContextualActionType.Won)
         })
     }
     @IBAction func loss(_ sender: UIButton) {
-        let opponent = userstanding?.user
-        let actionType = ContextualActionType.Loss
-        weak var presentingViewController = self.presentingViewController
         self.dismiss(animated: true, completion: {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
-            let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
-            enterScoreViewController.actionType = actionType
-            enterScoreViewController.opponent = opponent
-            presentingViewController?.present(enterScoreViewController, animated: true, completion: nil)
+            self.presentEnterScoreViewController(opponent: (self.userstanding?.user)!, actionType: ContextualActionType.Loss)
         })
     }
     @IBAction func cancel(_ sender: UIButton) {
@@ -79,6 +65,15 @@ class ActionPickerViewController: UIViewController {
     }
     
     // MARK: - Methods
+    func presentEnterScoreViewController(opponent: KlaskUser, actionType: ContextualActionType) {
+        weak var presentingViewController = self.presentingViewController
+        let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
+        let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
+        enterScoreViewController.actionType = actionType
+        enterScoreViewController.opponent = opponent
+        presentingViewController?.present(enterScoreViewController, animated: true, completion: nil)
+    }
+    
     func fabSetup() {
         wonFAB.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
         wonFAB.layer.borderWidth = 1.5
@@ -87,7 +82,7 @@ class ActionPickerViewController: UIViewController {
         challengeFAB.layer.borderColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
         challengeFAB.layer.borderWidth = 1.5
         cancelFAB.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        cancelFAB.layer.borderWidth = 1.5
+        cancelFAB.layer.borderWidth = 2.5
     }
 
 }
