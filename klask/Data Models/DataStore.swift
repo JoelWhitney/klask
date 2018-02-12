@@ -12,9 +12,9 @@ import CodableFirebase
 import UserNotifications
 
 typealias FirebaseArenaClosure = (KlaskArena?) -> Void
-typealias FirebaseArenasClosure = ([KlaskArena]) -> Void
-typealias FirebaseArenaUsersClosure = ([KlaskUser]) -> Void
-typealias FirebaseGameClosure = ([KlaskGame]) -> Void
+typealias FirebaseArenasClosure = ([KlaskArena]?) -> Void
+typealias FirebaseArenaUsersClosure = ([KlaskUser]?) -> Void
+typealias FirebaseGameClosure = ([KlaskGame]?) -> Void
 
 // MARK: - Delegates
 protocol StandingsDelegate {
@@ -89,8 +89,10 @@ class DataStore {
             saveUserDefaults()
             
             getArenasJoined() { arenas in
-                print(arenas)
-                self.arenasjoined = arenas
+                if let arenas = arenas {
+                    print(arenas)
+                    self.arenasjoined = arenas
+                }
             }
             observeUserChallenges(onComplete: { challenge in
                 if let challenge = challenge {
@@ -111,7 +113,9 @@ class DataStore {
             saveUserDefaults()
             
             observeArenaGames() { games in
-                self.arenagames = games
+                if let games = games {
+                    self.arenagames = games
+                }
             }
             getAndObserveArenaUsers()
         }
@@ -252,7 +256,10 @@ class DataStore {
         var arenas = [KlaskArena]()
         ref.child("arenas").queryOrdered(byChild: "arenaname").queryEqual(toValue: arenaname).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            guard let value = snapshot.value  else { return }
+            guard let value = snapshot.value  else {
+                onComplete(nil)
+                return
+            }
             
             do {
                 let arenaDict = try FirebaseDecoder().decode([String: KlaskArena].self, from: value)
@@ -268,32 +275,48 @@ class DataStore {
             }
         }) { (error) in
             print(error.localizedDescription)
+            onComplete(arenas)
         }
     }
     
-    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge]?) -> Void) {
-        var challenges: [KlaskChallenge]?
+    func getUserChallenges(onComplete: @escaping (_ challenges: [KlaskChallenge], _ error: Error?) -> Void) {
         
-        if let activeuser = activeuser {
-            ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let value = snapshot.value  else { onComplete(challenges) ; return }
-                
-                do {
-                    let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
-                    challenges = [KlaskChallenge]()
-                    for (_, value) in challengeDict {
-                        challenges?.append(value)
-                    }
-                } catch {
-                    print(error)
-                }
-                onComplete(challenges)
-            }) { (error) in
-                print(error.localizedDescription)
-            }
+        var challenges = [KlaskChallenge]()
+        
+        guard let activeuser = activeuser else {
+            onComplete(challenges, nil)
+            return
         }
-        onComplete(challenges)
+        
+        ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+
+            guard let value = snapshot.value else {
+                onComplete(challenges, nil)
+                return
+            }
+            
+            do {
+                let challengeDict = try FirebaseDecoder().decode([String: KlaskChallenge].self, from: value)
+                
+                for (_, value) in challengeDict {
+                    challenges.append(value)
+                }
+                
+                DispatchQueue.main.async() {
+                    onComplete(challenges, nil)
+                }
+            
+            } catch {
+                print(error)
+                onComplete(challenges, error)
+            }
+           
+            
+        }) { (error) in
+            print(error.localizedDescription)
+            onComplete(challenges, error)
+        }
+
     }
     
     private func userChangedPredicateMet(_ user: KlaskUser) {
@@ -322,7 +345,10 @@ class DataStore {
         
         if let activearena = activearena {
             
-            guard let joinedusers = activearena.joinedusers else { return }
+            guard let joinedusers = activearena.joinedusers else {
+                onComplete(nil)
+                return
+            }
             
             for uid in joinedusers {
                 
@@ -375,7 +401,10 @@ class DataStore {
     
     func postChallenge(_ challenge: KlaskChallenge, onComplete: @escaping (_ error: Error?) -> Void) {
         do {
-            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else { return }
+            guard let challengeruid = challenge.challengeruid, let challengeduid = challenge.challengeduid else {
+                onComplete(nil)
+                return
+            }
             let cid = "\(challengeruid)-\(challengeduid)"
             let challenge = try FirebaseEncoder().encode(challenge)
             ref.child("challenges").child(cid).setValue(challenge, withCompletionBlock: { (error, ref) in
@@ -383,6 +412,7 @@ class DataStore {
             })
         } catch {
             print(error)
+            onComplete(error)
         }
     }
     
@@ -428,18 +458,25 @@ class DataStore {
             ref.child("challenges").removeAllObservers()
             ref.child("challenges").queryOrdered(byChild: "challengeduid").queryEqual(toValue: activeuser.uid).observe(.childAdded, with: { (snapshot) in
                 
-                guard let value = snapshot.value  else { return }
+                guard let value = snapshot.value  else {
+                    onComplete(nil)
+                    return
+                }
                 
                 do {
                     let challenge  = try FirebaseDecoder().decode(KlaskChallenge.self, from: value)
                     onComplete(challenge)
                 } catch {
                     print(error)
+                    onComplete(nil)
                 }
                 
             }) { (error) in
                 print(error.localizedDescription)
+                onComplete(nil)
             }
+        } else {
+            onComplete(nil)
         }
     }
     
@@ -451,7 +488,11 @@ class DataStore {
             ref.child("games").removeAllObservers()
             ref.child("games").queryOrdered(byChild: "arenaid").queryEqual(toValue: activearena.aid).observe(.value, with: { (snapshot) in
                 
-                guard let value = snapshot.value  else { return }
+                guard let value = snapshot.value  else {
+                    onComplete(nil)
+                    return
+                }
+                
                 games = []
                 
                 do {
@@ -469,6 +510,7 @@ class DataStore {
                 }
             }) { (error) in
                 print(error.localizedDescription)
+                onComplete(nil)
             }
         }
     }
@@ -561,7 +603,8 @@ class DataStore {
                 case .Goals, .Wins:
                     return defaultStandings(arenausers: arenausers, relevantgames: relevantgames)
                 case .Points:
-                    return modifiedStandings(arenausers: arenausers, relevantgames: relevantgames)
+                    //return modifiedStandings1(arenausers: arenausers, relevantgames: relevantgames)
+                    return modifiedStandings2(arenausers: arenausers, relevantgames: relevantgames)
                 }
             }()
         }
@@ -615,7 +658,8 @@ class DataStore {
         }
     }
     
-    private func modifiedStandings(arenausers: [KlaskUser], relevantgames: [KlaskGame]) -> [Standing] {
+    // this is okay but is just wins * opponent win %
+    private func modifiedStandings1(arenausers: [KlaskUser], relevantgames: [KlaskGame]) -> [Standing] {
         let standings =  self.defaultStandings(arenausers: arenausers, relevantgames: relevantgames)
         return standings.map{ (standing: Standing) in
             var standing = standing
@@ -626,18 +670,55 @@ class DataStore {
                 .reduce(0, +)
             
             standing.opponentlosses = standing.opponents?.map{ (user: KlaskUser) in
-                return standings.filter({$0.user.uid == user.uid}).first!.wins
+                return standings.filter({$0.user.uid == user.uid}).first!.losses
             }
                 .reduce(0, +)
             
             standing.modifiedrank = (standing.games?.count ?? 0 > 0) ? ((standing.wins * 1.0) + (standing.losses * 0)) * (standing.opponentwins! / (standing.opponentwins! + standing.opponentlosses!)) : 0.0
+            
             return standing
-            }
+        }
             //.filter({ ($0.wins + $0.losses) > 0 })
             .sorted{ ($0.modifiedrank! > $1.modifiedrank!) }
 
     }
     
+    // this should be better is each win is a 1 * opponent win %, so you get more per win against better opponent
+    private func modifiedStandings2(arenausers: [KlaskUser], relevantgames: [KlaskGame]) -> [Standing] {
+        let standings =  self.defaultStandings(arenausers: arenausers, relevantgames: relevantgames)
+        return standings.map{ (standing: Standing) in
+            var standing = standing
+        
+            standing.opponentwins = standing.opponents?.map { (user: KlaskUser) in
+                return standings.filter({$0.user.uid == user.uid}).first!.wins
+            }
+                .reduce(0, +)
+            
+            standing.opponentlosses = standing.opponents?.map { (user: KlaskUser) in
+                return standings.filter({$0.user.uid == user.uid}).first!.losses
+            }
+                .reduce(0, +)
+            
+            standing.modifiedrank = standing.games?.map { (game: KlaskGame) in
+                if (game.player1id == standing.user.uid && game.player1score! > game.player2score!) {
+                    let opponentwins = standings.filter({$0.user.uid == game.player2id}).first!.wins
+                    let opponentlosses = standings.filter({$0.user.uid == game.player2id}).first!.losses
+                    return 0.5 + (1.5 * (opponentwins / (opponentwins + opponentlosses)))
+                } else if (game.player2id == standing.user.uid && game.player2score! > game.player1score!) {
+                    let opponentwins = standings.filter({$0.user.uid == game.player1id}).first!.wins
+                    let opponentlosses = standings.filter({$0.user.uid == game.player1id}).first!.losses
+                    return 0.5 + (1.5 * (opponentwins / (opponentwins + opponentlosses)))
+                }
+                return 0
+            }
+                .reduce(0, +)
+            
+            return standing
+        }
+            //.filter({ ($0.wins + $0.losses) > 0 })
+            .sorted{ ($0.modifiedrank! > $1.modifiedrank!) }
+    }
+        
     private func displayNotification(challenge: KlaskChallenge) {
         // should prob check presentedVC and make sure not on choose arena screen or sign in screen
         

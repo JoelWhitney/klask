@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -20,19 +20,19 @@
         <!--Enter Score View Controller-->
         <scene sceneID="ezs-vM-Zvt">
             <objects>
-                <viewController storyboardIdentifier="EnterScoreViewController" modalPresentationStyle="overCurrentContext" id="wAO-cr-AJH" customClass="EnterScoreViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EnterScoreViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="wAO-cr-AJH" customClass="EnterScoreViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="h7h-sd-6nf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3gp-tI-TWL">
-                                <rect key="frame" x="15" y="208.5" width="345" height="250"/>
+                                <rect key="frame" x="15" y="281" width="345" height="250"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="15" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xmS-Mu-Tf6">
                                         <rect key="frame" x="20" y="209" width="305" height="33"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAN-iP-14d">
-                                                <rect key="frame" x="0.0" y="0.0" width="137.5" height="33"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="137.66666666666666" height="33"/>
                                                 <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="15"/>
                                                 <color key="tintColor" red="0.62411361929999998" green="0.87044793369999995" blue="0.35340470080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="   Cancel   "/>
@@ -47,7 +47,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2C1-dk-VfO">
-                                                <rect key="frame" x="152.5" y="0.0" width="152.5" height="33"/>
+                                                <rect key="frame" x="152.66666666666663" y="0.0" width="152.33333333333337" height="33"/>
                                                 <color key="backgroundColor" red="0.62411361929999998" green="0.87044793369999995" blue="0.35340470080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="15"/>
                                                 <state key="normal" title="   Submit   ">
@@ -65,7 +65,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Loser Score" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zav-bH-27g">
-                                        <rect key="frame" x="49.5" y="15" width="247" height="30"/>
+                                        <rect key="frame" x="49.666666666666671" y="15" width="246.66666666666663" height="30"/>
                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="22"/>
                                         <color key="textColor" red="0.99963909390000005" green="1" blue="0.99975615740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -226,13 +226,13 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JDubs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="9ak-N4-hhp">
-                                        <rect key="frame" x="120" y="52.5" width="215" height="25"/>
+                                        <rect key="frame" x="120" y="52.666666666666679" width="215" height="24.666666666666664"/>
                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Joel" translatesAutoresizingMaskIntoConstraints="NO" id="uy6-hH-Lhk">
-                                        <rect key="frame" x="35" y="52.5" width="70" height="70"/>
+                                        <rect key="frame" x="35" y="52.666666666666686" width="70" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="2mm-Mi-L0J"/>
                                             <constraint firstAttribute="width" constant="70" id="Nvp-p3-nJq"/>
@@ -244,7 +244,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Joel Whitney" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YeH-Yl-k8G">
-                                        <rect key="frame" x="120" y="77" width="215" height="18"/>
+                                        <rect key="frame" x="120" y="76.666666666666686" width="215" height="18"/>
                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="15"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -303,22 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pe0-lD-Yj8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167" y="116"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="kRH-M0-VCv">
-            <objects>
-                <viewController id="oxs-yf-oJa" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="9RO-HS-LUW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="bg3-jm-i9R"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JAY-4T-Fnd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="602" y="103"/>
+            <point key="canvasLocation" x="23" y="113"/>
         </scene>
     </scenes>
     <resources>

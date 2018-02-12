@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KOMIKAH_.ttf">
+            <string>KomikaHand</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Action Picker View Controller-->
+        <scene sceneID="qoK-oT-fVF">
+            <objects>
+                <viewController storyboardIdentifier="ActionPickerViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="wW6-RC-jsR" customClass="ActionPickerViewController" customModule="klask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RXz-mC-rMk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nh-xp-Zq8">
+                                <rect key="frame" x="313" y="685" width="40" height="40"/>
+                                <color key="backgroundColor" red="0.1882159411907196" green="0.1882481575012207" blue="0.1882057785987854" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="NzB-ze-43d"/>
+                                    <constraint firstAttribute="height" constant="40" id="YM1-LJ-Vkv"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="Challenge">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="challenge:" destination="wW6-RC-jsR" eventType="touchUpInside" id="x9V-AI-iZs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VbF-EE-GoZ">
+                                <rect key="frame" x="313" y="629" width="40" height="40"/>
+                                <color key="backgroundColor" red="0.18821594119999999" green="0.18824815750000001" blue="0.18820577860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="VSf-U6-BtW"/>
+                                    <constraint firstAttribute="height" constant="40" id="cGw-o5-dGg"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="Loser">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="loss:" destination="wW6-RC-jsR" eventType="touchUpInside" id="gWP-bL-r6S"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIr-J1-LOE">
+                                <rect key="frame" x="313" y="573" width="40" height="40"/>
+                                <color key="backgroundColor" red="0.18821594119999999" green="0.18824815750000001" blue="0.18820577860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="3OU-Jw-GEB"/>
+                                    <constraint firstAttribute="height" constant="40" id="cqa-7W-6Xk"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="Won">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="won:" destination="wW6-RC-jsR" eventType="touchUpInside" id="OUz-jW-mr9"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Challenge" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KF8-hN-iQG">
+                                <rect key="frame" x="207.66666666666666" y="692.33333333333337" width="97.333333333333343" height="23.666666666666629"/>
+                                <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You Lost" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B67-nN-Eal">
+                                <rect key="frame" x="215" y="636" width="90" height="24"/>
+                                <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You Won" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xnj-6O-G9J">
+                                <rect key="frame" x="223" y="580.33333333333337" width="82" height="24"/>
+                                <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbz-Tr-KLL">
+                                <rect key="frame" x="304" y="741" width="56" height="56"/>
+                                <color key="backgroundColor" red="0.1882159411907196" green="0.1882481575012207" blue="0.1882057785987854" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="56" id="2ik-Wi-emq"/>
+                                    <constraint firstAttribute="height" constant="56" id="XUa-wb-1Ok"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                <state key="normal" image="Cancel">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="28"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="cancel:" destination="wW6-RC-jsR" eventType="touchUpInside" id="JTt-vm-gc9"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Wbb-Mf-Ifm" firstAttribute="trailing" secondItem="Fbz-Tr-KLL" secondAttribute="trailing" constant="15" id="0t8-TW-Ih0"/>
+                            <constraint firstItem="VbF-EE-GoZ" firstAttribute="top" secondItem="VIr-J1-LOE" secondAttribute="bottom" constant="16" id="3Lp-SG-dv5"/>
+                            <constraint firstItem="Fbz-Tr-KLL" firstAttribute="top" secondItem="5nh-xp-Zq8" secondAttribute="bottom" constant="16" id="4r6-NO-uTa"/>
+                            <constraint firstItem="VIr-J1-LOE" firstAttribute="leading" secondItem="Xnj-6O-G9J" secondAttribute="trailing" constant="8" id="6kn-99-YD4"/>
+                            <constraint firstItem="5nh-xp-Zq8" firstAttribute="leading" secondItem="KF8-hN-iQG" secondAttribute="trailing" constant="8" id="AKM-Ft-2at"/>
+                            <constraint firstItem="VbF-EE-GoZ" firstAttribute="leading" secondItem="B67-nN-Eal" secondAttribute="trailing" constant="8" id="FPF-7A-cyf"/>
+                            <constraint firstItem="B67-nN-Eal" firstAttribute="top" secondItem="Xnj-6O-G9J" secondAttribute="bottom" constant="32" id="NPD-GN-l2V"/>
+                            <constraint firstAttribute="bottom" secondItem="Fbz-Tr-KLL" secondAttribute="bottom" constant="15" id="Oux-Fz-bHk"/>
+                            <constraint firstItem="Wbb-Mf-Ifm" firstAttribute="trailing" secondItem="5nh-xp-Zq8" secondAttribute="trailing" constant="22" id="V1d-fv-PUs"/>
+                            <constraint firstItem="Wbb-Mf-Ifm" firstAttribute="trailing" secondItem="VIr-J1-LOE" secondAttribute="trailing" constant="22" id="eDu-3F-SO4"/>
+                            <constraint firstItem="Wbb-Mf-Ifm" firstAttribute="trailing" secondItem="VbF-EE-GoZ" secondAttribute="trailing" constant="22" id="jUd-iB-L9U"/>
+                            <constraint firstItem="KF8-hN-iQG" firstAttribute="top" secondItem="B67-nN-Eal" secondAttribute="bottom" constant="33" id="mB6-dC-zub"/>
+                            <constraint firstAttribute="bottom" secondItem="KF8-hN-iQG" secondAttribute="bottom" constant="96" id="n16-aD-Mta"/>
+                            <constraint firstItem="5nh-xp-Zq8" firstAttribute="top" secondItem="VbF-EE-GoZ" secondAttribute="bottom" constant="16" id="qtR-Nd-6yj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Wbb-Mf-Ifm"/>
+                    </view>
+                    <connections>
+                        <outlet property="cancelFAB" destination="Fbz-Tr-KLL" id="Lhz-gj-3ku"/>
+                        <outlet property="challengeFAB" destination="5nh-xp-Zq8" id="QW8-eS-XpE"/>
+                        <outlet property="lossFAB" destination="VbF-EE-GoZ" id="knw-P6-CWC"/>
+                        <outlet property="wonFAB" destination="VIr-J1-LOE" id="ybM-tM-dgE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u1I-Gb-8kk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="88.799999999999997" y="115.59220389805098"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Cancel" width="33" height="33"/>
+        <image name="Challenge" width="33" height="33"/>
+        <image name="Loser" width="33" height="33"/>
+        <image name="Won" width="33" height="33"/>
+    </resources>
+</document>

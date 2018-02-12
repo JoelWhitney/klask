@@ -35,35 +35,19 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
 
     // MARK: - IBOutlets
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var profileImage: UIImageView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var nickNameLabel: UILabel!
     @IBOutlet var rankLabel: UILabel!
-    @IBOutlet var challengeButton: UIButton!
-    @IBOutlet var wonButton: UIButton!
-    @IBOutlet var lossButton: UIButton!
+    @IBOutlet weak var bottomGradientView: UIView!
+    @IBOutlet weak var actionFAB: UIButton!
     
     // MARK: - IBAction
-    @IBAction func challenge(_ sender: UIButton) {
-        let opponent = userstanding?.user
-        guard let challengeduid = opponent?.uid, let challengedname = opponent?.nickname ?? opponent?.name else { return }
-        let challenge = KlaskChallenge(challengeduid: challengeduid)
-        DataStore.shared.postChallenge(challenge, onComplete: { error in
-            if error != nil {
-                let alertController = UIAlertController(title: "Error", message: "Hmm, try going to ask \(challengedname) instead of challenging again.", preferredStyle: UIAlertControllerStyle.alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alertController, animated: true, completion: nil)
-            }
-        })
-    }
-    @IBAction func won(_ sender: UIButton) {
-        let opponent = userstanding?.user
-        self.presentEnterScoreController(opponent: opponent!, actionType: ContextualActionType.Won)
-    }
-    @IBAction func loss(_ sender: UIButton) {
-        let opponent = userstanding?.user
-        self.presentEnterScoreController(opponent: opponent!, actionType: ContextualActionType.Loss)
+    @IBAction func presentActionPickerController() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "ActionPicker", bundle: nil)
+        let actionPickerViewController = storyBoard.instantiateViewController(withIdentifier: "ActionPickerViewController") as! ActionPickerViewController
+        actionPickerViewController.userstanding = self.userstanding
+        self.present(actionPickerViewController, animated: true, completion: nil)
     }
     
     // MARK: - Lifecycle
@@ -72,19 +56,21 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         DataStore.shared.standingsDelegate = self
         DataStore.shared.arenaUsersDelegate = self
         tableView.tableFooterView = UIView()
-        buttonUI()
+        
         updateUserInfo()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        setBottomGradientView()
+        CATransaction.commit()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
-            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
-            self.navigationItem.rightBarButtonItem = overflowButton
-        } else {
-//            let addButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Add"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(addGame))
-//            self.navigationItem.rightBarButtonItem = addButton
-        }
+        buttonUI()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -113,29 +99,20 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
     }
     
     func buttonUI() {
+        actionFAB.layer.borderColor = #colorLiteral(red: 0.9996390939, green: 1, blue: 0.9997561574, alpha: 1)
+        actionFAB.layer.borderWidth = 2.5
+        actionFAB.layer.shadowColor = #colorLiteral(red: 0.1865964234, green: 0.1867694855, blue: 0.1866232157, alpha: 1)
+        actionFAB.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        actionFAB.layer.shadowOpacity = 0.8
+        actionFAB.layer.shadowRadius = 0.2
         if userstanding?.user.uid == DataStore.shared.activeuser?.uid {
-            challengeButton.isEnabled = false
-            challengeButton.alpha = 0.0
-            wonButton.isEnabled = false
-            wonButton.alpha = 0.0
-            lossButton.isEnabled = false
-            lossButton.alpha = 0.0
+            actionFAB.isEnabled = false
+            actionFAB.alpha = 0.0
+            let overflowButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Overflow"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(overflowMenu))
+            self.navigationItem.rightBarButtonItem = overflowButton
         } else {
-            challengeButton.isEnabled = true
-            challengeButton.alpha = 1.0
-            wonButton.isEnabled = true
-            wonButton.alpha = 1.0
-            lossButton.isEnabled = true
-            lossButton.alpha = 1.0
-            challengeButton.layer.borderWidth = 0.25
-            challengeButton.layer.borderColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
-            challengeButton.tintColor = #colorLiteral(red: 0.9646865726, green: 0.7849650979, blue: 0.0104486309, alpha: 1)
-            wonButton.layer.borderWidth = 0.25
-            wonButton.layer.borderColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
-            wonButton.tintColor = #colorLiteral(red: 0.6241136193, green: 0.8704479337, blue: 0.3534047008, alpha: 1)
-            lossButton.layer.borderWidth = 0.25
-            lossButton.layer.borderColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
-            lossButton.tintColor = #colorLiteral(red: 0.9994900823, green: 0.2319722176, blue: 0.1904809773, alpha: 1)
+            actionFAB.isEnabled = true
+            actionFAB.alpha = 1.0
         }
     }
     
@@ -153,6 +130,19 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         }
     }
     
+    func setBottomGradientView() {
+        var gradientLayer: CAGradientLayer!
+        
+        let colorTop = UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 0.0).cgColor
+        let colorBottom = UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 0.35).cgColor
+        
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bottomGradientView.bounds
+        gradientLayer.colors = [colorTop, colorBottom]
+        gradientLayer.locations = [0.0, 1.0]
+        
+        bottomGradientView.layer.insertSublayer(gradientLayer, at: 0)
+    }
     
     @objc func overflowMenu() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -176,14 +166,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
         self.present(alert, animated: true, completion: nil)
-    }
-
-    
-    @objc func addGame(_ sender: UIBarButtonItem) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "SubmitGame", bundle: nil)
-        let selectWinnerViewController = storyBoard.instantiateViewController(withIdentifier: "SelectWinnerViewController") as! SelectWinnerViewController
-        selectWinnerViewController.challenger = userstanding?.user
-        self.navigationController?.pushViewController(selectWinnerViewController, animated: true)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -214,14 +196,6 @@ class ProfileViewController: UIViewController, StandingsDelegate, ArenaUsersDele
                 self.updateUserInfo()
             }
         })
-    }
-    
-    private func presentEnterScoreController(opponent: KlaskUser, actionType: ContextualActionType) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "EnterScore", bundle: nil)
-        let enterScoreViewController = storyBoard.instantiateViewController(withIdentifier: "EnterScoreViewController") as! EnterScoreViewController
-        enterScoreViewController.actionType = actionType
-        enterScoreViewController.opponent = opponent
-        self.present(enterScoreViewController, animated: true, completion: nil)
     }
 
     private func signOut() {

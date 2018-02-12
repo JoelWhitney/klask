@@ -258,79 +258,28 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Nickname&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01H-oU-gZz">
-                                        <rect key="frame" x="116" y="67" width="85" height="21"/>
+                                        <rect key="frame" x="116" y="67" width="84.333333333333314" height="20"/>
                                         <fontDescription key="fontDescription" name="KomikaSlim" family="Komika Slim" pointSize="17"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# 1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPB-gr-lQX">
-                                        <rect key="frame" x="326" y="48" width="29" height="34.666666666666657"/>
+                                        <rect key="frame" x="326" y="48.333333333333343" width="29" height="34.333333333333343"/>
                                         <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="25"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2L5-x7-pVR">
-                                        <rect key="frame" x="287" y="93" width="40" height="29"/>
-                                        <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="12"/>
-                                        <state key="normal" title=" Loss ">
-                                            <color key="titleColor" red="1" green="0.34895753860000001" blue="0.16649934650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="loss:" destination="gTK-y8-7xU" eventType="touchUpInside" id="0FO-Sz-WIq"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2I-iH-UMb">
-                                        <rect key="frame" x="332" y="93" width="35" height="29"/>
-                                        <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="12"/>
-                                        <state key="normal" title=" Won ">
-                                            <color key="titleColor" red="0.62529450649999996" green="0.87097728249999995" blue="0.35402873159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="won:" destination="gTK-y8-7xU" eventType="touchUpInside" id="zUr-4c-0Ab"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlj-2S-qVD">
-                                        <rect key="frame" x="116" y="93" width="76" height="29"/>
-                                        <fontDescription key="fontDescription" name="KomikaHand" family="Komika Hand" pointSize="12"/>
-                                        <state key="normal" title=" Challenge ">
-                                            <color key="titleColor" red="0.92156862750000001" green="0.6705882353" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="challenge:" destination="gTK-y8-7xU" eventType="touchUpInside" id="ZD8-K3-jm4"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1484079361" green="0.10822928699999999" blue="0.1866647303" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="01H-oU-gZz" firstAttribute="leading" secondItem="aNw-qp-h8u" secondAttribute="trailing" constant="8" id="1j9-u0-JPA"/>
-                                    <constraint firstItem="R2I-iH-UMb" firstAttribute="leading" secondItem="2L5-x7-pVR" secondAttribute="trailing" constant="5" id="9Nq-9i-Lt1"/>
                                     <constraint firstAttribute="trailing" secondItem="IPB-gr-lQX" secondAttribute="trailing" constant="20" id="A07-Wf-tGg"/>
                                     <constraint firstItem="Mia-fw-xmq" firstAttribute="leading" secondItem="aNw-qp-h8u" secondAttribute="trailing" constant="8" id="AyT-5s-zj1"/>
                                     <constraint firstItem="aNw-qp-h8u" firstAttribute="leading" secondItem="SFG-mP-o5Y" secondAttribute="leading" constant="8" id="DJG-5D-4aE"/>
                                     <constraint firstItem="01H-oU-gZz" firstAttribute="top" secondItem="Mia-fw-xmq" secondAttribute="bottom" constant="3" id="Ey8-iN-mqt"/>
-                                    <constraint firstAttribute="bottom" secondItem="2L5-x7-pVR" secondAttribute="bottom" constant="8" id="Lzj-6C-Re0"/>
                                     <constraint firstItem="IPB-gr-lQX" firstAttribute="centerY" secondItem="SFG-mP-o5Y" secondAttribute="centerY" id="Pzk-lu-GVf"/>
                                     <constraint firstAttribute="height" constant="130" id="aW5-Ui-ypF"/>
-                                    <constraint firstAttribute="trailing" secondItem="R2I-iH-UMb" secondAttribute="trailing" constant="8" id="bdX-k1-dV5"/>
-                                    <constraint firstItem="rlj-2S-qVD" firstAttribute="leading" secondItem="aNw-qp-h8u" secondAttribute="trailing" constant="8" id="emj-TM-a3P"/>
-                                    <constraint firstAttribute="bottom" secondItem="rlj-2S-qVD" secondAttribute="bottom" constant="8" id="ncg-e2-001"/>
                                     <constraint firstItem="Mia-fw-xmq" firstAttribute="top" secondItem="SFG-mP-o5Y" secondAttribute="top" constant="38" id="qYh-01-Psy"/>
-                                    <constraint firstAttribute="bottom" secondItem="R2I-iH-UMb" secondAttribute="bottom" constant="8" id="sr1-Ud-Gno"/>
                                     <constraint firstItem="aNw-qp-h8u" firstAttribute="top" secondItem="SFG-mP-o5Y" secondAttribute="top" constant="15" id="zbe-jq-rD4"/>
                                 </constraints>
                             </view>
@@ -474,15 +423,48 @@
                                     <outlet property="delegate" destination="gTK-y8-7xU" id="eYc-xs-u5l"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJB-qH-thg">
+                                <rect key="frame" x="0.0" y="597" width="375" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="rmZ-Ly-228"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODR-5V-0s2">
+                                <rect key="frame" x="304" y="601" width="56" height="56"/>
+                                <color key="backgroundColor" red="0.1882159411907196" green="0.1882481575012207" blue="0.1882057785987854" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="56" id="6Yx-qI-y3W"/>
+                                    <constraint firstAttribute="height" constant="56" id="ZxF-GG-NPK"/>
+                                </constraints>
+                                <color key="tintColor" red="0.99963909390000005" green="1" blue="0.99975615740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="Add">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="28"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="presentActionPickerController" destination="gTK-y8-7xU" eventType="touchUpInside" id="WJF-jQ-AV8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="leading" secondItem="401-et-ogc" secondAttribute="leading" id="1vf-qv-zQj"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="trailing" secondItem="401-et-ogc" secondAttribute="trailing" id="LXp-Fw-X3C"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="LYb-fs-TZ6"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="RA6-dJ-6Vr"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="leading" secondItem="obS-WM-xWa" secondAttribute="leading" id="SDW-xO-O8O"/>
+                            <constraint firstItem="NJB-qH-thg" firstAttribute="trailing" secondItem="obS-WM-xWa" secondAttribute="trailing" id="Ur1-GI-f5u"/>
+                            <constraint firstAttribute="bottom" secondItem="NJB-qH-thg" secondAttribute="bottom" id="YLc-61-ivC"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="top" secondItem="SFG-mP-o5Y" secondAttribute="bottom" id="ZPQ-Gp-0q2"/>
+                            <constraint firstAttribute="bottom" secondItem="ODR-5V-0s2" secondAttribute="bottom" constant="15" id="aJT-FD-unT"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="top" secondItem="obS-WM-xWa" secondAttribute="top" id="dcp-L7-MQD"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="trailing" secondItem="401-et-ogc" secondAttribute="trailing" id="fa0-s7-xyZ"/>
+                            <constraint firstAttribute="trailing" secondItem="ODR-5V-0s2" secondAttribute="trailing" constant="15" id="gtO-RZ-29o"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="bottom" secondItem="401-et-ogc" secondAttribute="bottom" id="pTZ-T4-mBA"/>
                             <constraint firstItem="SFG-mP-o5Y" firstAttribute="leading" secondItem="401-et-ogc" secondAttribute="leading" id="sYA-HT-ybr"/>
                             <constraint firstItem="qmw-2S-25c" firstAttribute="trailing" secondItem="obS-WM-xWa" secondAttribute="trailing" id="we8-Yu-agW"/>
@@ -491,19 +473,18 @@
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="ajY-Rp-gPl"/>
                     <connections>
-                        <outlet property="challengeButton" destination="rlj-2S-qVD" id="hST-Ac-c09"/>
-                        <outlet property="lossButton" destination="2L5-x7-pVR" id="OFN-CO-9Uv"/>
+                        <outlet property="actionFAB" destination="ODR-5V-0s2" id="pVX-76-vAc"/>
+                        <outlet property="bottomGradientView" destination="NJB-qH-thg" id="sDd-Fn-0d0"/>
                         <outlet property="nameLabel" destination="Mia-fw-xmq" id="yfb-c5-zak"/>
                         <outlet property="nickNameLabel" destination="01H-oU-gZz" id="ktR-yW-T2y"/>
                         <outlet property="profileImage" destination="aNw-qp-h8u" id="2La-ao-hTZ"/>
                         <outlet property="rankLabel" destination="IPB-gr-lQX" id="gBZ-uT-aI5"/>
                         <outlet property="tableView" destination="qmw-2S-25c" id="qPk-RR-yGe"/>
-                        <outlet property="wonButton" destination="R2I-iH-UMb" id="3HG-Ty-TKO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnS-Ds-VFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1232.8" y="-559.07046476761627"/>
+            <point key="canvasLocation" x="1232.8" y="-559.35960591133005"/>
         </scene>
         <!--Challenger-->
         <scene sceneID="mBO-Y7-G0z">
